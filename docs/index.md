@@ -6,7 +6,6 @@ The QB4OLAP vocabulary serves to represent MD data on the semantic web.
 Furthermore, non-MD data can be rendered accessible to MD analysis via superimposition of MD schemas.
 
 There is a variety of users who may be interested in conducting MD analysis over LOD sources, e.g., ordinary people and non-governmental organizations.
-Although there have been efforts to represent MD data over LOD, e.g., QB4OLAP, there is still a lack of tools that allow the MD analysis of these data.
 Users who are willing to make MD analysis of LOD sources face various obstacles.
 First, prospective users are likely to lack technical skills to conduct an analysis, e.g., dealing with RDF and SPARQL.
 Second, these user are also unlikely to have the sufficient analytical domain knowledge to know which analytical processes can be interesting or sense-making.
@@ -36,7 +35,7 @@ We have implemented a proof-of-concept prototype of SWAG as a Java dynamic web a
 Image below shows the architecture of the system.
 HTML, JavaScript, jQuery, d3, and AJAX are employed for the frontend.
 Handling web requests and responses is handled via the controller.
-The Execution Engine conducts the main logic of SWAG and coordinates other modules.
+The Engine conducts the main logic of SWAG and coordinates other modules.
 Reading RDF data, sending SPARQL queries, and obtaining results is carried out by the Data Handler module, where Apache Jena libraries are employed.
 Generation of SPARQL queries is done by the SPARQL Generator module, which uses Apache Jena ARQ libraries for that purpose.
 
