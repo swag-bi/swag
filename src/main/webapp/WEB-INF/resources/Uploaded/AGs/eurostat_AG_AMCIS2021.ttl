@@ -1,308 +1,204 @@
 @prefix : <http://www.amcis2021.com/swag/myAG#> .
-@prefix ag: <http://www.amcis2021.com/swag/ag#> .
-@prefix pr: <http://www.amcis2021.com/swag/pr#> .
-@prefix qb: <http://purl.org/linked-data/cube#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix smd: <http://www.amcis2021.com/swag/smd#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix myAG: <http://www.amcis2021.com/swag/myAG#> .
-@prefix qb4o: <http://purl.org/qb4olap/cubes#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix films: <http://www.amcis2021.com/swag/filmsMDSchema#> .
 @prefix schema: <http://www.fing.edu.uy/inco/cubes/schemas/migr_asyapp#> .
-@prefix property: <http://eurostat.linked-statistics.org/property#> .
+@prefix films: <http://www.amcis2021.com/swag/filmsMDSchema#> .
 @prefix myMDSchema: <http://www.fing.edu.uy/inco/cubes/schemas/myMDSchema#> .
+@prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix pr: <http://www.amcis2021.com/swag/pr#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ag: <http://www.amcis2021.com/swag/ag#> .
+@prefix gn: <http://www.geonames.org/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smd: <http://www.amcis2021.com/swag/smd#> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
 @prefix sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix qb4o: <http://purl.org/qb4olap/cubes#> .
+@prefix property: <http://eurostat.linked-statistics.org/property#> .
 @prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
-@base <http://www.w3.org/2002/07/owl#> .
 
-#################################################################
-#    Individuals
-#################################################################
+#This analysis graphs tracks the number of asylum applications.
+#Analysis graph
+:eurostatAG a owl:NamedIndividual, ag:AnalysisGraph;
+  rdfs:comment "This analysis graphs tracks the number of asylum applications."@en;
+  ag:analysisSituation :AS1, :AS2, :AS3, :AS4, :AS5;
+  ag:navigationStep :NV2-3, :NV1-2, :NV2-5, :NV3-4;
+  ag:onSchema schema:eurostat .
 
+#Analysis situations
+:AS1 a owl:NamedIndividual, ag:AnalysisSituation;
+  rdfs:comment "Sum of number of asylum applications submitted to a specific destination continent, grouped by destination continent."@en;
+  rdfs:label "Applications by destination continent"@en;
+  ag:dice :diceSpecOnContinent2;
+  ag:cube schema:migr_asyappctzmQB4O13;
+  ag:dataset schema:migr_asyappctzmQB4O13_ds;
+  ag:granularity :desContinentGran;
+  ag:measure myMDSchema:SumOfNumOfApplicatoins .
 
-###  http://www.amcis2021.com/swag/myAG#DiceSpecOnContinent2
-myAG:DiceSpecOnContinent2 rdf:type owl:NamedIndividual ,
-                                   ag:DiceSpecification ;
-                          ag:diceLevel schema:continent ;
-                          ag:diceNode myAG:varDiceNode3 ;
-                          ag:dimension schema:destinationDim ;
-                          ag:hierarchy schema:destinationGeoHier .
-						
-###  http://www.amcis2021.com/swag/myAG#DiceSpecOnCountry3
-myAG:DiceSpecOnCountry3 rdf:type owl:NamedIndividual ,
-                                 ag:DiceSpecification ;
-                        ag:diceLevel property:geo ;
-                        ag:diceNode myAG:varDiceNode2 ;
-                        ag:dimension schema:destinationDim ;
-                        ag:hierarchy schema:destinationGeoHier .
+:AS2 a owl:NamedIndividual, ag:AnalysisSituation;
+  rdfs:comment "Sum of  number of asylum applications submitted to a specific destination continent, grouped by destination country."@en;
+  rdfs:label "Applications by destination country"@en;
+  ag:dice :diceSpecOnContinent2;
+  ag:cube schema:migr_asyappctzmQB4O13;
+  ag:dataset schema:migr_asyappctzmQB4O13_ds;
+  ag:granularity :destCountryGran;
+  ag:measure myMDSchema:SumOfNumOfApplicatoins .
 
-###  http://www.amcis2021.com/swag/myAG#SliceSpecOnYear4
-myAG:SliceSpecOnYear4 rdf:type owl:NamedIndividual ,
-							   ag:GroundPredicate ,
-							   ag:Predicate ,
-							   ag:DimensionPredicate ,
-                               ag:DimensionGroundPredicate ,
-                               ag:Variable;
-							   ag:domain [ag:instanceOf pr:YearGreaterThan] 
-							   .
+:AS3 a owl:NamedIndividual, ag:AnalysisSituation;
+  rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, after a specific year, grouped by destination country and year."@en;
+  rdfs:label "Applications by destination country and year"@en;
+  ag:dice :diceSpecOnCountry3;
+  ag:cube schema:migr_asyappctzmQB4O13;
+  ag:dataset schema:migr_asyappctzmQB4O13_ds;
+  ag:granularity :destCountryGran, :yearGranularity;
+  ag:measure myMDSchema:SumOfNumOfApplicatoins;
+  ag:dimensionSelection :sliceOnYear .
 
-###  http://www.amcis2021.com/swag/myAG#AS1
-myAG:AS1 rdf:type owl:NamedIndividual ,
-				   ag:AnalysisSituation ;				   
-		  rdfs:label "Applications by destination continent"@en ;
-		  ag:dice myAG:DiceSpecOnContinent2 ;
-		  ag:cube schema:migr_asyappctzmQB4O13 ;
-		  ag:dataset schema:migr_asyappctzmQB4O13_ds ;
-		  ag:granularity myAG:desContinentGran ;
-		  ag:measure myMDSchema:SumOfNumOfApplicatoins ;                                 
-		  rdfs:comment "Sum of number of asylum applications submitted to a specific destination continent, grouped by destination continent."@en .
+:AS4 a owl:NamedIndividual, ag:AnalysisSituation;
+  rdfs:comment "Sum of number of asylum applications filtered by intensity, submitted to a specific destination country, after a specific year, grouped by destination country and month."@en;
+  rdfs:label "Applications by destination country and month"@en;
+  ag:dice :diceSpecOnCountry3;
+  ag:cube schema:migr_asyappctzmQB4O13;
+  ag:dataset schema:migr_asyappctzmQB4O13_ds;
+  ag:granularity :geoGran, :monthGranularity;
+  ag:measure myMDSchema:SumOfNumOfApplicatoins;
+  ag:dimensionSelection :sliceOnYear;
+  ag:resultSelection :sumOfNumOfAppsGreaterThan .
 
+:AS5 a owl:NamedIndividual, ag:AnalysisSituation;
+  rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, grouped by citizenship country and destination country."@en;
+  rdfs:label "Applications by citizenship and destination country"@en;
+  ag:dice :diceSpecOnCountry3;
+  ag:cube schema:migr_asyappctzmQB4O13;
+  ag:dataset schema:migr_asyappctzmQB4O13_ds;
+  ag:granularity :destCountryGran, :citizenGran;
+  ag:measure myMDSchema:SumOfNumOfApplicatoins .
 
-###  http://www.amcis2021.com/swag/myAG#AS2
-myAG:AS2 rdf:type owl:NamedIndividual ,
-                                         ag:AnalysisSituation ;
-								rdfs:label "Applications by destination country"@en ;
-                                ag:cube schema:migr_asyappctzmQB4O13 ;
-								ag:dataset schema:migr_asyappctzmQB4O13_ds ;
-								ag:measure myMDSchema:SumOfNumOfApplicatoins ;
-								ag:dice myAG:DiceSpecOnContinent2 ;                                
-                                ag:granularity myAG:destCountryGran ;                                
-                                rdfs:comment "Sum of  number of asylum applications submitted to a specific destination continent, grouped by destination country."@en .
+#Navigation steps
+:NV1-2 a owl:NamedIndividual, ag:NavigationStep;
+  rdfs:comment "Drill down to destination country"@en;
+  rdfs:label "Drill down to destination country"@en;
+  ag:operation :drillDownToDesCountry;
+  ag:source :AS1;
+  ag:target :AS2 .
 
+:NV2-3 a owl:NamedIndividual, ag:NavigationStep;
+  rdfs:comment "Restrict destination country to a specific country, drill down to year of applications, and restrict year of applications."@en;
+  rdfs:label "Drill down to year"@en;
+  ag:operation :addSelectionOnYear, :drillDownToYearOnTime, :moveToCountry;
+  ag:source :AS2;
+  ag:target :AS3 .
+  
+:NV3-4 a owl:NamedIndividual, ag:NavigationStep;
+  rdfs:comment "Drill down to month of applications, and filter sum of number of asylum applications by intensity per month and country."@en;
+  rdfs:label "Drill down to month"@en;
+  ag:operation :drillDownToMonthOnTime, :filterSumOfNumOfAppsToMoreThan;
+  ag:source :AS3;
+  ag:target :AS4 .
 
-###  http://www.amcis2021.com/swag/myAG#AS3
-myAG:AS3 rdf:type owl:NamedIndividual ,
-                                                ag:AnalysisSituation ;
-									   rdfs:label "Applications by destination country and year"@en ;
-                                       ag:cube schema:migr_asyappctzmQB4O13 ;
-									   ag:dataset schema:migr_asyappctzmQB4O13_ds ;
-									   ag:measure myMDSchema:SumOfNumOfApplicatoins ;
-									   ag:dice myAG:DiceSpecOnCountry3 ;
-                                       ag:dimensionSelection myAG:sliceOnYear ;                                       
-                                       ag:granularity myAG:destCountryGran ,
-                                                      myAG:yearGranularity ;                                       
-                                       rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, after a specific year, grouped by destination country and year."@en .
+:NV2-5 a owl:NamedIndividual, ag:NavigationStep;
+  rdfs:comment "Drill down to citizenship country, and restrict destination country to a specific country."@en;
+  rdfs:label "Drill down to citizenship country"@en;
+  ag:operation :moveToCountry, :drillDownToCitCountry;
+  ag:source :AS2;
+  ag:target :AS5 .
 
+#Navigation operations
+:drillDownToYearOnTime a owl:NamedIndividual, ag:DrillDownToLevel;
+  ag:opDimension schema:timeDim;
+  ag:opHierarchy schema:timeHier;
+  ag:opGranularityLevel schema:year .
 
-###  http://www.amcis2021.com/swag/myAG#AS4
-myAG:AS4 rdf:type owl:NamedIndividual ,
-                                                ag:AnalysisSituation ;
-									   rdfs:label "Applications by destination country and month"@en ;
-                                       ag:cube schema:migr_asyappctzmQB4O13 ;
-									   ag:dataset schema:migr_asyappctzmQB4O13_ds ;
-									   ag:measure myMDSchema:SumOfNumOfApplicatoins ;
-                                       ag:resultSelection myAG:SumOfNumOfAppsGreaterThan ;
-									   ag:dice myAG:DiceSpecOnCountry3 ;
-                                       ag:dimensionSelection myAG:sliceOnYear ;                                       
-                                       ag:granularity myAG:geoGran ,
-                                                      myAG:monthGranularity ;                                       
-                                       rdfs:comment "Sum of number of asylum applications filtered by intensity, submitted to a specific destination country, after a specific year, grouped by destination country and month."@en .
+:moveToCountry a owl:NamedIndividual, ag:MoveToDiceNode;
+  ag:opDimension schema:destinationDim;
+  ag:opHierarchy schema:destinationGeoHier;
+  ag:opDiceLevel property:geo;
+  ag:opDiceNode :varDiceNode2 .
 
+:addSelectionOnYear a owl:NamedIndividual, ag:AddDimensionSelection;
+  ag:opDimension schema:timeDim;
+  ag:opDimensionPredicate :sliceSpecOnYear4;
+  ag:opHierarchy schema:timeHier .
+  
+:drillDownToDesCountry a owl:NamedIndividual, ag:DrillDownToLevel;
+  ag:opDimension schema:destinationDim;
+  ag:opHierarchy schema:destinationGeoHier;
+  ag:opGranularityLevel property:geo .
 
+:drillDownToCitCountry a owl:NamedIndividual, ag:DrillDownToLevel;
+  ag:opDimension schema:citizenshipDim;
+  ag:opHierarchy schema:citizenshipGeoHier;
+  ag:opGranularityLevel property:citizen .
 
+:drillDownToMonthOnTime a owl:NamedIndividual, ag:DrillDownToLevel;
+  ag:opDimension schema:timeDim;
+  ag:opHierarchy schema:timeHier;
+  ag:opGranularityLevel sdmx-dimension:refPeriod .
 
-###  http://www.amcis2021.com/swag/myAG#AS5
-myAG:AS5 rdf:type owl:NamedIndividual ,
-				 ag:AnalysisSituation ;
-		rdfs:label "Applications by citizenship and destination country"@en ;
-		ag:cube schema:migr_asyappctzmQB4O13 ;
-		ag:dataset schema:migr_asyappctzmQB4O13_ds ;
-		ag:measure myMDSchema:SumOfNumOfApplicatoins ;
-		ag:dice myAG:DiceSpecOnCountry3 ;												
-		ag:granularity myAG:destCountryGran ,
-						myAG:citizenGran;												
-		rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, grouped by citizenship country and destination country."@en .
-												
+:filterSumOfNumOfAppsToMoreThan a owl:NamedIndividual, ag:AddResultSelection;
+  ag:opResultSelection :sumOfNumOfAppsGreaterThan .
 
+#Specifications  
+:diceSpecOnContinent2 a owl:NamedIndividual, ag:DiceSpecification;
+  ag:diceLevel schema:continent;
+  ag:diceNode :varDiceNode3;
+  ag:dimension schema:destinationDim;
+  ag:hierarchy schema:destinationGeoHier .
 
-###  http://www.amcis2021.com/swag/myAG#SumOfNumOfAppsGreaterThan
-myAG:SumOfNumOfAppsGreaterThan rdf:type owl:NamedIndividual ,
-                                        ag:ResultGroundPredicate , 
-										ag:GroundPredicate ,
-										ag:Predicate ,
-										ag:ResultPredicate ,                               
-										ag:Variable ;
-										ag:domain [ag:instanceOf pr:HighMonthlySumOfNumberOfApps] .
+:diceSpecOnCountry3 a owl:NamedIndividual, ag:DiceSpecification;
+  ag:diceLevel property:geo;
+  ag:diceNode :varDiceNode2;
+  ag:dimension schema:destinationDim;
+  ag:hierarchy schema:destinationGeoHier .
 
+:desContinentGran a owl:NamedIndividual, ag:Granularity;
+  ag:dimension schema:destinationDim;
+  ag:hierarchy schema:destinationGeoHier;
+  ag:granularityLevel schema:continent .  
 
-###  http://www.amcis2021.com/swag/myAG#addSelectionOnYear
-myAG:addSelectionOnYear rdf:type owl:NamedIndividual ,
-                                 ag:AddDimensionSelection ;
-                        ag:opDimension schema:timeDim ;
-                        ag:opDimensionPredicate myAG:SliceSpecOnYear4 ;                        
-                        ag:opHierarchy schema:timeHier .
+:destCountryGran a owl:NamedIndividual, ag:Granularity;
+  ag:dimension schema:destinationDim;
+  ag:hierarchy schema:destinationGeoHier;
+  ag:granularityLevel property:geo .
 
+:sliceOnYear a owl:NamedIndividual, ag:DimensionSelection;
+  ag:dimension schema:timeDim;
+  ag:hierarchy schema:timeHier;
+  ag:dimensionPredicate :sliceSpecOnYear4 .
 
-###  http://www.amcis2021.com/swag/myAG#citizenGran
-myAG:citizenGran rdf:type owl:NamedIndividual ,
-                          ag:Granularity ;
-                 ag:dimension schema:citizenshipDim ;
-                 ag:granularityLevel property:citizen ;
-                 ag:hierarchy schema:citizenshipGeoHier .
-				 
-###  http://www.amcis2021.com/swag/myAG#destCountryGran
-myAG:destCountryGran rdf:type owl:NamedIndividual ,
-                          ag:Granularity ;
-                 ag:dimension schema:destinationDim ;
-                 ag:granularityLevel property:geo ;
-                 ag:hierarchy schema:destinationGeoHier .
+:yearGranularity a owl:NamedIndividual, ag:Granularity;
+  ag:dimension schema:timeDim;
+  ag:hierarchy schema:timeHier;
+  ag:granularityLevel schema:year .
 
+:geoGran a owl:NamedIndividual, ag:Granularity;
+  ag:dimension schema:destinationDim;
+  ag:hierarchy schema:destinationGeoHier;
+  ag:granularityLevel property:geo .
 
-###  http://www.amcis2021.com/swag/myAG#NV2-3
-myAG:NV2-3 rdf:type owl:NamedIndividual ,
-					   ag:NavigationStep ;
-			  rdfs:label "Drill down to year"@en ;
-			  ag:operation myAG:addSelectionOnYear ,
-						   myAG:drillDownToYearOnTime ,
-						   myAG:moveToCountry ;
-			  ag:source myAG:AS2 ;
-			  ag:target myAG:AS3 ;
-			  rdfs:comment "Restrict destination country to a specific country, drill down to year of applications, and restrict year of applications."@en .
+:monthGranularity a owl:NamedIndividual, ag:Granularity;
+  ag:dimension schema:timeDim;
+  ag:hierarchy schema:timeHier;
+  ag:granularityLevel sdmx-dimension:refPeriod .
 
+:citizenGran a owl:NamedIndividual, ag:Granularity;
+  ag:dimension schema:citizenshipDim;
+  ag:hierarchy schema:citizenshipGeoHier;
+  ag:granularityLevel property:citizen .
+ 
+#Variables
+:sliceSpecOnYear4 a owl:NamedIndividual, ag:GroundPredicate, ag:Predicate, ag:DimensionPredicate,
+    ag:DimensionGroundPredicate, ag:Variable;
+  ag:domain [ag:instanceOf pr:yearGreaterThan ] .
+:varDiceNode2 a owl:NamedIndividual, ag:Variable .
+:varDiceNode3 a owl:NamedIndividual, ag:Variable .
+:sumOfNumOfAppsGreaterThan a owl:NamedIndividual, ag:GroundPredicate, ag:Predicate,
+    ag:Variable, ag:ResultGroundPredicate, ag:ResultPredicate;
+  ag:domain [ag:instanceOf pr:highMonthlySumOfNumberOfApps] .
 
-###  http://www.amcis2021.com/swag/myAG#NV1-2
-myAG:NV1-2 rdf:type owl:NamedIndividual ,
-                                              ag:NavigationStep ;
-									 rdfs:label "Drill down to destination country"@en ;
-                                     ag:operation myAG:drillDownToDesCountry ;
-                                     ag:source myAG:AS1 ;
-                                     ag:target myAG:AS2 ;
-                                     rdfs:comment "Drill down to destination country"@en .
-									 
-###  http://www.amcis2021.com/swag/myAG#NV2-5
-myAG:NV2-5 rdf:type owl:NamedIndividual ,
-				  ag:NavigationStep ;
-				  rdfs:label "Drill down to citizenship country"@en ;
-				  ag:operation myAG:moveToCountry ;
-				  ag:operation myAG:drillDownToCitCountry ;
-				  ag:source myAG:AS2 ;
-				  ag:target myAG:AS5 ;
-				  rdfs:comment "Drill down to citizenship country, and restrict destination country to a specific country."@en .
-				  
-###  http://www.amcis2021.com/swag/myAG#drillDownToDesCountry
-myAG:drillDownToDesCountry rdf:type owl:NamedIndividual ,
-                                    ag:DrillDownToLevel ;
-                           ag:opDimension schema:destinationDim ;
-                           ag:opGranularityLevel property:geo ;
-                           ag:opHierarchy schema:destinationGeoHier .
-																  																  
-
-###  http://www.amcis2021.com/swag/myAG#drillDownToCitCountry
-myAG:drillDownToCitCountry rdf:type owl:NamedIndividual ,
-                                    ag:DrillDownToLevel ;
-                           ag:opDimension schema:citizenshipDim ;
-                           ag:opGranularityLevel property:citizen ;
-                           ag:opHierarchy schema:citizenshipGeoHier .
-
-###  http://www.amcis2021.com/swag/myAG#drillDownToYearOnTime
-myAG:drillDownToYearOnTime rdf:type owl:NamedIndividual ,
-                                    ag:DrillDownToLevel ;
-                           ag:opDimension schema:timeDim ;
-                           ag:opGranularityLevel schema:year ;
-                           ag:opHierarchy schema:timeHier .
-						   
-###  http://www.amcis2021.com/swag/myAG#drillDownToMonthOnTime
-myAG:drillDownToMonthOnTime rdf:type owl:NamedIndividual ,
-                                    ag:DrillDownToLevel ;
-                           ag:opDimension schema:timeDim ;
-                           ag:opGranularityLevel sdmx-dimension:refPeriod ;
-                           ag:opHierarchy schema:timeHier .				
-
-###  http://www.amcis2021.com/swag/myAG#eurostatAG
-myAG:eurostatAG rdf:type owl:NamedIndividual ,
-                         ag:AnalysisGraph ;
-                ag:analysisSituation myAG:AS1 ,
-                                        myAG:AS2 ,
-                                        myAG:AS3 ,
-                                        myAG:AS4 ,                                        
-										myAG:AS5 ;									
-                ag:navigationStep myAG:NV2-3,
-                                     myAG:NV1-2 ,
-                                     myAG:NV3-4 ,
-									 myAG:NV2-5;
-                ag:onSchema schema:eurostat ;
-                rdfs:comment "This analysis graphs tracks the number of asylum applications."@en .
-
-
-###  http://www.amcis2021.com/swag/myAG#NV3-4
-myAG:NV3-4 rdf:type owl:NamedIndividual ,
-                                 ag:NavigationStep ;
-						rdfs:label "Drill down to month"@en ;
-                        ag:operation myAG:filterSumOfNumOfAppsToMoreThan ;
-						ag:operation myAG:drillDownToMonthOnTime ;
-                        ag:source myAG:AS3 ;
-                        ag:target myAG:AS4 ;
-                        rdfs:comment "Drill down to month of applications, and filter sum of number of asylum applications by intensity per month and country."@en.
-
-
-###  http://www.amcis2021.com/swag/myAG#filterSumOfNumOfAppsToMoreThan
-myAG:filterSumOfNumOfAppsToMoreThan rdf:type owl:NamedIndividual ,
-                                             ag:AddResultSelection ;
-                                    ag:opResultSelection myAG:SumOfNumOfAppsGreaterThan .
-
-###  http://www.amcis2021.com/swag/myAG#geoGran
-myAG:geoGran rdf:type owl:NamedIndividual ,
-                      ag:Granularity ;
-             ag:dimension schema:destinationDim ;
-             ag:granularityLevel property:geo ;
-             ag:hierarchy schema:destinationGeoHier .
-			 
-
-###  http://www.amcis2021.com/swag/myAG#desContinentGran
-myAG:desContinentGran rdf:type owl:NamedIndividual ,
-                      ag:Granularity ;
-             ag:dimension schema:destinationDim ;
-             ag:granularityLevel  schema:continent;
-             ag:hierarchy schema:destinationGeoHier .
-
-###  http://www.amcis2021.com/swag/myAG#moveToCountry
-myAG:moveToCountry rdf:type owl:NamedIndividual ,
-                            ag:MoveToDiceNode ;
-                   ag:opDiceLevel property:geo ;
-                   ag:opDiceNode myAG:varDiceNode2 ;
-                   ag:opDimension schema:destinationDim ;
-                   ag:opHierarchy schema:destinationGeoHier.				   
-
-###  http://www.amcis2021.com/swag/myAG#sliceOnYear
-myAG:sliceOnYear rdf:type owl:NamedIndividual ,
-                          ag:DimensionSelection ;
-                 ag:dimension schema:timeDim ;
-                 ag:dimensionPredicate myAG:SliceSpecOnYear4 ;
-                 ag:hierarchy schema:timeHier .
-
-###  http://www.amcis2021.com/swag/myAG#varDiceNode2
-myAG:varDiceNode2 rdf:type owl:NamedIndividual ,
-                           ag:Variable .
-
-
-###  http://www.amcis2021.com/swag/myAG#varDiceNode3
-myAG:varDiceNode3 rdf:type owl:NamedIndividual ,
-                           ag:Variable .
-
-###  http://www.amcis2021.com/swag/myAG#monthGranularity
-myAG:monthGranularity rdf:type owl:NamedIndividual ,
-                              ag:Granularity ;
-                     ag:dimension schema:timeDim ;
-                     ag:granularityLevel sdmx-dimension:refPeriod ;
-                     ag:hierarchy schema:timeHier ;
-                     rdfs:label "Month Granularity" .
-
-###  http://www.amcis2021.com/swag/myAG#yearGranularity
-myAG:yearGranularity rdf:type owl:NamedIndividual ,
-                              ag:Granularity ;
-                     ag:dimension schema:timeDim ;
-                     ag:granularityLevel schema:year ;
-                     ag:hierarchy schema:timeHier ;
-                     rdfs:label "Year Granularity" .
-
-
-###  http://www.fing.edu.uy/inco/cubes/schemas/migr_asyapp#eurostat
-schema:eurostat rdf:type owl:NamedIndividual ,
-                         smd:MDSchema ;
-                smd:hasFactClass schema:migr_asyappctzmQB4O13 ;				
-                rdfs:isDefinedBy <https://raw.githubusercontent.com/lorenae/qb4olap/master/examples/eurostat_schema_QB4OLAP_v1.3.ttl> ;
-                rdfs:label "eurostat" ;
-				smd:hasSPARQLService "http://localhost:7200/repositories/AMCIS_2021" .
+schema:eurostat a owl:NamedIndividual, smd:MDSchema;
+  rdfs:label "eurostat";
+  rdfs:isDefinedBy <https://raw.githubusercontent.com/lorenae/qb4olap/master/examples/eurostat_schema_QB4OLAP_v1.3.ttl>;
+  smd:hasFactClass schema:migr_asyappctzmQB4O13;
+  smd:hasSPARQLService "http://localhost:7200/repositories/AMCIS_2021" .  
