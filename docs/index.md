@@ -31,7 +31,7 @@ Furthermore, domain-specific business terms can be referenced within a SWAG.
 We have implemented the SWAG-BI proof-of-concept prototype as a Java dynamic web application.
 HTML, JavaScript, jQuery, d3, and AJAX are employed for the frontend.
 Dealing with web requests and responses is handled via the controller.
-The Engine conducts the main logic of SWAG and coordinates other modules.
+The SWAG Engine conducts the main logic of SWAG and coordinates other modules.
 Reading RDF data, sending SPARQL queries, and obtaining results is carried out by the Data Handler module, where Apache Jena libraries are employed.
 Generation of SPARQL queries is done by the SPARQL Generator module, which uses Apache Jena ARQ libraries for that purpose.
 
