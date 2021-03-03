@@ -11,7 +11,7 @@ In particular, users may lack the technical skills to conduct an analysis, e.g.,
 
 Semantic web analysis graphs (SWAG) allow to model generic analytical processes over the semantic web.
 SWAGs may contain variables which allow to tailor an analytical process to particular requirements.
-Modeling analytical processes with SWAGs allows for the creation of tools that empowers users to conduct guided MD analysis over LOD.
+Modeling analytical processes with SWAGs allows for the creation of tools that empower users to conduct guided MD analysis over LOD.
 
 As the name suggests, a SWAG is a graph where nodes are analysis situations and edges are navigation steps that connect analysis situations.
 An analysis situation can be seen as a high-level representation of a generic MD query.
@@ -44,7 +44,7 @@ Once a navigation step is selected, user can bind its variables, and then naviga
 
 # Usability Study
 We employed the SWAG-BI prototype in a usability study which employed the System Usability Scale questionnaire.
-First, a demostration of the prototype was presented to participants, as one study adminstrator narrated from a [script](usability/script.pdf), while the other demonstrated on a PC connected to a projector.
+First, a demonstration of the prototype was presented to participants, as one study administrator narrated from a [script](usability/script.pdf), while the other demonstrated on a PC connected to a projector.
 
 Identical [task and questionnaire sheets](usability/questionnaire.pdf) were distributed to participants, which included an introduction, six tasks, and the final SUS questionnaire.
 Tasks required the participants to obtain answers for an MD analysis by correctly binding variables and navigating, so that participants can interact with the system before they proceed to the SUS questionnaire.
