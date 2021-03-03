@@ -44,9 +44,9 @@ Once a navigation step is selected, user can bind its variables, and then naviga
 
 # Usability Study
 We employed the SWAG-BI prototype in a usability study which employed the System usability Scale questionnaire.
-First a demostration of the prototype was presented to participant, as one study adminstrator narrated from a [script](), while the other demonstrated on PC connected to a projector.
+First a demostration of the prototype was presented to participant, as one study adminstrator narrated from a [script](usability/script.pdf), while the other demonstrated on PC connected to a projector.
 
-Identical [task and questionnaire sheets]() were distributed on participants, which included an introduction, six tasks, and the final SUS questionnaire.
+Identical [task and questionnaire sheets](usability/questionnaire.pdf) were distributed on participants, which included an introduction, six tasks, and the final SUS questionnaire.
 Tasks wererequired the participants to obtain answers for MD analysis by correctly binding variables and navigating, so that user can interact with the system beore they proceed to the SUS questionnaire.
 
-Results from the [data]() demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
+Results from the [data](usability/data.csv) demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
