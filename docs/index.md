@@ -1,9 +1,9 @@
 # Semantic Web Analysis Graphs
 
 The linked open data (LOD) comprises hundreds of data sets and billions of triples of different domains, which represent an important resource of knowledge for Multidimensional (MD) data analysis.
-Modelling data according to the multidimensional data model render these data accessible to Online Analytical Processing (OLAP).
-The QB4OLAP vocabulary serves to represent MD data on the semantic web.
-Furthermore, non-MD data can be rendered accessible to MD analysis via superimposition of MD schemas.
+Modeling data according to the multidimensional data model renders these data accessible to Online Analytical Processing (OLAP).
+The QB4OLAP vocabulary serves to represent statistical LOD on the semantic web.
+Furthermore, non-statistical LOD can be rendered accessible to MD analysis via superimposition of MD schemas.
 
 There is a variety of users who may be interested in conducting MD analysis over LOD sources, e.g., ordinary people and non-governmental organizations.
 Users who are willing to make MD analysis of LOD sources face various obstacles.
@@ -44,9 +44,9 @@ Once a navigation step is selected, user can bind its variables, and then naviga
 
 # Usability Study
 We employed the SWAG-BI prototype in a usability study which employed the System usability Scale questionnaire.
-First a demostration of the prototype was presented to participant, as one study adminstrator narrated from a [script](usability/script.pdf), while the other demonstrated on PC connected to a projector.
+First a demostration of the prototype was presented to participants, as one study adminstrator narrated from a [script](usability/script.pdf), while the other demonstrated on a PC connected to a projector.
 
 Identical [task and questionnaire sheets](usability/questionnaire.pdf) were distributed on participants, which included an introduction, six tasks, and the final SUS questionnaire.
-Tasks wererequired the participants to obtain answers for MD analysis by correctly binding variables and navigating, so that user can interact with the system beore they proceed to the SUS questionnaire.
+Tasks required the participants to obtain answers for an MD analysis by correctly binding variables and navigating, so that participants can interact with the system before they proceed to the SUS questionnaire.
 
 Results from the [data](usability/data.csv) demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
