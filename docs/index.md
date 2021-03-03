@@ -23,7 +23,7 @@ For a demo of the prototype, refer to [demo page](demo.md).
 We have employed semantic web analysis graphs as a foundation to develop a guided OLAP analysis tool for LOD sources.
 Semantic web recommendations (RDF and RDFS) serve to represent and publish SWAGs.
 The [SWAG vocabulary](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/AG.ttl) defines RDF classes and properties used to represent and publish [concrete SWAGs](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/Uploaded/AGs/eurostat_AG_AMCIS2021.ttl).
-[QB](https://github.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl) and [QB4OAP](https://github.com/lorenae/qb4olap/blob/master/rdf/qb4olap.ttl) vocabularies are employed as the underlying MD data model, SPARQL serves as the underlying query language against LOD sources.
+[QB](https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl) and [QB4OAP](https://github.com/lorenae/qb4olap/blob/master/rdf/qb4olap.ttl) vocabularies are employed as the underlying MD data model, SPARQL serves as the underlying query language against LOD sources.
 SWAG vocabulary refers to elements from QB4OLAP vocabulary and concrete SWAGs refer to elements from an MD schema represented using QB4O vocabulary.
 Other LOD sources, no represented using QB4OLAP, can also be employed within SWAG via, e.g., superimposition.
 Furthermore, domain-specific business terms can be referenced within a SWAG.
@@ -41,12 +41,3 @@ Details panel serves to display details of the selected analysis situation or na
 User can provide values for the situation's variables supported by auto-completion.
 As soon as the variables of an analysis situation are bound, it is possible to view its results, as well as selecting an outgoing navigation step to proceed with.
 Once a navigation step is selected, user can bind its variables, and then navigate to the target situation and view its results.
-
-# Usability Study
-We employed the SWAG-BI prototype in a usability study which employed the System usability Scale questionnaire.
-First a demostration of the prototype was presented to participant, as one study adminstrator narrated from a [script](), while the other demonstrated on PC connected to a projector.
-
-Identical [task and questionnaire sheets]() were distributed on participants, which included an introduction, six tasks, and the final SUS questionnaire.
-Tasks wererequired the participants to obtain answers for MD analysis by correctly binding variables and navigating, so that user can interact with the system beore they proceed to the SUS questionnaire.
-
-Results from the [data]() demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
