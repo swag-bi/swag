@@ -43,7 +43,7 @@ As soon as the variables of an analysis situation are bound, it is possible to v
 Once a navigation step is selected, user can bind its variables, and then navigate to the target situation and view its results.
 
 # Usability Study
-We employed the SWAG-BI prototype in a usability study which employed the System usability Scale questionnaire.
+We employed the SWAG-BI prototype in a usability study which employed the System Usability Scale questionnaire.
 First, a demostration of the prototype was presented to participants, as one study adminstrator narrated from a [script](usability/script.pdf), while the other demonstrated on a PC connected to a projector.
 
 Identical [task and questionnaire sheets](usability/questionnaire.pdf) were distributed to participants, which included an introduction, six tasks, and the final SUS questionnaire.
