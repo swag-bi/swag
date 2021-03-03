@@ -35,7 +35,6 @@ The Engine conducts the main logic of SWAG and coordinates other modules.
 Reading RDF data, sending SPARQL queries, and obtaining results is carried out by the Data Handler module, where Apache Jena libraries are employed.
 Generation of SPARQL queries is done by the SPARQL Generator module, which uses Apache Jena ARQ libraries for that purpose.
 
-The image below is a screenshot from the prototype.
 The prototype depicts a particular SWAG using bird's eye view.
 Whereas circles represent analysis situations, directed edges are navigation steps.
 Details panel serves to display details of the selected analysis situation or navigation step.
@@ -43,14 +42,11 @@ User can provide values for the situation's variables supported by auto-completi
 As soon as the variables of an analysis situation are bound, it is possible to view its results, as well as selecting an outgoing navigation step to proceed with.
 Once a navigation step is selected, user can bind its variables, and then navigate to the target situation and view its results.
 
-![Screenshot](img/prot.png)
-
-# Usability
+# Usability Study
 We employed the SWAG-BI prototype in a usability study which employed the System usability Scale questionnaire.
-First a demostration of the prototype was presented to participant. 
-One study adminstrator narrated from a [script]() while the other demonstrated on PC connected to a projector.
+First a demostration of the prototype was presented to participant, as one study adminstrator narrated from a [script](), while the other demonstrated on PC connected to a projector.
 
-Identical [sheets]() of paper  were distributed on participants, which included an introduction, six tasks, and the final SUS questionnaire.
+Identical [task and questionnaire sheets]() were distributed on participants, which included an introduction, six tasks, and the final SUS questionnaire.
 Tasks wererequired the participants to obtain answers for MD analysis by correctly binding variables and navigating, so that user can interact with the system beore they proceed to the SUS questionnaire.
 
-Results from the [data] demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
+Results from the [data]() demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
