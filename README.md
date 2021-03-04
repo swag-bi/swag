@@ -18,7 +18,7 @@ You will need to load the data into your SPARQL database in order to be able to 
 
 * Download [dimension instances](https://github.com/lorenae/qb4olap/blob/master/examples/eurostat_schema_QB4OLAP_v1.3.ttl) and load them into your SPARQL database.
 
-* Download [observations]() which is a small, random set of observations that you can also load into your SPARQL database.
+* Download [observations](observatoins/observations.ttl) which is a small, random set of observations that you can also load into your SPARQL database.
 
 Once you have completed the previous two steps, you can proceed to run the project with [SWAG for analysis of asylum applications](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/Uploaded/AGs/eurostat_AG_AMCIS2021.ttl).
 
