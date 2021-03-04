@@ -10,7 +10,7 @@ You can also use the ready war file in bin folder.
 
 Afterwards, the project is ready to be deployed in e.g., Apache Tomcat.
 
-The project comes with a example [SWAG for analysis of asylum applications](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/Uploaded/AGs/eurostat_AG_AMCIS2021.ttl) which you can use to try the project out.
+The project comes with an example [SWAG for analysis of asylum applications](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/Uploaded/AGs/eurostat_AG_AMCIS2021.ttl) which you can use to try the project out.
 
 You will need a local SPARQL database e.g., GraphDB, running on port 7200 and a repository called "AMCIS_2021". Alternatively, you can change your connection string of the underlying SPARQL endpoint the [SWAG](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/Uploaded/AGs/eurostat_AG_AMCIS2021.ttl) itself.
 
