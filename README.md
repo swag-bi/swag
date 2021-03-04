@@ -16,7 +16,7 @@ You will need a local SPARQL database e.g., GraphDB, running on port 7200 and a 
 
 You will need to load the data into your SPARQL database in order to be able to obtain actual results and instntiate the SWAG:
 
-* Download [dimension instances](https://github.com/lorenae/qb4olap/blob/master/examples/eurostat_schema_QB4OLAP_v1.3.ttl) and load them into your SPARQL database.
+* Download [dimension instances](https://github.com/lorenae/qb4olap/blob/master/examples/eurostat_instances_QB4OLAP_v1.3.ttl) and load them into your SPARQL database.
 
 * Download [observations](observatoins/observations.ttl) which is a small, random set of observations that you can also load into your SPARQL database.
 
