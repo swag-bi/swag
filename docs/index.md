@@ -1,6 +1,6 @@
 # Semantic Web Analysis Graphs
 
-The linked open data (LOD) comprises hundreds of data sets and billions of triples of different domains, which represent an important resource of knowledge for Multidimensional (MD) data analysis.
+The linked open data (LOD) comprise hundreds of data sets and billions of triples of different domains, which represent an important resource of knowledge for Multidimensional (MD) data analysis.
 Modeling data according to the multidimensional data model renders these data accessible to Online Analytical Processing (OLAP).
 The QB4OLAP vocabulary serves to represent statistical LOD on the semantic web.
 Furthermore, non-statistical LOD can be rendered accessible to MD analysis via superimposition of MD schemas.
