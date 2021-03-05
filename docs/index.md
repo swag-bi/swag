@@ -28,7 +28,7 @@ SWAG vocabulary refers to elements from QB4OLAP vocabulary and concrete SWAGs re
 Other LOD sources, not represented using QB4OLAP, can also be employed within SWAG via, e.g., superimposition.
 Furthermore, domain-specific business terms can be referenced within a SWAG.
 
-We have implemented the SWAG-BI proof-of-concept prototype as a Java dynamic web application.
+We have implemented the SWAG-BI proof-of-concept prototype as a Java Dynamic Web Application.
 HTML, JavaScript, jQuery, d3, and AJAX are employed for the frontend.
 Dealing with web requests and responses is handled via the controller.
 The SWAG Engine conducts the main logic of SWAG and coordinates other modules.
