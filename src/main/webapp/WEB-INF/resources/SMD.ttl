@@ -26,37 +26,6 @@
                                   rdfs:label "The Superimposed Multidimensional Schemas Vocabulary" ;
                                   owl:versionInfo "1.0" .
 
-#################################################################
-#    Annotation properties
-#################################################################
-
-###  http://purl.org/dc/terms/created
-dcterms:created rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/dc/terms/creator
-dcterms:creator rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/dc/terms/modified
-dcterms:modified rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/dc/terms/title
-dcterms:title rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/vocab/vann/preferredNamespacePrefix
-vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
-
-
-###  http://purl.org/vocab/vann/preferredNamespaceUri
-vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
-
-
-###  http://xmlns.com/foaf/0.1/mbox
-foaf:mbox rdf:type owl:AnnotationProperty .
-
 
 #################################################################
 #    Object Properties
@@ -190,33 +159,6 @@ smd:hasString rdf:type owl:DatatypeProperty ,
 #################################################################
 #    Classes
 #################################################################
-
-###  http://purl.org/linked-data/cube#DataStructureDefinition
-qb:DataStructureDefinition rdf:type owl:Class .
-
-
-###  http://purl.org/linked-data/cube#DimensionProperty
-qb:DimensionProperty rdf:type owl:Class .
-
-
-###  http://purl.org/linked-data/cube#MeasureProperty
-qb:MeasureProperty rdf:type owl:Class .
-
-
-###  http://purl.org/qb4olap/cubes#HierarchyStep
-qb4o:HierarchyStep rdf:type owl:Class .
-
-
-###  http://purl.org/qb4olap/cubes#LevelAttribute
-qb4o:LevelAttribute rdf:type owl:Class .
-
-
-###  http://purl.org/qb4olap/cubes#LevelProperty
-qb4o:LevelProperty rdf:type owl:Class .
-
-
-###  http://purl.org/vocommons/voaf#Vocabulary
-voaf:Vocabulary rdf:type owl:Class .
 
 
 ###  http://www.amcis2021.com/swag/smd#Attribute
