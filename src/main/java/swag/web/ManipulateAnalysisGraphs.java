@@ -79,10 +79,6 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 
-	// System.getProperties().put("proxySet", "true");
-	// System.getProperties().put("http.proxyHost", "140.78.58.10");
-	// System.getProperties().put("http.proxyPort", "3128");
-
 	Configuration.createInstance(getServletContext().getRealPath("/WEB-INF/resources/config.properties"));
 
 	HttpSession session = request.getSession(true);
@@ -306,6 +302,7 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
 		session.removeAttribute("resultsHeader");
 	    }
 
+	    request.changeSessionId();
 	    session.setAttribute("calledFirstTime", true);
 
 	    Map<String, AnalysisSituation> asListMap = new HashMap<String, AnalysisSituation>();
