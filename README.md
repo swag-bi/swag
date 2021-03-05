@@ -1,6 +1,6 @@
 # Semantic Web Analysis Graphs
 
-Semantic Web Analysis Graphs (SWAG) allow to model and execute analytical processes over the the semantic web. For further details, refer to the project [website](https://swag-bi.github.io/swag/).
+Semantic Web Analysis Graphs (SWAG) allow to model and execute analytical processes for Linked Open Data (LOD). For further details, refer to the project [website](https://swag-bi.github.io/swag/).
 
 The project ships as a Java Maven web project and can be directly imported into Eclipse or other IDEs.
 
