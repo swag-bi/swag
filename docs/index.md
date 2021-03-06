@@ -23,7 +23,7 @@ For a demo of the prototype, refer to [demo page](demo.md).
 We have employed semantic web analysis graphs as a foundation to develop a guided OLAP analysis tool for LOD sources.
 Semantic web recommendations (RDF and RDFS) serve to represent and publish SWAGs.
 The [SWAG vocabulary](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/AG.ttl) defines RDF classes and properties used to represent and publish [concrete SWAGs](https://github.com/swag-bi/swag/blob/master/src/main/webapp/WEB-INF/resources/Uploaded/AGs/eurostat_AG_AMCIS2021.ttl).
-[QB](https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl) and [QB4OAP](https://github.com/lorenae/qb4olap/blob/master/rdf/qb4olap.ttl) vocabularies are employed as the underlying MD data model, SPARQL serves as the underlying query language against LOD sources.
+[QB](https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl) and [QB4OAP](https://github.com/lorenae/qb4olap/blob/master/rdf/qb4olap.ttl) vocabularies are employed as the underlying MD data model, and SPARQL serves as the underlying query language against LOD sources.
 SWAG vocabulary refers to elements from QB4OLAP vocabulary and concrete SWAGs refer to elements from an MD schema represented using QB4O vocabulary.
 Other LOD sources, not represented using QB4OLAP, can also be employed within SWAG via, e.g., superimposition.
 Furthermore, domain-specific business terms can be referenced within a SWAG.
