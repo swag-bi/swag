@@ -47,6 +47,6 @@ We employed the SWAG-BI prototype in a usability study which used the System Usa
 First, a demonstration of the prototype was presented to participants, as one study administrator narrated from a [script](usability/script.pdf), while the other demonstrated on a PC connected to a projector.
 
 Identical [tasks and questionnaire sheets](usability/questionnaire.pdf) were distributed to participants, which included an introduction, six tasks, and the final SUS questionnaire.
-Tasks required the participants to obtain answers for an MD analysis by correctly binding variables and navigating, so that participants can interact with the system before they proceed to the SUS questionnaire.
+Tasks required the participants to obtain answers for an MD analysis by correctly binding variables and navigating, so that participants could interact with the system before they proceed to the SUS questionnaire.
 
 Results from the [data](usability/data.csv) demonstrate that SWAG can be employed to construct intuitive user interfaces for guided MD analysis over LOD.
