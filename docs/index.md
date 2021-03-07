@@ -10,7 +10,7 @@ Users who are willing to make MD analysis of LOD sources face various obstacles.
 In particular, users may lack the technical skills to conduct an analysis, e.g., dealing with RDF and SPARQL, and are also unlikely to have appropriate analytical domain knowledge to know which analytical processes can be interesting or sense-making.
 
 Semantic web analysis graphs (SWAG) allow to model generic analytical processes over the semantic web.
-SWAGs can contain variables which allow to custmozize analytical processes to particular scenarios.
+SWAGs can contain variables which allow to customize analytical processes to particular scenarios.
 Modeling analytical processes with SWAGs allows for the creation of tools that empower users to conduct guided MD analysis over LOD.
 
 As the name suggests, a SWAG is a graph where nodes are analysis situations and edges are navigation steps that connect analysis situations.
