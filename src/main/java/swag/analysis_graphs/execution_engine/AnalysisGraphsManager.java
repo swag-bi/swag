@@ -17,6 +17,7 @@ import swag.analysis_graphs.dao.IDataDAO;
 import swag.analysis_graphs.dao.IMDSchemaDAO;
 import swag.analysis_graphs.execution_engine.analysis_situations.PredicateInAG;
 import swag.analysis_graphs.execution_engine.navigations.NavigationStep;
+import swag.helpers.AutoCompleteData;
 import swag.md_elements.MDElement;
 import swag.md_elements.MDSchema;
 import swag.predicates.IPredicateGraph;
@@ -81,9 +82,18 @@ public class AnalysisGraphsManager {
 		this.mdDao = mdDao;
 		this.dataDao = dataDao;
 	}
+	
 
 	public List<String> getPossibleLevelsOnDimension(String dimensionURI) {
 		return graph.getPossibleLevelsOnDimension(dimensionURI);
+	}
+
+	public Set<String> getUniquePossibleLevelsOnDimension(String dimensionURI) {
+		return graph.getUniquePossibleLevelsOnDimension(dimensionURI);
+	}
+	
+	public Set<AutoCompleteData> getUniquePossibleLevelsOnDimensionWithLabels(String dimensionURI) {
+		return graph.getUniquePossibleLevelsOnDimensionWithLabels(dimensionURI);		
 	}
 
 	public String getEndpointURI() {

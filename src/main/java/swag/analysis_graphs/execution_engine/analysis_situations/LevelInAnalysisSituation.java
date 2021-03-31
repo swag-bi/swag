@@ -159,6 +159,7 @@ public class LevelInAnalysisSituation extends Level
     @Override
     public void bind(Variable tempVariable) {
 	LevelInAnalysisSituation tempLevel = (LevelInAnalysisSituation) tempVariable;
+	this.setIdentifyingName(tempLevel.getIdentifyingName());
 	this.setURI(tempLevel.getURI());
 	this.setName(tempLevel.getName());
 	this.setMapping(tempLevel.getMapping());
@@ -203,7 +204,7 @@ public class LevelInAnalysisSituation extends Level
 
     @Override
     public IClonableTo<IDimensionQualification> cloneMeTo(IDimensionQualification to) {
-	return new LevelInAnalysisSituation(getURI(), getName(), getMapping(),
+	return new LevelInAnalysisSituation(getIdentifyingName(), getName(), getMapping(),
 		(Signature<IDimensionQualification>) getSignature().cloneMeTo(to), getLabel());
     }
 }

@@ -13,6 +13,7 @@ import swag.analysis_graphs.execution_engine.analysis_situations.MeasureAggregat
 import swag.analysis_graphs.execution_engine.analysis_situations.MeasureDerived;
 import swag.graph.Graph;
 import swag.graph.Path;
+import swag.helpers.AutoCompleteData;
 import swag.sparql_builder.Configuration;
 
 /**
@@ -187,6 +188,19 @@ public interface MDSchema extends Graph<MDElement, MDRelation> {
       HierarchyInDimension hm = (HierarchyInDimension) this.getNode(uri);
       QB4OHierarchy h = hm.getHier();
       Dimension d = hm.getDim();
+      
+      if (h.equals(DefaultHierarchy.getDefaultHierarchy())){
+    	  for (QB4OHierarchy hInD : getHierarchiesOnDimension(d.getURI())){
+    		  Set<Level> levels = getAllLevelsOnHierarchyInDimension(hInD.getURI(), d.getURI());
+    	      for (Level lvl : levels) {
+    	        elems.add(lvl);
+    	        if (lvl != null) {
+    	          elems.addAll(getDescriptors(lvl.getIdentifyingName()));
+    	        }
+    	      }
+    	  }
+    	  return elems;
+      }
 
       Set<Level> levels = getAllLevelsOnHierarchyInDimension(h.getURI(), d.getURI());
       for (Level lvl : levels) {
@@ -485,6 +499,10 @@ public interface MDSchema extends Graph<MDElement, MDRelation> {
    * @return a list of levels URIs
    * 
    */
+  public Set<String> getUniquePossibleLevelsOnDimension(String dimensionURI);
+  
+  public Set<AutoCompleteData> getUniquePossibleLevelsOnDimensionWithLabels(String dimensionURI);
+  
   public List<String> getPossibleLevelsOnDimension(String dimensionURI);
 
   public Set<MDRelation> getMappedOutEdgesOfNode(String nodeUri);

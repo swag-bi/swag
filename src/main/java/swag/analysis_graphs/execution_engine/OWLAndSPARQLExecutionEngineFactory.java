@@ -73,6 +73,8 @@ public class OWLAndSPARQLExecutionEngineFactory implements IExecutionEngineFacto
 					.getIndividual(OWLConnectionFactory.getAGInstanceNamespace(owlConn) + analysisGraphName);
 			AnalysisGraph ag = owlInterface.buildAnalysisGraph(agIndiv.getLocalName(), agIndiv.getURI(),
 					OWLConnectionFactory.getAGInstanceNamespace(owlConn), schema);
+			
+			performNavigationGeneration(dataRep, owlInterface, mdBuilder, schema, ag);
 
 			if (Configuration.getInstance().is("singleHierarchy")) {
 

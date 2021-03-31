@@ -119,12 +119,12 @@ public class DimsReader implements IDimsReader {
 		String dimensinoURI = DataHandlerUtils.getDimensoin(owlConnection, granIndiv);
 		String hierarchyURI = DataHandlerUtils.getHierarchy(owlConnection, granIndiv);
 
-		if (dimensinoURI == null || hierarchyURI == null) {
+		if (dimensinoURI == null || hierarchyURI == null)  {
 		    logger.warn("Cannot read granularity specification on dimensoin " + dimensinoURI + " / hierarchy"
 			    + hierarchyURI + ". Skipping...");
 		    continue;
 		}
-
+		
 		HierarchyInDimension hd = new HierarchyInDimension((QB4OHierarchy) mdSchema.getNode(hierarchyURI),
 			(Dimension) mdSchema.getNode(dimensinoURI));
 		IDimensionQualification q = quals.get(hd);
@@ -167,6 +167,17 @@ public class DimsReader implements IDimsReader {
 		}
 	    }
 	}
+    }
+    
+    boolean isValidSpec(String dimensinoURI, String hierarchyURI){
+    	
+    	if (dimensinoURI != null && Configuration.getInstance().is("singleHierarchy")) {
+    		return true;
+    	}
+    	if (dimensinoURI != null && hierarchyURI != null) {
+    		return true;
+    	}
+    	return false;
     }
 
     /**

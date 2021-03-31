@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import swag.analysis_graphs.execution_engine.analysis_situations.IMeasure;
 import swag.graph.Path;
+import swag.helpers.AutoCompleteData;
 
 public class MDSchemaGraphSMD implements MDSchema {
 
@@ -470,6 +471,30 @@ public class MDSchemaGraphSMD implements MDSchema {
     }
     return levels;
   }
+  
+  public Set<String> getUniquePossibleLevelsOnDimension(String dimensionURI) {
+
+	    return getPossibleLevelsOnDimension(dimensionURI).stream().collect(Collectors.toSet()); 
+  }
+
+  public Set<AutoCompleteData> getUniquePossibleLevelsOnDimensionWithLabels(String dimensionURI) {
+
+	  Set<AutoCompleteData> levels = new HashSet<>();
+
+	    for (MDElement elem : mdGraphMap.keySet()) {
+	      if (elem instanceof Level) {
+	        for (MDRelation rel : getEdgesOfNode(elem)) {
+	          if (rel instanceof InDimension && rel.getTo() != null
+	              && rel.getTo().getIdentifyingName().equals(dimensionURI)) {
+	            levels.add(new AutoCompleteData(rel.getFrom().getLabel() ,rel.getFrom().getIdentifyingName()));
+	          }
+	        }
+	      }
+	    }
+	    return levels; 
+}
+
+  
 
   @Override
   public List<Path<MDElement, MDRelation>> getAllPathsBetweenTwoVertices(MDElement startNode,
@@ -542,7 +567,7 @@ public class MDSchemaGraphSMD implements MDSchema {
     List<Path<MDElement, MDRelation>> maxLengthPaths =
         Collections.synchronizedList(new LinkedList<>());
 
-    if (this.mdGraphMap.get(startNode) != null) {
+    if (this.mdGraphMap.get(startNode) != null && this.mdGraphMap.get(endNode) != null) {
       Set<MDRelation> outEdges = getMappedOutEdgesOfNodeSmartly(startNode.getIdentifyingName(),
           endNode.getIdentifyingName());
       maxLengthPaths = outEdges.stream().map(x -> new MDPath(x)).collect(Collectors.toList());

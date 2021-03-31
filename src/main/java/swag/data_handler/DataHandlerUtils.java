@@ -224,6 +224,12 @@ public class DataHandlerUtils {
    * @return uri of the hierarchy
    */
   public static String getOpHierarchyByURI(OWlConnection owlConnection, String uri) {
+	  
+
+	    if (Configuration.getInstance().is("singleHierarchy")) {
+	      return DefaultHierarchy.getDefaultHierarchy().getURI();
+	    }
+
     String hierarchyURI = "";
     org.apache.jena.ontology.Individual ind = owlConnection.getModel().getIndividual(uri);
 
@@ -373,9 +379,9 @@ public class DataHandlerUtils {
 
       } else {
 
-        if (granIndiv.as(Individual.class).hasProperty(RDF.type,
+        if (false /*granIndiv.as(Individual.class).hasProperty(RDF.type,
             owlConnection.getClassByName(OWLConnectionFactory.getAGNamespace(owlConnection)
-                + Constants.PredicateInstanceClass))) {
+                + Constants.PredicateInstanceClass))*/) {
 
           sc = DataHandlerUtils.handlePredicateSlicesNoPosition(granIndiv, dimToAS, hierarchyURI,
               owlConnection, mdSchema, predicateGraph);
@@ -529,8 +535,8 @@ public class DataHandlerUtils {
     if (cond != null) {
       MDElement elm = null;
       elm = cond.getMdElems().stream()
-          .filter(e -> (schema.getDimensoinOfLevelOrDescriptor(e.getURI()).equals(dimensionUri)
-              && schema.getHierarchyOfLevelOrDescriptor(e.getURI()).equals(hierarchyUri)))
+          .filter(e -> (schema.getDimensoinOfLevelOrDescriptor(e.getIdentifyingName()).equals(dimensionUri)
+              && (schema.getHierarchyOfLevelOrDescriptor(e.getIdentifyingName()).equals(hierarchyUri)) || hierarchyUri.equals(DefaultHierarchy.getDefaultHierarchy().getURI())))
           .findAny().orElse(null);
 
       if (elm != null) {

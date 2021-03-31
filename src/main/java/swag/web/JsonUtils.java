@@ -152,7 +152,7 @@ public class JsonUtils {
 	    json += "\"summary\": \"" + fullJustify(as.getSummary(), 50, "</br>") + "\", ";
 	    // json+="\"x\": \"" + id * 100 + "\", ";
 	    // json+="\"y\": \"" + id * 100 + "\", ";
-	    json += "\"label\": \"" + as.getLabel() + "\", ";
+	    json += "\"label\": \"" + as.getLabel() + "\", ";	
 	    json += "\"reflexive\": " + "\"false\"";
 	    // json+="\"fixed\": " + "\"true\"";
 	    json += "}";

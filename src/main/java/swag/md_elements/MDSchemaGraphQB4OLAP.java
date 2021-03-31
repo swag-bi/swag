@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import swag.helpers.AutoCompleteData;
 import swag.sparql_builder.Configuration;
 import swag.sparql_builder.CustomSPARQLQuery;
 import swag.sparql_builder.SPARQLUtilities;
@@ -51,6 +52,30 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
                 if (edge instanceof QB4OInHierarchy) {
                   if (edge.getTo() != null && edge.getTo().equals(elem)) {
                     levels.add(edge.getSource().getIdentifyingName());
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return levels;
+  }
+  
+  @Override
+  public Set<AutoCompleteData> getUniquePossibleLevelsOnDimensionWithLabels(String dimensionURI) {
+
+    Set<AutoCompleteData> levels = new HashSet<>();
+    for (MDElement elem : this.getMdGraphMap().keySet()) {
+      if (elem instanceof QB4OHierarchy) {
+        for (MDRelation rel : getEdgesOfNode(elem)) {
+          if (rel instanceof QB4OHierarchyInDimension) {
+            if (rel.getTarget().equals(getNode(dimensionURI))) {
+              for (MDRelation edge : getAllEdges()) {
+                if (edge instanceof QB4OInHierarchy) {
+                  if (edge.getTo() != null && edge.getTo().equals(elem)) {
+                    levels.add(new AutoCompleteData(edge.getSource().getLabel(), edge.getSource().getIdentifyingName()));
                   }
                 }
               }

@@ -803,6 +803,10 @@ public class FileBasedPredicateFunction implements IPredicateFunctions {
 	String hierAttribute = sol.get("hierAttribute") != null ? sol.get("hierAttribute").toString() : null;
 
 	String dimAttribute = sol.get("dimAttribute") != null ? sol.get("dimAttribute").toString() : null;
+	
+	String hierOfCond = sol.get("hierOfCond") != null ? sol.get("hierOfCond").toString() : null;
+
+	String dimOfCond = sol.get("dimOfCond") != null ? sol.get("dimOfCond").toString() : null;
 
 	String conditinPositoinMeasure = sol.get("conditinPositoinMeasure") != null
 		? sol.get("conditinPositoinMeasure").toString() : null;
@@ -813,6 +817,8 @@ public class FileBasedPredicateFunction implements IPredicateFunctions {
 	    if (elem == null) {
 		throw new Exception("Insufficient specification of MD element for condition.");
 	    }
+	    elems.add(elem);
+	    return elems;
 	}
 
 	if (conditinPositoinAttribute != null) {
@@ -823,6 +829,18 @@ public class FileBasedPredicateFunction implements IPredicateFunctions {
 	    if (elem == null) {
 		throw new Exception("Insufficient specification of MD element for condition.");
 	    }
+	    elems.add(elem);
+	    return elems;
+	}
+	
+	if (dimOfCond!=null && hierOfCond!=null){
+		 Level elem = (Level) schema.getNode(
+				    schema.getIdentifyingNameFromUriAndDimensionAndHier(conditoinPosition, dimOfCond, hierOfCond));
+			    if (elem == null) {
+				throw new Exception("Insufficient specification of MD element for condition.");
+			    }
+			    elems.add(elem);
+			    return elems;
 	}
 
 	if (conditinPositoinMeasure != null) {
@@ -830,6 +848,8 @@ public class FileBasedPredicateFunction implements IPredicateFunctions {
 	    if (elem == null) {
 		throw new Exception("Insufficient specification of MD element for condition.");
 	    }
+	    elems.add(elem);
+	    return elems;
 	}
 
 	elems = schema.getNodesByURI(conditoinPosition);

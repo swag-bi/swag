@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,9 +42,11 @@ import swag.analysis_graphs.execution_engine.AnalysisGraphsManager;
 import swag.analysis_graphs.execution_engine.ConsiderEmptyVariablesStrategy;
 import swag.analysis_graphs.execution_engine.ConsiderNavigationVariablesStrategy;
 import swag.analysis_graphs.execution_engine.NavigationStrategy;
+import swag.analysis_graphs.execution_engine.NavigationStrategyPerformNavigation;
 import swag.analysis_graphs.execution_engine.analysis_situations.AnalysisSituation;
 import swag.analysis_graphs.execution_engine.analysis_situations.Variable;
 import swag.analysis_graphs.execution_engine.navigations.NavigationStep;
+import swag.analysis_graphs.execution_engine.navigations.NavigationStrategyFactory;
 import swag.analysis_graphs.visualization.MDSchemaJSONizer;
 import swag.helpers.AutoCompleteData;
 import swag.sparql_builder.Configuration;
@@ -462,7 +465,7 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
 	String navOrNot = request.getParameter("navigateOrNot");
 	if (!navOrNot.equals("")) {
 	    NavigationStep nv = ((Map<String, NavigationStep>) session.getAttribute("nvListMap")).get(navOrNot);
-	    NavigationStrategy strategy = new ConsiderEmptyVariablesStrategy();
+	    NavigationStrategy strategy = NavigationStrategyFactory.getNavigationStrategy(buildEng.getAg());
 	    buildEng.doNavigate(strategy, nv);
 	}
 
@@ -578,7 +581,7 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
 		variables, buildEng, nv, nv.getTarget().getFact().getURI(), addedLabels, addedVals, addedSuggestions);
 	doPostProcess(addedLabels, addedVals, addedSuggestions, session, request, loadedSuggestions);
 
-	NavigationStrategy strategy = new ConsiderNavigationVariablesStrategy();
+	NavigationStrategy strategy = NavigationStrategyFactory.getNavigationStrategy(buildEng.getAg());
 	buildEng.doNavigate(strategy, nv);
 
 	request.setAttribute("currASName", nv.getTarget().getName());
@@ -607,6 +610,8 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
 	ResultSetFormatter.outputAsJSON(results);
 	String finalResponse = ServletPresentationHelper.putResultsAsHTMLString(finalResults, resultsHeader,
 		nv.getTarget());
+	
+	doScreen(request, response, session, buildEng);
 
 	Map<String, String[]> allASsResponseStr = AnalysisSituationWebFormatter.fleshCurrASs(
 		(List<AnalysisSituation>) session.getAttribute("asList"),
@@ -734,10 +739,10 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
 		JSONObject obj = new JSONObject(reqVal);
 		String str = obj.getString("dimensionURI");
 		response.setContentType("application/json");
-		List<String> levelValues = buildEng.getPossibleLevelsOnDimension(str);
+		Set<AutoCompleteData> levelValues = buildEng.getUniquePossibleLevelsOnDimensionWithLabels(str);
 		final List<AutoCompleteData> result = new ArrayList<AutoCompleteData>();
-		for (String val : levelValues) {
-		    result.add(new AutoCompleteData(val.replace(addedNSForSMDInstance, ""), val));
+		for (AutoCompleteData val : levelValues) {
+		    result.add(val);
 		}
 		response.getWriter().write(new Gson().toJson(result));
 		loadedSuggestions.addAll(result);
@@ -1142,6 +1147,46 @@ public class ManipulateAnalysisGraphs extends HttpServlet {
 	sessionloadedSuggestions.addAll(addedSuggestions);
 	session.setAttribute("loadedSuggestions", sessionloadedSuggestions);
 
+    }
+    
+    private void doScreen(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+    	    AnalysisGraphsManager buildEng){
+    	
+    	if (Configuration.getInstance().is("dynamicGenerationOfTarget")) {
+        AnalysisGraph ag = buildEng.getAg();
+        
+        Map<String, AnalysisSituation> asListMap = new HashMap<String, AnalysisSituation>();
+	    List<AnalysisSituation> asList = new ArrayList<AnalysisSituation>();
+
+	     asList = ag.getAnalysisSituations();
+
+	    for (AnalysisSituation as : asList) {
+		asListMap.put(as.getName(), as);
+	    }
+
+	    String asjson = JsonUtils.generateASJSON(asList);
+	    
+	    session.setAttribute("asjson", asjson);
+	    request.setAttribute("asjson", asjson);
+	    session.setAttribute("asList", asList);
+	    session.setAttribute("asListMap", asListMap);
+
+	    Map<String, NavigationStep> nvListMap = new HashMap<String, NavigationStep>();
+	    
+	    List<NavigationStep> nvList = new ArrayList<NavigationStep>();
+	    nvList = ag.getNavigationSteps();
+	    for (NavigationStep nv : nvList) {
+		nvListMap.put(nv.getAbbName(), nv);
+	    }
+
+	    String nvjson = JsonUtils.generateNVJson(nvList, asList);
+	    session.setAttribute("nvjson", nvjson);
+	    request.setAttribute("nvjson", nvjson);
+	    session.setAttribute("nvList", nvList);
+	    session.setAttribute("nvListMap", nvListMap);
+	    response.setContentType("text/html");
+    	}
+	   
     }
 
 }

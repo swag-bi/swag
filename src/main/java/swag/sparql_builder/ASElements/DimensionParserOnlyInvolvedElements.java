@@ -30,8 +30,10 @@ public class DimensionParserOnlyInvolvedElements extends DimensionAbstractParser
 
     Set<MDElement> elementsOnDim = dimToAS.getAllInvolvedElms();
     for (MDElement elem : elementsOnDim) {
+    	if(!elem.isNullElement()){
       frgments
           .add(new MDPathFragment(mdSchema.getFactOfSchema(), elem, MDPathFragmentType.Mandatory));
+    	}
     }
   }
 

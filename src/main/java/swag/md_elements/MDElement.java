@@ -244,5 +244,9 @@ public class MDElement implements Serializable, Node, IRDFElement {
 	// TODO Auto-generated method stub
 	return null;
     }
+    
+    public boolean isNullElement(){
+    	return StringUtils.isEmpty(getIdentifyingName());
+    }
 
 }
