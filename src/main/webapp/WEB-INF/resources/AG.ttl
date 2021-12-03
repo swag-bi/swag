@@ -1,723 +1,1168 @@
 @prefix : <http://www.amcis2021.com/swag/ag#> .
-@prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
-@prefix pr: <http://www.amcis2021.com/swag/pr#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix gn: <http://www.geonames.org/ontology#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix voaf: <http://purl.org/vocommons/voaf#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix smd: <http://www.amcis2021.com/swag/smd#> .
+@prefix pr: <http://www.amcis2021.com/swag/pr#> .
 @prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix smd: <http://www.amcis2021.com/swag/smd#> .
+@prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix qb4o: <http://purl.org/qb4olap/cubes#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
-@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix qb4o: <http://purl.org/qb4olap/cubes#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://www.amcis2021.com/swag/ag> .
 
-<http://www.amcis2021.com/swag/ag> a owl:Ontology, voaf:Vocabulary, owl:NamedIndividual;
-  rdfs:comment "This vocabulary allows for the modeling analytical processes proactively as graph composed of analysis situations connected by navigation steps."@en;
-  rdfs:label "The Semantic Web Analysis Graphs Vocabulary.";
-  owl:imports <http://purl.org/linked-data/cube#>;  
-  dcterms:title "The Semantic Web Analysis Graphs Vocabulary.";
-  vann:preferredNamespacePrefix "ag";
-  vann:preferredNamespaceUri "http://www.amcis2021.com/swag/ag#";
-  owl:versionInfo "1.0" .
+<http://www.amcis2021.com/swag/ag> rdf:type owl:Ontology ;
+                                    owl:imports qb: ;
+                                    dcterms:title "The Semantic Web Analysis Graphs Vocabulary." ;
+                                    vann:preferredNamespacePrefix "ag" ;
+                                    vann:preferredNamespaceUri "http://www.amcis2021.com/swag/ag#" ;
+                                    rdfs:comment "This vocabulary allows for the modeling analytical processes proactively as graph composed of analysis situations connected by navigation steps."@en ;
+                                    rdfs:label "The Semantic Web Analysis Graphs Vocabulary." ;
+                                    owl:versionInfo "1.0" .
 
-#Classes
-:AnalysisGraph a owl:Class;
-  rdfs:comment "A graph composed of analysis situations connected by navigation steps. An analysis graph plots an analytical process as a successsion of analysis situations connected by navigation steps."@en .
+#################################################################
+#    Annotation properties
+#################################################################
 
-:NavigationStep a owl:Class;
-  rdfs:comment "A navigation step is a set of OLAP operations that transforms the source analysis situation to the target analysis situation. A navigation step has a source analysis situation and a target analysis situation."@en .
+###  http://purl.org/dc/terms/title
+dcterms:title rdf:type owl:AnnotationProperty .
 
-:AnalysisSituation a owl:Class;
-  rdfs:comment "An analysis situation is a high level representation of a multidimensional query. An analysis situation may have variables, which are to be bound by user to concrete values."@en .
 
-:Specification a owl:Class ;
-  rdfs:comment "Abstract class for specifications, e.g., dimension specification or measure specification."@en . 
-  
-:DimensionSpecification a owl:Class;
-  rdfs:subClassOf :Specification ;
-  rdfs:comment "Element of a qualification of a dimension."@en .
-  
-:Granularity a owl:Class;
-  rdfs:subClassOf :DimensionSpecification;
-  rdfs:comment """Abstract class and a part of a dimension specification. 
-											Used to specifiy the granularity level on a dimension"""@en .
-											
-:Dice a owl:Class;
-  rdfs:subClassOf :DimensionSpecification;
-  rdfs:comment "Restriction of a level to a specific value."@en .
-  
-:DimensionSelection a owl:Class;
-  rdfs:subClassOf :DimensionSpecification;
-  rdfs:comment """A slice specification is a part of a dimension specification. 
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.amcis2021.com/swag/ag#analysisGraphProperty
+:analysisGraphProperty rdf:type owl:ObjectProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#analysisSituation
+:analysisSituation rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :analysisGraphProperty ;
+                   rdfs:domain :AnalysisGraph ;
+                   rdfs:range :AnalysisSituation ;
+                   rdfs:comment "Links an analysis graph to a member analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#analysisSituationProperty
+:analysisSituationProperty rdf:type owl:ObjectProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#clause
+:clause rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :predicateProperty ;
+        rdfs:domain :Predicate ;
+        rdfs:range :Clause .
+
+
+###  http://www.amcis2021.com/swag/ag#cube
+:cube rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf :analysisSituationProperty ;
+      rdfs:domain :AnalysisSituation ;
+      rdfs:range qb:DataStructureDefinition ;
+      rdfs:comment "Specifies the cube of an analysis situtation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#dataset
+:dataset rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf :analysisSituationProperty ;
+         rdfs:domain :AnalysisSituation ;
+         rdfs:range qb:DataSet ;
+         rdfs:comment "Specifies the dataset of an analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#derivedFrom
+:derivedFrom rdf:type owl:ObjectProperty ;
+             rdfs:domain :DerivedMeasure ;
+             rdfs:range qb:MeasureProperty ;
+             rdfs:comment "Specifies a value in a navigation operation to be the dice value in the navigate target analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#dice
+:dice rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf :analysisSituationProperty ;
+      rdfs:domain :AnalysisSituation ;
+      rdfs:range :Dice ;
+      rdfs:comment "Specifies a combination of a dice level and a corresponding dice value."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#diceLevel
+:diceLevel rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :analysisSituationProperty ;
+           rdfs:domain :Dice ;
+           rdfs:range :Level ;
+           rdfs:comment "Specifies the level on which the restriction of values (dice) is performed."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#diceNode
+:diceNode rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :analysisSituationProperty ;
+          rdfs:domain :Dice ;
+          rdfs:range :Value ;
+          rdfs:comment "Specifies a value to restrict the dice level to."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#dimension
+:dimension rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :analysisSituationProperty ;
+           rdfs:domain :DimensionSpecification ;
+           rdfs:range qb:DimensionProperty ;
+           rdfs:comment "Specifies a dimension property."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#dimensionPredicate
+:dimensionPredicate rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :analysisSituationProperty ;
+                    rdfs:domain :DimensionSelection ;
+                    rdfs:comment "Specifies a dimension predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#dimensionSelection
+:dimensionSelection rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :analysisSituationProperty ;
+                    rdfs:domain :AnalysisSituation ;
+                    rdfs:range :DimensionSelection .
+
+
+###  http://www.amcis2021.com/swag/ag#dimensionSummarizability
+:dimensionSummarizability rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf :summarizabilityProperty ;
+                          rdfs:domain :AnalysisGraph ,
+                                      :AnalysisSituation ;
+                          rdfs:range :DimensionSummarizability .
+
+
+###  http://www.amcis2021.com/swag/ag#granularity
+:granularity rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :analysisSituationProperty ;
+             rdfs:domain :AnalysisSituation ;
+             rdfs:range :Granularity ;
+             rdfs:comment "Specifies a granularity of an analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#granularityLevel
+:granularityLevel rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :analysisSituationProperty ;
+                  rdfs:domain :Granularity ;
+                  rdfs:range :Level ;
+                  rdfs:comment "Specifies a granularity level property."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#hasConfiguration
+:hasConfiguration rdf:type owl:ObjectProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#hierarchy
+:hierarchy rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :analysisSituationProperty ;
+           rdfs:range qb4o:Hierarchy ;
+           rdfs:comment "Specifies a hierarchy." .
+
+
+###  http://www.amcis2021.com/swag/ag#impliedBy
+:impliedBy rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :predicateProperty ;
+           owl:inverseOf :implies ;
+           rdfs:domain :GroundPredicate ;
+           rdfs:range :GroundPredicate ;
+           rdfs:comment "Specifies an inverse implication relationship between two predicates."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#implies
+:implies rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf :predicateProperty ;
+         rdfs:domain :GroundPredicate ;
+         rdfs:range :GroundPredicate ;
+         rdfs:comment "Specifies an implication relationship between two predicates."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#incomplete
+:incomplete rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :summarizabilityProperty ;
+            rdfs:domain :Summarizability ;
+            rdfs:range :IncompleteMeasureMode ,
+                       :NonStrictMeasureMode .
+
+
+###  http://www.amcis2021.com/swag/ag#instanceOf
+:instanceOf rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :predicateProperty ;
+            rdf:type owl:TransitiveProperty ;
+            rdfs:domain :Predicate ;
+            rdfs:range :Predicate ;
+            rdfs:comment "Specifies the type of the predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#mdSelection
+:mdSelection rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :analysisSituationProperty ;
+             rdfs:domain :AnalysisSituation ;
+             rdfs:range :MDSelection .
+
+
+###  http://www.amcis2021.com/swag/ag#measureProperty
+:measureProperty rdf:type owl:ObjectProperty ;
+                 rdfs:comment "Abstract propertz of measure properties."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#measureSelection
+:measureSelection rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :analysisSituationProperty ;
+                  rdfs:domain :AnalysisSituation ;
+                  rdfs:range :MeasureSelection ;
+                  rdfs:comment "Specifies a conditoin over a measure." .
+
+
+###  http://www.amcis2021.com/swag/ag#measureSummarizability
+:measureSummarizability rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf :summarizabilityProperty ;
+                        rdfs:domain :AnalysisGraph ,
+                                    :AnalysisSituation ;
+                        rdfs:range :MeasureSummarizability ;
+                        rdfs:comment "Connects an analysis situation or an analysis graph to its summarizability resolution configurations."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#mode
+:mode rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf :summarizabilityProperty ;
+      rdfs:domain :SummarizabilityConfig ;
+      rdfs:range :SummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#navigationOperationProperty
+:navigationOperationProperty rdf:type owl:ObjectProperty ;
+                             rdfs:comment "Abstract property of navigation operations." .
+
+
+###  http://www.amcis2021.com/swag/ag#navigationStep
+:navigationStep rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :analysisGraphProperty ;
+                rdfs:domain :AnalysisGraph ;
+                rdfs:range :AnalysisSituation ;
+                rdfs:comment "Links an analysis graph to a member navigation step. "@en .
+
+
+###  http://www.amcis2021.com/swag/ag#navigationStepProperty
+:navigationStepProperty rdf:type owl:ObjectProperty ;
+                        rdfs:comment "Abstract property of navigation steps." .
+
+
+###  http://www.amcis2021.com/swag/ag#node
+:node rdf:type owl:ObjectProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#nonStrict
+:nonStrict rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :summarizabilityProperty ;
+           rdfs:domain :Summarizability ;
+           rdfs:range :NonStrictDimSummarizabilityConfig ,
+                      :NonStrictMsrSummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#onSchema
+:onSchema rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :analysisGraphProperty ;
+          rdfs:domain :AnalysisGraph ;
+          rdfs:range smd:MDSchema ;
+          rdfs:comment "Specifies a multidimensional schema on which an analysis situation is defined."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opDiceLevel
+:opDiceLevel rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :navigationOperationProperty ;
+             rdfs:range :Value ;
+             rdfs:comment "Specifies a value in a navigation operation to be a dice value in the navigation target analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opDiceNode
+:opDiceNode rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :navigationOperationProperty ;
+            rdfs:range :Value ;
+            rdfs:comment "Specifies a value in a navigation operation to be a dice value in the navigation target analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opDimConditionType
+:opDimConditionType rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :navigationOperationProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#opDimension
+:opDimension rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :navigationOperationProperty ;
+             rdfs:domain :DimensionOperation ;
+             rdfs:range qb:DimensionProperty ;
+             rdfs:comment "Specifies the dimension on which a navigation is to be performed."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opGranularityLevel
+:opGranularityLevel rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :navigationOperationProperty ;
+                    rdfs:range :Granularity ;
+                    rdfs:comment "Specifies a level in a navigation operation to be a level in the navigation target analysis situation (e.g., a dice level or a granularity)."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opHierarchy
+:opHierarchy rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :navigationOperationProperty ;
+             rdfs:domain :DimensionOperation ;
+             rdfs:comment "Specifies the dimension on which a navigation is to be performed."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opNewDimPredicate
+:opNewDimPredicate rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :navigationOperationProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#opNewResultMeasure
+:opNewResultMeasure rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :navigationOperationProperty ;
+                    rdfs:domain :AddResultMeasure ;
+                    rdfs:comment "Specifies a measure speicification for the operation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opNewResultPredicate
+:opNewResultPredicate rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf :navigationOperationProperty ;
+                      rdfs:comment "Specifies a filter conditoin for the operation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opOldDimPredicate
+:opOldDimPredicate rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :navigationOperationProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#opOldResultMeasure
+:opOldResultMeasure rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :navigationOperationProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#opOldResultPredicate
+:opOldResultPredicate rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf :navigationOperationProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#operation
+:operation rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :navigationStepProperty ;
+           rdfs:domain :NavigationStep ;
+           rdfs:range :NavigationOperation ;
+           rdfs:comment "Connects a navigation step to an operation of the step." .
+
+
+###  http://www.amcis2021.com/swag/ag#predicateMDElement
+:predicateMDElement rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :predicateProperty ;
+                    rdfs:range :PredicateMDElement .
+
+
+###  http://www.amcis2021.com/swag/ag#predicateProperty
+:predicateProperty rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Predicate ;
+                   rdfs:range :MDElement .
+
+
+###  http://www.amcis2021.com/swag/ag#predicateVariable
+:predicateVariable rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :predicateProperty ;
+                   rdfs:domain :Predicate ;
+                   rdfs:range :PredicateVariable ;
+                   rdfs:comment "Specifies a variable of a predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#resultMeasure
+:resultMeasure rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :analysisSituationProperty ;
+               rdfs:domain :AnalysisSituation ;
+               rdfs:range :Measure ;
+               rdfs:comment "Specifies a measure for an analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#resultSelection
+:resultSelection rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :analysisSituationProperty ;
+                 rdfs:domain :AnalysisSituation ;
+                 rdfs:range :ResultSelection ;
+                 rdfs:comment "Specifies a filter condition to be applied to the result of the analysis situation." .
+
+
+###  http://www.amcis2021.com/swag/ag#source
+:source rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :navigationStepProperty ;
+        rdfs:domain :NavigationStep ;
+        rdfs:range :AnalysisSituation ;
+        rdfs:comment "Specifies the source analysis situation of a navigation step."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#summarizabilityProperty
+:summarizabilityProperty rdf:type owl:ObjectProperty ;
+                         rdfs:comment "Umbrella abstract object property for summarizability options."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#target
+:target rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :navigationStepProperty ;
+        rdfs:domain :NavigationStep ;
+        rdfs:range :AnalysisSituation ;
+        rdfs:comment "Specifies the target analysis situation of a navigation step."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#usesAggregationFunction
+:usesAggregationFunction rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf :measureProperty ;
+                         rdfs:domain :AggregatedMeasure ;
+                         rdfs:comment "Links an aggregated measure to the aggregation function it uses."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#usesMeasure
+:usesMeasure rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :measureProperty ;
+             rdfs:domain :AggregatedMeasure ;
+             rdfs:range :NonAggregatedMeasure ;
+             rdfs:comment "Links an aggregated measure to the base-derived measure it aggregates."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#value
+:value rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf :summarizabilityProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.amcis2021.com/swag/ag#connectOver
+:connectOver rdf:type owl:DatatypeProperty ,
+                      owl:FunctionalProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#expression
+:expression rdf:type owl:DatatypeProperty .
+
+
+###  http://www.amcis2021.com/swag/ag#hasValue
+:hasValue rdf:type owl:DatatypeProperty ,
+                   owl:FunctionalProperty ;
+          rdfs:comment "Specifies a value for a variable, node, etc."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#name
+:name rdf:type owl:DatatypeProperty ;
+      rdfs:range xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/linked-data/cube#DataSet
+qb:DataSet rdf:type owl:Class .
+
+
+###  http://purl.org/linked-data/cube#DataStructureDefinition
+qb:DataStructureDefinition rdf:type owl:Class .
+
+
+###  http://purl.org/linked-data/cube#DimensionProperty
+qb:DimensionProperty rdf:type owl:Class .
+
+
+###  http://purl.org/linked-data/cube#MeasureProperty
+qb:MeasureProperty rdf:type owl:Class ;
+                   rdfs:subClassOf :NonAggregatedMeasure .
+
+
+###  http://purl.org/qb4olap/cubes#Hierarchy
+qb4o:Hierarchy rdf:type owl:Class .
+
+
+###  http://purl.org/qb4olap/cubes#LevelProperty
+qb4o:LevelProperty rdf:type owl:Class ;
+                   rdfs:subClassOf :Level .
+
+
+###  http://purl.org/vocommons/voaf#Vocabulary
+voaf:Vocabulary rdf:type owl:Class .
+
+
+###  http://www.amcis2021.com/swag/ag#AddBaseMeasureSelection
+:AddBaseMeasureSelection rdf:type owl:Class ;
+                         rdfs:subClassOf :BaseMeasureOperation ;
+                         rdfs:comment "A navigation operation that adds a base measure selection condition to the set of base measure conditions of the source analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AddDimPredicate
+:AddDimPredicate rdf:type owl:Class ;
+                 rdfs:subClassOf :DimensionSelectionOperation ;
+                 rdfs:comment "A navigation operation that adds a dimension selectoin condition to a specific dimension/hirearchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AddMDPredicate
+:AddMDPredicate rdf:type owl:Class ;
+                rdfs:subClassOf :MDOperation ;
+                rdfs:comment "A navigation operatoin that adds an MD selection condition to the set of MD selection conditions in the source analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AddResultMeasure
+:AddResultMeasure rdf:type owl:Class ;
+                  rdfs:subClassOf :ResultMeasureOperation ;
+                  rdfs:comment "An operator that adds a measure to the set of measures of the source analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AddResultPredicate
+:AddResultPredicate rdf:type owl:Class ;
+                    rdfs:subClassOf :ResultPredicateOperation ;
+                    rdfs:comment "A navigation operation that adds a result selection condition to the set of result selection conditions of the source analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AddTypedDimensionSelectoin
+:AddTypedDimensionSelectoin rdf:type owl:Class ;
+                            rdfs:subClassOf :DimensionSelectionOperation ;
+                            rdfs:comment "Adds a new dimension selection condition to the set selection conditions on a specific diemsnion/hierarchy. The added condition should be of a specific type passed as s parameter ."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AggregatedMeasure
+:AggregatedMeasure rdf:type owl:Class ;
+                   rdfs:subClassOf :Measure ;
+                   rdfs:comment "Aggregation expression over a measure."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AnalysisGraph
+:AnalysisGraph rdf:type owl:Class ;
+               rdfs:comment "A graph composed of analysis situations connected by navigation steps. An analysis graph plots an analytical process as a successsion of analysis situations connected by navigation steps."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#AnalysisSituation
+:AnalysisSituation rdf:type owl:Class ;
+                   rdfs:comment "An analysis situation is a high level representation of a multidimensional query. An analysis situation may have variables, which are to be bound by user to concrete values."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Attribute
+:Attribute rdf:type owl:Class ;
+           rdfs:subClassOf :DimensionElement .
+
+
+###  http://www.amcis2021.com/swag/ag#BaseMeasureOperation
+:BaseMeasureOperation rdf:type owl:Class ;
+                      rdfs:subClassOf :MeasureOperatoin .
+
+
+###  http://www.amcis2021.com/swag/ag#BroadenBaseMeasureSelection
+:BroadenBaseMeasureSelection rdf:type owl:Class ;
+                             rdfs:subClassOf :BaseMeasureOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#BroadenDimPredicate
+:BroadenDimPredicate rdf:type owl:Class ;
+                     rdfs:subClassOf :ReplaceDimPredicate ;
+                     rdfs:comment "Substitutes a dimension selection condition in the set selection conditions on a specific diemsnion/hierarchy by an implying condition passed as s parameter ."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#BroadenResultSelection
+:BroadenResultSelection rdf:type owl:Class ;
+                        rdfs:subClassOf :ReplaceResultPredicate .
+
+
+###  http://www.amcis2021.com/swag/ag#ChangeGranularityTo
+:ChangeGranularityTo rdf:type owl:Class ;
+                     rdfs:subClassOf :GranularityOperatoin ;
+                     rdfs:comment "Abstract Navigation Operation for the operations that change a granularity level of an analysis situation up or down the hierarchy." .
+
+
+###  http://www.amcis2021.com/swag/ag#Clause
+:Clause rdf:type owl:Class ;
+        rdfs:subClassOf :PredicateElement ;
+        rdfs:comment "Syntactic SPARQL clause used in a predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DerivedMeasure
+:DerivedMeasure rdf:type owl:Class ;
+                rdfs:comment "Non-aggregation expression over a base measure."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Dice
+:Dice rdf:type owl:Class ;
+      rdfs:subClassOf :DimensionSpecification ;
+      rdfs:comment "Restriction of a level to a specific value."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DiceOperation
+:DiceOperation rdf:type owl:Class ;
+               rdfs:subClassOf :DimensionOperation ;
+               rdfs:comment "Abstract class for dice operations."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionElement
+:DimensionElement rdf:type owl:Class ;
+                  rdfs:subClassOf :MDElement ;
+                  rdfs:comment "Abstract class for all dimensional elements."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionOperation
+:DimensionOperation rdf:type owl:Class ;
+                    rdfs:subClassOf :NavigationOperation ;
+                    rdfs:comment "Abstract class for operations involving dimensions."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionSelection
+:DimensionSelection rdf:type owl:Class ;
+                    rdfs:subClassOf :DimensionSpecification ;
+                    rdfs:comment """A slice specification is a part of a dimension specification. 
 		A slice specification is used to restrict the values of a dimension element (i.e., a level or a descriptor) using a condition."""@en .
-		
-:MDSelection a owl:Class;
-  rdfs:subClassOf :Specification ;
-  rdfs:comment "Abstract class for selection conditoins over multiple dimensions."@en .
-
-:MeasureSpecification a owl:Class;
-  rdfs:subClassOf :Specification ;
-  rdfs:comment "Abstract class for measure specification."@en .
-
-:Measure a owl:Class;
-  rdfs:subClassOf :MDElement, :MeasureSpecification ;
-  rdfs:comment "Measure."@en .
-  
-:DerivedMeasure a owl:Class;
-  rdfs:comment "Non-aggregation expression over a base measure."@en .
-  
-qb:MeasureProperty a owl:Class;
-  rdfs:subClassOf :NonAggregatedMeasure .
-
-:AggregatedMeasure a owl:Class;
-  rdfs:subClassOf :Measure ;
-  rdfs:comment "Aggregation expression over a measure."@en .
-  
-:ResultSelection a owl:Class;
-  rdfs:subClassOf :Specification ;
-  rdfs:comment "Filter conditoin"@en .
-    
-:MeasureGroundPredicate a owl:Class;
-  rdfs:subClassOf :GroundPredicate, :MeasurePredicate ;
-  rdfs:comment "Measure ground condition."@en .
-
-:MeasurePredicate a owl:Class;
-  rdfs:subClassOf :Predicate ;
-  rdfs:comment "Measure condition."@en .
-
-:MeasureSelection a owl:Class;
-  rdfs:subClassOf :MeasureSpecification ;  
-  rdfs:subClassOf :NonAggregatedMeasure .
-
-:ResultGroundPredicate a owl:Class;
-  rdfs:subClassOf :GroundPredicate, :ResultPredicate ;
-  rdfs:comment "Ground filter condition."@en .
-  
-:ResultPredicate a owl:Class;
-  rdfs:subClassOf :Predicate ;
-  rdfs:comment "Filter condition."@en .
-  
-:Clause a owl:Class;
-  rdfs:subClassOf :PredicateElement ;
-  rdfs:comment "Syntactic SPARQL clause used in a predicate."@en .
-
-:MDElement a owl:Class ;
-  rdfs:comment "Abstract class for all MD elements."@en .
-
-:Attribute a owl:Class;
-  rdfs:subClassOf :DimensionElement .
-
-:DimensionElement a owl:Class;
-  rdfs:subClassOf :MDElement ;
-  rdfs:comment "Abstract class for all dimensional elements."@en .
-  
-:Predicate a owl:Class ;
-  rdfs:comment "A predicate specifies a selection condition that can be evaluated to true or false."@en .
-  
-:DimensionPredicate a owl:Class;
-  rdfs:subClassOf :Predicate ;
-  rdfs:comment "Dimension predicate."@en .  
-  
-:MDPredicate a owl:Class;
-  rdfs:subClassOf :Predicate ;
-  rdfs:comment "MD conditoin: multiple dimensions are involved."@en .
-  
-:PredicateElement a owl:Class ;
-  rdfs:comment "Abstract class for predicate elements."@en .
-
-:PredicateMDElement a owl:Class;
-  rdfs:subClassOf :PredicateElement ;
-  rdfs:comment "Abstract class for MD elements of a predicate."@en .
-
-:PredicateVariable a owl:Class;
-  rdfs:subClassOf :PredicateElement ;
-  rdfs:comment "A predicate predicate variable can be bound to a concrete value allowing for reusable predicates."@en .
-  
-:PredicateParameter a owl:Class;
-  rdfs:subClassOf :PredicateElement ;
-  rdfs:comment "Parameter of a predicate (e.g, a variable or an MD element)."@en .  
-    
-:GroundPredicate a owl:Class;
-  rdfs:subClassOf :Predicate ;
-  rdfs:comment "Ground predicate."@en .  
-    
-:MDGroundPredicate a owl:Class;
-  rdfs:subClassOf :GroundPredicate, :MDPredicate ;
-  rdfs:comment "Ground MD predicate."@en .  
-  
-:DimensionGroundPredicate a owl:Class;
-  rdfs:subClassOf :GroundPredicate, :DimensionPredicate ;
-  rdfs:comment "Ground dimension predicate."@en .
-
-:QualifiedAttribute a owl:Class;
-  rdfs:subClassOf :Attribute ;
-  rdfs:comment "Allows a fully qualified specification of an attribute, i.e., dimension, hierarchy, level, and attribute."@en .
-
-:QualifiedLevel a owl:Class;
-  rdfs:subClassOf :Level ;
-  rdfs:comment "Allows a fully qualified specification of a level, i.e., dimension, hierarchy, and level."@en . 
-  
-:Level a owl:Class;
-  rdfs:subClassOf :DimensionElement ;
-  rdfs:comment "Abstract class for levels and level variables."@en .
-											
-qb4o:LevelProperty rdfs:subClassOf :Level.
-
-:Value a owl:Class;
-  rdfs:comment "Actual value."@en .
-  
-:Variable a owl:Class;
-  rdfs:comment "A variable is like a plcae holder on a specific element of an analysis situation / navigation step. A variable can encode further information, e.g., the type of the variable representing the set of potential values, etc."@en .
-
-#Navigation operation classes
-:NavigationOperation a owl:Class;
-  rdfs:comment "An abstract class that represents a navigation operation. All navigation operations are subclasses of this class."@en .
-
-#Dimension operations
-:DimensionOperation a owl:Class;
-  rdfs:subClassOf :NavigationOperation ;
-  rdfs:comment "Abstract class for operations involving dimensions."@en .
-  
-#Grnularity oprerations
-:ChangeGranularityToOperation a owl:Class;
-  rdfs:subClassOf :GranularityOperatoin;
-  rdfs:comment "Abstract navigation Operation for the operations that change a granularity level of an analysis situation to a specific level." .
-  
-:ChangeGranularityOperation a owl:Class;
-  rdfs:subClassOf :GranularityOperatoin;
-  rdfs:comment "Abstract Navigation Operation for the operations that change a granularity level of an analysis situation up or down the hierarchy." .
-
-:GranularityOperatoin a owl:Class;
-  rdfs:subClassOf :DimensionOperation;
-  rdfs:comment "Umbrella Navigation Operation for the operations that change a granularity level of an analysis situation." .
-  
-:RollUp a owl:Class;
-  rdfs:subClassOf :ChangeGranularityOperation;
-  rdfs:comment "A navigation operation that changes the current granularity level on a dimenion/hierarchy to the level up in the hierarchy."@en .
-
-:RollUpToLevel a owl:Class;
-  rdfs:subClassOf :ChangeGranularityToOperation;
-  rdfs:comment "A roll up to a specific level navigation operator that changes the granularity level on a dimenions/hierarchy  to a specific level that is higher it in the hierarchy."@en .
-  
-:DrillDown a owl:Class;
-  rdfs:subClassOf :ChangeGranularityOperation;
-  rdfs:comment "A navigation operation that changes the current granularity level on a dimenion-hierarchy to the level below it in the hierarchy."@en .
-
-:DrillDownToLevel a owl:Class;
-  rdfs:subClassOf :ChangeGranularityToOperation;
-  rdfs:comment "A drill down to a specific level navigation operation that changes the granularity level on a dimenions/hierarchy  to a specific level that is lower it in the hierarchy."@en .
-  
-#Dice operations
-:DiceOperation a owl:Class;
-  rdfs:subClassOf :DimensionOperation ;
-  rdfs:comment "Abstract class for dice operations."@en .
-  
-:MoveDownToDiceNode a owl:Class;
-  rdfs:subClassOf :DiceOperation;
-  rdfs:comment "A navigation operatoion that changes the dice node on a dimension/hierarchy to a node that is a member of the level down the current dice level in the hierarchy."@en .
-
-:MoveToDiceNode a owl:Class;
-  rdfs:subClassOf :DiceOperation;
-  rdfs:comment "A navigation operation to change the dice value of a dice specoification to a specific value on a specific dice level."@en .
-
-:MoveToNextDiceNode a owl:Class;
-  rdfs:subClassOf :DiceOperation;
-  rdfs:comment "A navigation operation that changes the dice node on a specific dimension/hierarchy to the next node provided that a total ordering funciton between the level members exist." .
-
-:MoveToPreviousDiceNode a owl:Class;
-  rdfs:subClassOf :DiceOperation;
-  rdfs:comment "A navigation operation that changes the dice node on a specific dimension/hierarchy to the previous node provided that a total ordering funciton between the level members exist." .
-
-:MoveUpToDiceNode a owl:Class;
-  rdfs:subClassOf :DiceOperation;
-  rdfs:comment "A navigation operation that changes the dice node on a dimension/hierarchy to the node that is a member of the level up the current dice level in the hierarchy."@en .
-
-# Selection operations  
-:SelectionOperation a owl:Class;
-  rdfs:subClassOf :DimensionOperation ;
-  rdfs:comment "Abstract class for selection operations."@en .
-
-:ChangeSlice a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "A navigation operation to substitute the slice specification in the target analysis situation."@en .
-  
-:RefocusSliceCondition a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "A navigation operation to substitute a slice condition in the target analysis situation."@en .
-  
-:RemoveDimensionSelection a owl:Class;
-  rdfs:subClassOf :SelectionOperation ;
-  rdfs:comment "A navigation operation that removes a selection condition from the set of selection conditions of a dimension of the source analysis situation." .
-
-:RemoveMDSelection a owl:Class;
-  rdfs:subClassOf :NavigationOperation ;
-  rdfs:comment "A navigation operation that removes an MD selection condition from the set MD conditions of the source analysis situation." .
-    
-:NarrowDimensionSelection a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "Substitutes a dimension selection condition in the set selection conditions on a specific diemsnion-hierarchy by an implied condition passed as a parameter ."@en .  
-
-:AddBoundDimensionSelectoin a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "Adds a new dimension selection conditoin to the set selection conditions on a specific diemsnion-hierarchy. The added condition should imply a selection passed as s parameter ."@en .
-
-:AddDimensionSelection a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "A navigation operation that adds a dimension selectoin condition to a specific dimension/hirearchy."@en .
-
-:AddMDSelection a owl:Class;
-  rdfs:subClassOf :NavigationOperation;
-  rdfs:comment "A navigation operatoin that adds an MD selection condition to the set of MD selection conditions in the source analysis situation."@en .
-  
-:AddTypedDimensionSelectoin a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "Adds a new dimension selection condition to the set selection conditions on a specific diemsnion/hierarchy. The added condition should be of a specific type passed as s parameter ."@en .  
-  
-:BroadenDimensionSelection a owl:Class;
-  rdfs:subClassOf :SelectionOperation;
-  rdfs:comment "Substitutes a dimension selection condition in the set selection conditions on a specific diemsnion/hierarchy by an implying condition passed as s parameter ."@en .
-
-#Measure operations
-:MeasureOperatoin a owl:Class;
-  rdfs:subClassOf :NavigationOperation ;
-  rdfs:comment "Abstract class for measure operations."@en .
-
-:AddBoundBaseMeasureSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin .
-  
-:AddMeasure a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin;
-  rdfs:comment "An operator that adds a measure to the set of measures of the source analysis situation."@en .
-
-:RemoveBaseMeasureSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin;
-  rdfs:comment "A navigation operation that removes a base measure selection condition from the set of base measure conditions of the source analysis situation." .
-
-:RemoveMeasure a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin ;
-  rdfs:comment "A navigation operation that removes a measure from the set of measures of the source analysis situation." .
-
-:RemoveResultSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin;
-  rdfs:comment "A navigation operation that removes a filter condition from the set of filter conditions of the source analysis situation."@en .
-
-:NarrowBaseMeasureSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin .
-
-:NarrowResultSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin ;
-  rdfs:comment "Substitutes a measure selection condition by an implied condition passed as a parameter."@en .
-  
-:AddBaseMeasureSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin;
-  rdfs:comment "A navigation operation that adds a base measure selection condition to the set of base measure conditions of the source analysis situation."@en .
-
-:AddBoundResultSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin .
-
-:AddResultSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin;
-  rdfs:comment "A navigation operation that adds a result selection condition to the set of result selection conditions of the source analysis situation."@en .
-  
-:BroadenBaseMeasureSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin .
-
-:BroadenResultSelection a owl:Class;
-  rdfs:subClassOf :MeasureOperatoin .
-
-#Properties 
-#Analysis graph properties
-:analysisGraphProperty a owl:ObjectProperty .
-
-:navigationStep a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisGraphProperty;
-  rdfs:domain :AnalysisGraph;
-  rdfs:range :AnalysisSituation;
-  rdfs:comment "Links an analysis graph to a member navigation step. "@en .
-
-:analysisSituation a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisGraphProperty;
-  rdfs:domain :AnalysisGraph;
-  rdfs:range :AnalysisSituation;
-  rdfs:comment "Links an analysis graph to a member analysis situation."@en .
-  
-#Analysis situation properties
-:analysisSituationProperty a owl:ObjectProperty .
-
-:cube a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range qb:DataStructureDefinition;
-  rdfs:comment "Specifies the cube of an analysis situtation."@en .
-  
-:dataset a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range qb:DataSet;
-  rdfs:comment "Specifies the dataset of an analysis situation."@en .  
-
-:usesAggregationFunction a owl:ObjectProperty;
-  rdfs:subPropertyOf :measureProperty;
-  rdfs:domain :AggregatedMeasure;
-  rdfs:comment "Links an aggregated measure to the aggregation function it uses."@en .
-
-:usesMeasure a owl:ObjectProperty;
-  rdfs:subPropertyOf :measureProperty;
-  rdfs:domain :AggregatedMeasure;
-  rdfs:range :NonAggregatedMeasure;
-  rdfs:comment "Links an aggregated measure to the base-derived measure it aggregates."@en .
-    
-:measure a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :Measure;
-  rdfs:comment "Specifies a measure for an analysis situation."@en .
-
-:measureProperty a owl:ObjectProperty ;
-  rdfs:comment "Abstract propertz of measure properties."@en .
-
-:measureSelection a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :MeasureSelection;
-  rdfs:comment "Specifies a conditoin over a measure." .
-
-:resultSelection a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :ResultSelection;
-  rdfs:comment "Specifies a filter condition to be applied to the result of the analysis situation." .
-  
-:derivedFrom a owl:ObjectProperty;
-  rdfs:domain :DerivedMeasure;
-  rdfs:range qb:MeasureProperty;
-  rdfs:comment "Specifies a value in a navigation operation to be the dice value in the navigate target analysis situation."@en .
-  
-:dimension a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :DimensionSpecification;
-  rdfs:range qb:DimensionProperty;
-  rdfs:comment "Specifies a dimension property."@en .
-  
-:hierarchy a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:range qb4o:Hierarchy;
-  rdfs:comment "Specifies a hierarchy." .
-
-:dice a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :Dice;
-  rdfs:comment "Specifies a combination of a dice level and a corresponding dice value."@en .
-
-:diceLevel a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :Dice;
-  rdfs:range :Level;
-  rdfs:comment "Specifies the level on which the restriction of values (dice) is performed."@en .
-
-:diceNode a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :Dice;
-  rdfs:range :Value;
-  rdfs:comment "Specifies a value to restrict the dice level to."@en .
-  
-:dimensionPredicate a owl:ObjectProperty;
-  rdfs:domain :DimensionSelection ;
-  rdfs:comment "Specifies a dimension predicate."@en .
-  
-:granularity a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :Granularity;
-  rdfs:comment "Specifies a granularity of an analysis situation."@en .
-
-:granularityLevel a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :Granularity;
-  rdfs:range :Level;
-  rdfs:comment "Specifies a granularity level property."@en .
-  
-:dimensionSelection a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :DimensionSelection .
-
-:mdSelection a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisSituationProperty;
-  rdfs:domain :AnalysisSituation;
-  rdfs:range :MDSelection .  
-  
-:node a owl:ObjectProperty .  
-
-#Navigation step properties
-:navigationStepProperty a owl:ObjectProperty ;
-  rdfs:comment "Abstract property of navigation steps." .
-  
-:source a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationStepProperty;
-  rdfs:domain :NavigationStep;
-  rdfs:range :AnalysisSituation;
-  rdfs:comment "Specifies the source analysis situation of a navigation step."@en .
-
-:target a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationStepProperty;
-  rdfs:domain :NavigationStep;
-  rdfs:range :AnalysisSituation;
-  rdfs:comment "Specifies the target analysis situation of a navigation step."@en .
-    
-#Navigation operation properties
-:navigationOperationProperty a owl:ObjectProperty ;
-  rdfs:comment "Abstract property of navigation operations." .
-
-:opHierarchy a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:domain :DimensionOperation;
-  rdfs:comment "Specifies the dimension on which a navigation is to be performed."@en .
-
-:opMeasure a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:domain :AddMeasure;
-  rdfs:comment "Specifies a measure speicification for the operation."@en .
-
-:operation a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationStepProperty;
-  rdfs:domain :NavigationStep;
-  rdfs:range :NavigationOperation;
-  rdfs:comment "Connects a navigation step to an operation of the step." .
-  
-:opDiceLevel a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:range :Value;
-  rdfs:comment "Specifies a value in a navigation operation to be a dice value in the navigation target analysis situation."@en .
-
-:opDiceNode a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:range :Value;
-  rdfs:comment "Specifies a value in a navigation operation to be a dice value in the navigation target analysis situation."@en .
-
-:opDimConditionType a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty .  
-
-:opDimension a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:domain :DimensionOperation;
-  rdfs:range qb:DimensionProperty;
-  rdfs:comment "Specifies the dimension on which a navigation is to be performed."@en .
-
-:opDimensionPredicate a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty .
-
-:opGranularityLevel a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:domain :ChangeGranularityToOperation;
-  rdfs:range :Granularity;
-  rdfs:comment "Specifies a level in a navigation operation to be a level in the navigation target analysis situation (e.g., a dice level or a granularity)."@en .
-
-:opHierarchy a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:domain :DimensionOperation;
-  rdfs:comment "Specifies the dimension on which a navigation is to be performed."@en .
-
-:opMeasure a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty;
-  rdfs:domain :AddMeasure;
-  rdfs:comment "Specifies a measure speicification for the operation."@en .
-
-:opResultSelection a owl:ObjectProperty;
-  rdfs:subPropertyOf :navigationOperationProperty ;
-  rdfs:comment "Specifies a filter conditoin for the operation."@en .
-
-#Predicate properties
-:predicateMDElement a owl:ObjectProperty;
-  rdfs:subPropertyOf :predicateProperty;
-  rdfs:range :PredicateMDElement .
-
-:predicateVariable a owl:ObjectProperty;
-  rdfs:subPropertyOf :predicateProperty;
-  rdfs:domain :Predicate;
-  rdfs:range :PredicateVariable ;
-  rdfs:comment "Specifies a variable of a predicate."@en .
-
-:impliedBy a owl:ObjectProperty;
-  rdfs:subPropertyOf :predicateProperty;
-  rdfs:domain :GroundPredicate;
-  rdfs:range :GroundPredicate;
-  owl:inverseOf :implies ;
-  rdfs:comment "Specifies an inverse implication relationship between two predicates."@en .
-
-:implies a owl:ObjectProperty;
-  rdfs:subPropertyOf :predicateProperty;
-  rdfs:domain :GroundPredicate;
-  rdfs:range :GroundPredicate ;
-  rdfs:comment "Specifies an implication relationship between two predicates."@en .
-  
-:instanceOf a owl:TransitiveProperty, owl:ObjectProperty;
-  rdfs:subPropertyOf :predicateProperty;
-  rdfs:domain :Predicate;
-  rdfs:range :Predicate ;
-  rdfs:comment "Specifies the type of the predicate."@en .
-
-:clause a owl:ObjectProperty;
-  rdfs:subPropertyOf :predicateProperty;
-  rdfs:domain :Predicate;
-  rdfs:range :Clause .
-
-:predicateProperty a owl:ObjectProperty;
-  rdfs:domain :Predicate;
-  rdfs:range :MDElement .
-
-#Summarizability classes, properties, and individuals - to deal with aggregations over non-statistical LOD
-:Summarizability a owl:Class;
-  rdfs:comment "An abstract class. A configuration defines how the queries are to be genrated from an analysis situation's element, e.g., a dimension qualification or a measure specification." .
-
-:IncompleteMeasureMode a owl:Class;
-  rdfs:subClassOf :MeasureSummarizabilityMode .
-
-:NonStrictMeasureMode a owl:Class;
-  rdfs:subClassOf :MeasureSummarizabilityMode .
-  
-:MeasureSummarizability a owl:Class;
-  rdfs:subClassOf :Summarizability;
-  rdfs:comment "Specifies different configurations for generating a query from a measure qualification." .
-
-:SummarizabilityConfig a owl:Class .
-
-:NonAggregatedMeasure a owl:Class;
-  rdfs:subClassOf :Measure .
-
-:SummarizabilityMode a owl:Class;
-  rdfs:comment "An abstract class for possible configurations." .
-
-:NonStrictDimSummarizabilityConfig a owl:Class;
-  rdfs:subClassOf :DimensionSummarizabilityConfig .
-
-:NonStrictMsrSummarizabilityConfig a owl:Class;
-  rdfs:subClassOf :MeasureSummarizabilityConfig .
-  
-:DimensionSummarizability a owl:Class;
-  rdfs:subClassOf :Summarizability;
-  rdfs:comment "Specifies different configurations for generating a query from a dimension qualification." .
-
-:dimensionSummarizability a owl:ObjectProperty;
-  rdfs:subPropertyOf :summarizabilityProperty;
-  rdfs:domain :AnalysisGraph, :AnalysisSituation;
-  rdfs:range :DimensionSummarizability .
-
-:summarizabilityProperty a owl:ObjectProperty;
-  rdfs:comment "Umbrella abstract object property for summarizability options."@en .
-
-:hasConfiguration a owl:ObjectProperty .
-
-:incomplete a owl:ObjectProperty;
-  rdfs:subPropertyOf :summarizabilityProperty;
-  rdfs:domain :Summarizability;
-  rdfs:range :IncompleteMeasureMode, :NonStrictMeasureMode .
-
-:measureSummarizability a owl:ObjectProperty;
-  rdfs:subPropertyOf :summarizabilityProperty;
-  rdfs:domain :AnalysisGraph, :AnalysisSituation;
-  rdfs:range :MeasureSummarizability;
-  rdfs:comment "Connects an analysis situation or an analysis graph to its summarizability resolution configurations."@en .
-
-:mode a owl:ObjectProperty;
-  rdfs:subPropertyOf :summarizabilityProperty;
-  rdfs:domain :SummarizabilityConfig;
-  rdfs:range :SummarizabilityMode .
-
-:nonStrict a owl:ObjectProperty;
-  rdfs:subPropertyOf :summarizabilityProperty;
-  rdfs:domain :Summarizability;
-  rdfs:range :NonStrictDimSummarizabilityConfig, :NonStrictMsrSummarizabilityConfig .
-
-:onSchema a owl:ObjectProperty;
-  rdfs:subPropertyOf :analysisGraphProperty;
-  rdfs:domain :AnalysisGraph;
-  rdfs:range smd:MDSchema;
-  rdfs:comment "Specifies a multidimensional schema on which an analysis situation is defined."@en .
-
-smd:MDSchema a owl:Class .
-
-:value a owl:ObjectProperty;
-  rdfs:subPropertyOf :summarizabilityProperty .
-
-:connectOver a owl:DatatypeProperty, owl:FunctionalProperty .
-
-:expression a owl:DatatypeProperty .
-
-:hasValue a owl:DatatypeProperty, owl:FunctionalProperty;
-  rdfs:comment "Specifies a value for a variable, node, etc."@en .
-
-:name a owl:DatatypeProperty;
-  rdfs:range xsd:string .
-
-:DimensionSummarizabilityConfig a owl:Class;
-  rdfs:subClassOf :SummarizabilityConfig .
-
-:DimensionSummarizabilityMode a owl:Class;
-  rdfs:subClassOf :SummarizabilityMode .
-
-:IncompleteDimSummarizabilityConfig a owl:Class;
-  rdfs:subClassOf :DimensionSummarizabilityConfig .
-
-:IncompleteDimensionMode a owl:Class;
-  rdfs:subClassOf :DimensionSummarizabilityMode .
-
-:MeasureSummarizabilityMode a owl:Class;
-  rdfs:subClassOf :SummarizabilityMode .
-
-:IncompleteMsrSummarizabilityConfig a owl:Class;
-  rdfs:subClassOf :MeasureSummarizabilityConfig .
-
-:MeasureSummarizabilityConfig a owl:Class;
-  rdfs:subClassOf :SummarizabilityConfig .
-
-:Topic a owl:Class;
-  rdfs:subClassOf :PredicateElement .
-  
-:NonStrictDimensionMode a owl:Class;
-  rdfs:subClassOf :DimensionSummarizabilityMode .
-
-pr:Variable a owl:Class .
-
-xsd:String a owl:Class .
-
-qb4o:Avg a owl:NamedIndividual .
-
-:All a owl:NamedIndividual .
-
-:Avg a owl:NamedIndividual .
-
-:BaseLevel a owl:NamedIndividual .
-
-:DefaultValue a :IncompleteMeasureMode, owl:NamedIndividual .
-
-:DiscardFact a :IncompleteMeasureMode, :IncompleteDimensionMode, owl:NamedIndividual .
-
-:InternAggregation a :NonStrictMeasureMode, owl:NamedIndividual .
-
-:Optional a owl:NamedIndividual .
-
-:Other a :IncompleteDimensionMode, owl:NamedIndividual .
-
-:Sets a :NonStrictDimensionMode, owl:NamedIndividual .
-
-:SplitByWeight a :NonStrictDimensionMode, owl:NamedIndividual .
-
-:SplitEqually a :NonStrictDimensionMode, owl:NamedIndividual .
-
-:SubElement a :IncompleteDimensionMode, owl:NamedIndividual .
-
-:TreatAsFact a :NonStrictMeasureMode, :NonStrictDimensionMode, owl:NamedIndividual .
-
-:defaultDimConfig a :DimensionSummarizability, owl:NamedIndividual;
-  :incomplete :Other;
-  :nonStrict :TreatAsFact .
-
-:defaultMsrConfig a :MeasureSummarizability, owl:NamedIndividual .
-
-  
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionSelectionOperation
+:DimensionSelectionOperation rdf:type owl:Class ;
+                             rdfs:subClassOf :DimensionOperation ;
+                             rdfs:comment "Abstract class for selection operations."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionSpecification
+:DimensionSpecification rdf:type owl:Class ;
+                        rdfs:subClassOf :Specification ;
+                        rdfs:comment "Element of a qualification of a dimension."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionSummarizability
+:DimensionSummarizability rdf:type owl:Class ;
+                          rdfs:subClassOf :Summarizability ;
+                          rdfs:comment "Specifies different configurations for generating a query from a dimension qualification." .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionSummarizabilityConfig
+:DimensionSummarizabilityConfig rdf:type owl:Class ;
+                                rdfs:subClassOf :SummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#DimensionSummarizabilityMode
+:DimensionSummarizabilityMode rdf:type owl:Class ;
+                              rdfs:subClassOf :SummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#DrillDown
+:DrillDown rdf:type owl:Class ;
+           rdfs:subClassOf :GranularityOperatoin ;
+           rdfs:comment "A navigation operation that changes the current granularity level on a dimenion-hierarchy to the level below it in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#DrillDownTo
+:DrillDownTo rdf:type owl:Class ;
+             rdfs:subClassOf :ChangeGranularityTo ;
+             rdfs:comment "A drill down to a specific level navigation operation that changes the granularity level on a dimenions/hierarchy  to a specific level that is lower it in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#FreeDimensionPredicate
+:FreeDimensionPredicate rdf:type owl:Class ;
+                        rdfs:subClassOf :FreePredicate ;
+                        rdfs:comment "Dimension predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#FreePredicate
+:FreePredicate rdf:type owl:Class ;
+               rdfs:subClassOf :Predicate .
+
+
+###  http://www.amcis2021.com/swag/ag#FreeResultPredicate
+:FreeResultPredicate rdf:type owl:Class ;
+                     rdfs:subClassOf :FreePredicate ;
+                     rdfs:comment "Filter condition."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Granularity
+:Granularity rdf:type owl:Class ;
+             rdfs:subClassOf :DimensionSpecification ;
+             rdfs:comment """Abstract class and a part of a dimension specification. 
+											Used to specifiy the granularity level on a dimension"""@en .
+
+
+###  http://www.amcis2021.com/swag/ag#GranularityOperatoin
+:GranularityOperatoin rdf:type owl:Class ;
+                      rdfs:subClassOf :DimensionOperation ;
+                      rdfs:comment "Umbrella Navigation Operation for the operations that change a granularity level of an analysis situation." .
+
+
+###  http://www.amcis2021.com/swag/ag#GroundDimensionPredicate
+:GroundDimensionPredicate rdf:type owl:Class ;
+                          rdfs:subClassOf :GroundPredicate ;
+                          rdfs:comment "Ground dimension predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#GroundMDPredicate
+:GroundMDPredicate rdf:type owl:Class ;
+                   rdfs:subClassOf :GroundPredicate ;
+                   rdfs:comment "Ground MD predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#GroundPredicate
+:GroundPredicate rdf:type owl:Class ;
+                 rdfs:subClassOf :Predicate ;
+                 rdfs:comment "Ground predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#GroundResultPredicate
+:GroundResultPredicate rdf:type owl:Class ;
+                       rdfs:subClassOf :GroundPredicate ;
+                       rdfs:comment "Measure ground condition."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#IncompleteDimSummarizabilityConfig
+:IncompleteDimSummarizabilityConfig rdf:type owl:Class ;
+                                    rdfs:subClassOf :DimensionSummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#IncompleteDimensionMode
+:IncompleteDimensionMode rdf:type owl:Class ;
+                         rdfs:subClassOf :DimensionSummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#IncompleteMeasureMode
+:IncompleteMeasureMode rdf:type owl:Class ;
+                       rdfs:subClassOf :MeasureSummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#IncompleteMsrSummarizabilityConfig
+:IncompleteMsrSummarizabilityConfig rdf:type owl:Class ;
+                                    rdfs:subClassOf :MeasureSummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#Level
+:Level rdf:type owl:Class ;
+       rdfs:subClassOf :DimensionElement ;
+       rdfs:comment "Abstract class for levels and level variables."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MDElement
+:MDElement rdf:type owl:Class ;
+           rdfs:comment "Abstract class for all MD elements."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MDOperation
+:MDOperation rdf:type owl:Class ;
+             rdfs:subClassOf :NavigationOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#MDPredicate
+:MDPredicate rdf:type owl:Class ;
+             rdfs:subClassOf :FreePredicate ;
+             rdfs:comment "MD conditoin: multiple dimensions are involved."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MDSelection
+:MDSelection rdf:type owl:Class ;
+             rdfs:subClassOf :Specification ;
+             rdfs:comment "Abstract class for selection conditoins over multiple dimensions."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Measure
+:Measure rdf:type owl:Class ;
+         rdfs:subClassOf :MDElement ,
+                         :MeasureSpecification ;
+         rdfs:comment "Measure."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MeasureOperatoin
+:MeasureOperatoin rdf:type owl:Class ;
+                  rdfs:subClassOf :NavigationOperation ;
+                  rdfs:comment "Abstract class for measure operations."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MeasureSelection
+:MeasureSelection rdf:type owl:Class ;
+                  rdfs:subClassOf :MeasureSpecification ,
+                                  :NonAggregatedMeasure .
+
+
+###  http://www.amcis2021.com/swag/ag#MeasureSpecification
+:MeasureSpecification rdf:type owl:Class ;
+                      rdfs:subClassOf :Specification ;
+                      rdfs:comment "Abstract class for measure specification."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MeasureSummarizability
+:MeasureSummarizability rdf:type owl:Class ;
+                        rdfs:subClassOf :Summarizability ;
+                        rdfs:comment "Specifies different configurations for generating a query from a measure qualification." .
+
+
+###  http://www.amcis2021.com/swag/ag#MeasureSummarizabilityConfig
+:MeasureSummarizabilityConfig rdf:type owl:Class ;
+                              rdfs:subClassOf :SummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#MeasureSummarizabilityMode
+:MeasureSummarizabilityMode rdf:type owl:Class ;
+                            rdfs:subClassOf :SummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveAsideToNode
+:MoveAsideToNode rdf:type owl:Class ;
+                 rdfs:subClassOf :MoveToNode .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveDownToNode
+:MoveDownToNode rdf:type owl:Class ;
+                rdfs:subClassOf :DiceOperation ;
+                rdfs:comment "A navigation operatoion that changes the dice node on a dimension/hierarchy to a node that is a member of the level down the current dice level in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveToLevelAndNode
+:MoveToLevelAndNode rdf:type owl:Class ;
+                    rdfs:subClassOf :MoveToNode ;
+                    rdfs:comment "A navigation operation to change the dice value of a dice specoification to a specific value on a specific dice level."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveToNextNode
+:MoveToNextNode rdf:type owl:Class ;
+                rdfs:subClassOf :DiceOperation ;
+                rdfs:comment "A navigation operation that changes the dice node on a specific dimension/hierarchy to the next node provided that a total ordering funciton between the level members exist." .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveToNode
+:MoveToNode rdf:type owl:Class ;
+            rdfs:subClassOf :DiceOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveToPreviousNode
+:MoveToPreviousNode rdf:type owl:Class ;
+                    rdfs:subClassOf :DiceOperation ;
+                    rdfs:comment "A navigation operation that changes the dice node on a specific dimension/hierarchy to the previous node provided that a total ordering funciton between the level members exist." .
+
+
+###  http://www.amcis2021.com/swag/ag#MoveUpToNode
+:MoveUpToNode rdf:type owl:Class ;
+              rdfs:subClassOf :DiceOperation ;
+              rdfs:comment "A navigation operation that changes the dice node on a dimension/hierarchy to the node that is a member of the level up the current dice level in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#NarrowBaseMeasureSelection
+:NarrowBaseMeasureSelection rdf:type owl:Class ;
+                            rdfs:subClassOf :BaseMeasureOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#NarrowDimPredicate
+:NarrowDimPredicate rdf:type owl:Class ;
+                    rdfs:subClassOf :ReplaceDimPredicate ;
+                    rdfs:comment "Substitutes a dimension selection condition in the set selection conditions on a specific diemsnion-hierarchy by an implied condition passed as a parameter ."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#NarrowResultSelection
+:NarrowResultSelection rdf:type owl:Class ;
+                       rdfs:subClassOf :ReplaceResultPredicate ;
+                       rdfs:comment "Substitutes a measure selection condition by an implied condition passed as a parameter."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#NavigationOperation
+:NavigationOperation rdf:type owl:Class ;
+                     rdfs:comment "An abstract class that represents a navigation operation. All navigation operations are subclasses of this class."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#NavigationStep
+:NavigationStep rdf:type owl:Class ;
+                rdfs:comment "A navigation step is a set of OLAP operations that transforms the source analysis situation to the target analysis situation. A navigation step has a source analysis situation and a target analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#NonAggregatedMeasure
+:NonAggregatedMeasure rdf:type owl:Class ;
+                      rdfs:subClassOf :Measure .
+
+
+###  http://www.amcis2021.com/swag/ag#NonStrictDimSummarizabilityConfig
+:NonStrictDimSummarizabilityConfig rdf:type owl:Class ;
+                                   rdfs:subClassOf :DimensionSummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#NonStrictDimensionMode
+:NonStrictDimensionMode rdf:type owl:Class ;
+                        rdfs:subClassOf :DimensionSummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#NonStrictMeasureMode
+:NonStrictMeasureMode rdf:type owl:Class ;
+                      rdfs:subClassOf :MeasureSummarizabilityMode .
+
+
+###  http://www.amcis2021.com/swag/ag#NonStrictMsrSummarizabilityConfig
+:NonStrictMsrSummarizabilityConfig rdf:type owl:Class ;
+                                   rdfs:subClassOf :MeasureSummarizabilityConfig .
+
+
+###  http://www.amcis2021.com/swag/ag#Predicate
+:Predicate rdf:type owl:Class ;
+           rdfs:comment "A predicate specifies a selection condition that can be evaluated to true or false."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#PredicateElement
+:PredicateElement rdf:type owl:Class ;
+                  rdfs:comment "Abstract class for predicate elements."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#PredicateMDElement
+:PredicateMDElement rdf:type owl:Class ;
+                    rdfs:subClassOf :PredicateElement ;
+                    rdfs:comment "Abstract class for MD elements of a predicate."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#PredicateParameter
+:PredicateParameter rdf:type owl:Class ;
+                    rdfs:subClassOf :PredicateElement ;
+                    rdfs:comment "Parameter of a predicate (e.g, a variable or an MD element)."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#PredicateVariable
+:PredicateVariable rdf:type owl:Class ;
+                   rdfs:subClassOf :PredicateElement ;
+                   rdfs:comment "A predicate predicate variable can be bound to a concrete value allowing for reusable predicates."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#QualifiedAttribute
+:QualifiedAttribute rdf:type owl:Class ;
+                    rdfs:subClassOf :Attribute ;
+                    rdfs:comment "Allows a fully qualified specification of an attribute, i.e., dimension, hierarchy, level, and attribute."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#QualifiedLevel
+:QualifiedLevel rdf:type owl:Class ;
+                rdfs:subClassOf :Level ;
+                rdfs:comment "Allows a fully qualified specification of a level, i.e., dimension, hierarchy, and level."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#RebindDimPredicate
+:RebindDimPredicate rdf:type owl:Class ;
+                    rdfs:subClassOf :ReplaceDimPredicate .
+
+
+###  http://www.amcis2021.com/swag/ag#RebindResultMeasure
+:RebindResultMeasure rdf:type owl:Class ;
+                     rdfs:subClassOf :ReplaceResultMeasure .
+
+
+###  http://www.amcis2021.com/swag/ag#RebindResultPredicate
+:RebindResultPredicate rdf:type owl:Class ;
+                       rdfs:subClassOf :ReplaceResultPredicate .
+
+
+###  http://www.amcis2021.com/swag/ag#RemoveBaseMeasureSelection
+:RemoveBaseMeasureSelection rdf:type owl:Class ;
+                            rdfs:subClassOf :BaseMeasureOperation ;
+                            rdfs:comment "A navigation operation that removes a base measure selection condition from the set of base measure conditions of the source analysis situation." .
+
+
+###  http://www.amcis2021.com/swag/ag#RemoveDimPredicate
+:RemoveDimPredicate rdf:type owl:Class ;
+                    rdfs:subClassOf :DimensionSelectionOperation ;
+                    rdfs:comment "A navigation operation that removes a selection condition from the set of selection conditions of a dimension of the source analysis situation." .
+
+
+###  http://www.amcis2021.com/swag/ag#RemoveMDPredicate
+:RemoveMDPredicate rdf:type owl:Class ;
+                   rdfs:subClassOf :MDOperation ;
+                   rdfs:comment "A navigation operation that removes an MD selection condition from the set MD conditions of the source analysis situation." .
+
+
+###  http://www.amcis2021.com/swag/ag#RemoveResultMeasure
+:RemoveResultMeasure rdf:type owl:Class ;
+                     rdfs:subClassOf :ResultMeasureOperation ;
+                     rdfs:comment "A navigation operation that removes a measure from the set of measures of the source analysis situation." .
+
+
+###  http://www.amcis2021.com/swag/ag#RemoveResultPredicate
+:RemoveResultPredicate rdf:type owl:Class ;
+                       rdfs:subClassOf :ResultPredicateOperation ;
+                       rdfs:comment "A navigation operation that removes a filter condition from the set of filter conditions of the source analysis situation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#ReplaceDimPredicate
+:ReplaceDimPredicate rdf:type owl:Class ;
+                     rdfs:subClassOf :DimensionSelectionOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#ReplaceResultMeasure
+:ReplaceResultMeasure rdf:type owl:Class ;
+                      rdfs:subClassOf :ResultMeasureOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#ReplaceResultPredicate
+:ReplaceResultPredicate rdf:type owl:Class ;
+                        rdfs:subClassOf :ResultPredicateOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#ResultMeasureOperation
+:ResultMeasureOperation rdf:type owl:Class ;
+                        rdfs:subClassOf :ResultOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#ResultOperation
+:ResultOperation rdf:type owl:Class ;
+                 rdfs:subClassOf :MeasureOperatoin .
+
+
+###  http://www.amcis2021.com/swag/ag#ResultPredicateOperation
+:ResultPredicateOperation rdf:type owl:Class ;
+                          rdfs:subClassOf :ResultOperation .
+
+
+###  http://www.amcis2021.com/swag/ag#ResultSelection
+:ResultSelection rdf:type owl:Class ;
+                 rdfs:subClassOf :Specification ;
+                 rdfs:comment "Filter conditoin"@en .
+
+
+###  http://www.amcis2021.com/swag/ag#RollUp
+:RollUp rdf:type owl:Class ;
+        rdfs:subClassOf :GranularityOperatoin ;
+        rdfs:comment "A navigation operation that changes the current granularity level on a dimenion/hierarchy to the level up in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#RollUpTo
+:RollUpTo rdf:type owl:Class ;
+          rdfs:subClassOf :ChangeGranularityTo ;
+          rdfs:comment "A roll up to a specific level navigation operator that changes the granularity level on a dimenions/hierarchy  to a specific level that is higher it in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Specification
+:Specification rdf:type owl:Class ;
+               rdfs:comment "Abstract class for specifications, e.g., dimension specification or measure specification."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Summarizability
+:Summarizability rdf:type owl:Class ;
+                 rdfs:comment "An abstract class. A configuration defines how the queries are to be genrated from an analysis situation's element, e.g., a dimension qualification or a measure specification." .
+
+
+###  http://www.amcis2021.com/swag/ag#SummarizabilityConfig
+:SummarizabilityConfig rdf:type owl:Class .
+
+
+###  http://www.amcis2021.com/swag/ag#SummarizabilityMode
+:SummarizabilityMode rdf:type owl:Class ;
+                     rdfs:comment "An abstract class for possible configurations." .
+
+
+###  http://www.amcis2021.com/swag/ag#Topic
+:Topic rdf:type owl:Class ;
+       rdfs:subClassOf :PredicateElement .
+
+
+###  http://www.amcis2021.com/swag/ag#Value
+:Value rdf:type owl:Class ;
+       rdfs:comment "Actual value."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#Variable
+:Variable rdf:type owl:Class ;
+          rdfs:comment "A variable is like a plcae holder on a specific element of an analysis situation / navigation step. A variable can encode further information, e.g., the type of the variable representing the set of potential values, etc."@en .
+
+
+###  http://www.amcis2021.com/swag/pr#Variable
+pr:Variable rdf:type owl:Class .
+
+
+###  http://www.amcis2021.com/swag/smd#MDSchema
+smd:MDSchema rdf:type owl:Class .
+
+
+###  http://www.w3.org/2001/XMLSchema#String
+xsd:String rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://purl.org/qb4olap/cubes#Avg
+qb4o:Avg rdf:type owl:NamedIndividual .
+
+
+###  http://www.amcis2021.com/swag/ag
+<http://www.amcis2021.com/swag/ag> rdf:type owl:NamedIndividual ,
+                                            voaf:Vocabulary .
+
+
+###  http://www.amcis2021.com/swag/ag#All
+:All rdf:type owl:NamedIndividual .
+
+
+###  http://www.amcis2021.com/swag/ag#Avg
+:Avg rdf:type owl:NamedIndividual .
+
+
+###  http://www.amcis2021.com/swag/ag#BaseLevel
+:BaseLevel rdf:type owl:NamedIndividual .
+
+
+###  http://www.amcis2021.com/swag/ag#DefaultValue
+:DefaultValue rdf:type owl:NamedIndividual ,
+                       :IncompleteMeasureMode .
+
+
+###  http://www.amcis2021.com/swag/ag#DiscardFact
+:DiscardFact rdf:type owl:NamedIndividual ,
+                      :IncompleteDimensionMode ,
+                      :IncompleteMeasureMode .
+
+
+###  http://www.amcis2021.com/swag/ag#InternAggregation
+:InternAggregation rdf:type owl:NamedIndividual ,
+                            :NonStrictMeasureMode .
+
+
+###  http://www.amcis2021.com/swag/ag#Optional
+:Optional rdf:type owl:NamedIndividual .
+
+
+###  http://www.amcis2021.com/swag/ag#Other
+:Other rdf:type owl:NamedIndividual ,
+                :IncompleteDimensionMode .
+
+
+###  http://www.amcis2021.com/swag/ag#Sets
+:Sets rdf:type owl:NamedIndividual ,
+               :NonStrictDimensionMode .
+
+
+###  http://www.amcis2021.com/swag/ag#SplitByWeight
+:SplitByWeight rdf:type owl:NamedIndividual ,
+                        :NonStrictDimensionMode .
+
+
+###  http://www.amcis2021.com/swag/ag#SplitEqually
+:SplitEqually rdf:type owl:NamedIndividual ,
+                       :NonStrictDimensionMode .
+
+
+###  http://www.amcis2021.com/swag/ag#SubElement
+:SubElement rdf:type owl:NamedIndividual ,
+                     :IncompleteDimensionMode .
+
+
+###  http://www.amcis2021.com/swag/ag#TreatAsFact
+:TreatAsFact rdf:type owl:NamedIndividual ,
+                      :NonStrictDimensionMode ,
+                      :NonStrictMeasureMode .
+
+
+###  http://www.amcis2021.com/swag/ag#defaultDimConfig
+:defaultDimConfig rdf:type owl:NamedIndividual ,
+                           :DimensionSummarizability ;
+                  :incomplete :Other ;
+                  :nonStrict :TreatAsFact .
+
+
+###  http://www.amcis2021.com/swag/ag#defaultMsrConfig
+:defaultMsrConfig rdf:type owl:NamedIndividual ,
+                           :MeasureSummarizability .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

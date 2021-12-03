@@ -34,6 +34,7 @@ import swag.md_elements.Mapping;
 import swag.md_elements.Measure;
 import swag.md_elements.QB4OHierarchy;
 import swag.md_elements.QB4OHierarchyStep;
+import swag.sparql_builder.Configuration;
 
 /**
  * 
@@ -57,8 +58,8 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 
 		OWlConnection owlConn = OWLConnectionFactory.createOWLConnectionWithoutReasoning();
 
-		OWLConnectionFactory.appendQB(owlConn, path, Constants.qbFile, false);
-		OWLConnectionFactory.appendQB4O(owlConn, path, Constants.qb4oFile, false);
+		OWLConnectionFactory.appendQB(owlConn, path, Constants.qbFile, Configuration.getInstance().isLocal());
+		OWLConnectionFactory.appendQB4O(owlConn, path, Constants.qb4oFile, Configuration.getInstance().isLocal());
 		OWLConnectionFactory.appendSMD(owlConn, path, Constants.SMDFile);
 		OWLConnectionFactory.appendAG(owlConn, path, Constants.AGFile);
 

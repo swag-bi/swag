@@ -40,8 +40,8 @@ public class OWLAndSPARQLExecutionEngineFactory implements IExecutionEngineFacto
 	public OWlConnection initOWLConnection(String path) {
 
 		OWlConnection owlConn = OWLConnectionFactory.createOWLConnectionWithoutReasoning();
-		OWLConnectionFactory.appendQB(owlConn, path, Constants.qbFile, false);
-		OWLConnectionFactory.appendQB4O(owlConn, path, Constants.qb4oFile, false);
+		OWLConnectionFactory.appendQB(owlConn, path, Constants.qbFile, Configuration.getInstance().isLocal());
+		OWLConnectionFactory.appendQB4O(owlConn, path, Constants.qb4oFile, Configuration.getInstance().isLocal());
 		OWLConnectionFactory.appendSMD(owlConn, path, Constants.SMDFile);
 		OWLConnectionFactory.appendAG(owlConn, path, Constants.AGFile);
 		OWLConnectionFactory.appendPredicates(owlConn, path, Constants.PredicatesFile);
@@ -55,7 +55,7 @@ public class OWLAndSPARQLExecutionEngineFactory implements IExecutionEngineFacto
 
 		OWlConnection owlConn = initOWLConnection(pathToSourceOntologies);
 
-		OWLConnectionFactory.appendSMDIns(owlConn, pathToSourceOntologies + "/Uploaded/SMDs", mdSchemaFileName, false);
+		OWLConnectionFactory.appendSMDIns(owlConn, pathToSourceOntologies + "/Uploaded/SMDs", mdSchemaFileName, Configuration.getInstance().isLocal());
 
 		OWLConnectionFactory.appendAGIns(owlConn, pathToSourceOntologies + "/Uploaded/AGs", analysisGraphFileName);
 		SPARQLEndpointConnection sparqlEndpointConn = new SPARQLEndpointConnection();

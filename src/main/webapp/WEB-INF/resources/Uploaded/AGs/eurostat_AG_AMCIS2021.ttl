@@ -34,7 +34,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :desContinentGran;
-  ag:measure myMDSchema:SumOfNumOfApplicatoins .
+  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins .
 
 :AS2 a owl:NamedIndividual, ag:AnalysisSituation;
   rdfs:comment "Sum of  number of asylum applications submitted to a specific destination continent, grouped by destination country."@en;
@@ -43,7 +43,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :destCountryGran;
-  ag:measure myMDSchema:SumOfNumOfApplicatoins .
+  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins .
 
 :AS3 a owl:NamedIndividual, ag:AnalysisSituation;
   rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, after a specific year, grouped by destination country and year."@en;
@@ -52,7 +52,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :destCountryGran, :yearGranularity;
-  ag:measure myMDSchema:SumOfNumOfApplicatoins;
+  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins;
   ag:dimensionSelection :sliceOnYear .
 
 :AS4 a owl:NamedIndividual, ag:AnalysisSituation;
@@ -62,9 +62,9 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :geoGran, :monthGranularity;
-  ag:measure myMDSchema:SumOfNumOfApplicatoins;
+  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins;
   ag:dimensionSelection :sliceOnYear;
-  ag:resultSelection :sumOfNumOfAppsGreaterThan .
+  ag:resultPredicate :sumOfNumOfAppsGreaterThan .
 
 :AS5 a owl:NamedIndividual, ag:AnalysisSituation;
   rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, grouped by citizenship country and destination country."@en;
@@ -73,7 +73,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :destCountryGran, :citizenGran;
-  ag:measure myMDSchema:SumOfNumOfApplicatoins .
+  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins .
 
 #Navigation steps
 :NV1-2 a owl:NamedIndividual, ag:NavigationStep;
@@ -105,39 +105,39 @@
   ag:target :AS5 .
 
 #Navigation operations
-:drillDownToYearOnTime a owl:NamedIndividual, ag:DrillDownToLevel;
+:drillDownToYearOnTime a owl:NamedIndividual, ag:DrillDownTo;
   ag:opDimension schema:timeDim;
   ag:opHierarchy schema:timeHier;
   ag:opGranularityLevel schema:year .
 
-:moveToCountry a owl:NamedIndividual, ag:MoveToDiceNode;
+:moveToCountry a owl:NamedIndividual, ag:MoveToLevelAndNode;
   ag:opDimension schema:destinationDim;
   ag:opHierarchy schema:destinationGeoHier;
   ag:opDiceLevel property:geo;
   ag:opDiceNode :varDiceNode2 .
 
-:addSelectionOnYear a owl:NamedIndividual, ag:AddDimensionSelection;
+:addSelectionOnYear a owl:NamedIndividual, ag:AddDimPredicate;
   ag:opDimension schema:timeDim;
-  ag:opDimensionPredicate :sliceSpecOnYear4;
+  ag:opNewDimPredicate :sliceSpecOnYear4;
   ag:opHierarchy schema:timeHier .
   
-:drillDownToDesCountry a owl:NamedIndividual, ag:DrillDownToLevel;
+:drillDownToDesCountry a owl:NamedIndividual, ag:DrillDownTo;
   ag:opDimension schema:destinationDim;
   ag:opHierarchy schema:destinationGeoHier;
   ag:opGranularityLevel property:geo .
 
-:drillDownToCitCountry a owl:NamedIndividual, ag:DrillDownToLevel;
+:drillDownToCitCountry a owl:NamedIndividual, ag:DrillDownTo;
   ag:opDimension schema:citizenshipDim;
   ag:opHierarchy schema:citizenshipGeoHier;
   ag:opGranularityLevel property:citizen .
 
-:drillDownToMonthOnTime a owl:NamedIndividual, ag:DrillDownToLevel;
+:drillDownToMonthOnTime a owl:NamedIndividual, ag:DrillDownTo;
   ag:opDimension schema:timeDim;
   ag:opHierarchy schema:timeHier;
   ag:opGranularityLevel sdmx-dimension:refPeriod .
 
-:filterSumOfNumOfAppsToMoreThan a owl:NamedIndividual, ag:AddResultSelection;
-  ag:opResultSelection :sumOfNumOfAppsGreaterThan .
+:filterSumOfNumOfAppsToMoreThan a owl:NamedIndividual, ag:AddResultPredicate;
+  ag:opNewResultPredicate :sumOfNumOfAppsGreaterThan .
 
 #Specifications  
 :diceSpecOnContinent2 a owl:NamedIndividual, ag:DiceSpecification;

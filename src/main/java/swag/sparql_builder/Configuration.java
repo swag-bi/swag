@@ -62,6 +62,10 @@ public class Configuration {
   public boolean is(String key) {
     return prop.getProperty(key).equals("true");
   }
+  
+  public boolean isLocal() {
+	    return prop.getProperty("local").equals("true");
+	  }
 
   public boolean is(String key, @Nonnull String value) {
     return value.equals(prop.getProperty(key));

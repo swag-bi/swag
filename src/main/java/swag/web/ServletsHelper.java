@@ -48,6 +48,7 @@ import swag.data_handler.Constants;
 import swag.data_handler.OWLConnectionFactory;
 import swag.data_handler.OWlConnection;
 import swag.helpers.AutoCompleteData;
+import swag.sparql_builder.Configuration;
 
 public class ServletsHelper {
 
@@ -288,6 +289,9 @@ public class ServletsHelper {
 		String analysisGraphName = getAGName(path, analysisGraphFileName);
 		String mdSchemaFileName = getMDSchemaFileNameIRI(path, analysisGraphFileName);
 		String mdSchemaName = getMDSchemaName(path, analysisGraphFileName);
+		if (Configuration.getInstance().isLocal()) {
+			mdSchemaFileName = mdSchemaName + ".ttl";
+		}
 		try {
 			return factory.initiateExecutionEngin(path, mdSchemaFileName, mdSchemaName, analysisGraphFileName,
 					analysisGraphName);
