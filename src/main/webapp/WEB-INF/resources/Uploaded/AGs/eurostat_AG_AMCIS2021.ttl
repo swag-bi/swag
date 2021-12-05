@@ -34,7 +34,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :desContinentGran;
-  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins .
+  ag:resultMeasureInAG myMDSchema:SumOfNumOfApplicatoins .
 
 :AS2 a owl:NamedIndividual, ag:AnalysisSituation;
   rdfs:comment "Sum of  number of asylum applications submitted to a specific destination continent, grouped by destination country."@en;
@@ -43,7 +43,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :destCountryGran;
-  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins .
+  ag:resultMeasureInAG myMDSchema:SumOfNumOfApplicatoins .
 
 :AS3 a owl:NamedIndividual, ag:AnalysisSituation;
   rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, after a specific year, grouped by destination country and year."@en;
@@ -52,7 +52,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :destCountryGran, :yearGranularity;
-  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins;
+  ag:resultMeasureInAG myMDSchema:SumOfNumOfApplicatoins;
   ag:dimensionSelection :sliceOnYear .
 
 :AS4 a owl:NamedIndividual, ag:AnalysisSituation;
@@ -62,9 +62,9 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :geoGran, :monthGranularity;
-  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins;
+  ag:resultMeasureInAG myMDSchema:SumOfNumOfApplicatoins;
   ag:dimensionSelection :sliceOnYear;
-  ag:resultPredicate :sumOfNumOfAppsGreaterThan .
+  ag:resultPredicateInAG :sumOfNumOfAppsGreaterThan .
 
 :AS5 a owl:NamedIndividual, ag:AnalysisSituation;
   rdfs:comment "Sum of number of asylum applications submitted to a specific destination country, grouped by citizenship country and destination country."@en;
@@ -73,7 +73,7 @@
   ag:cube schema:migr_asyappctzmQB4O13;
   ag:dataset schema:migr_asyappctzmQB4O13_ds;
   ag:granularity :destCountryGran, :citizenGran;
-  ag:resultMeasure myMDSchema:SumOfNumOfApplicatoins .
+  ag:resultMeasureInAG myMDSchema:SumOfNumOfApplicatoins .
 
 #Navigation steps
 :NV1-2 a owl:NamedIndividual, ag:NavigationStep;
@@ -113,12 +113,12 @@
 :moveToCountry a owl:NamedIndividual, ag:MoveToLevelAndNode;
   ag:opDimension schema:destinationDim;
   ag:opHierarchy schema:destinationGeoHier;
-  ag:opDiceLevel property:geo;
-  ag:opDiceNode :varDiceNode2 .
+  ag:opDiceLevelInAG property:geo;
+  ag:opDiceNodeInAG :varDiceNode2 .
 
 :addSelectionOnYear a owl:NamedIndividual, ag:AddDimPredicate;
   ag:opDimension schema:timeDim;
-  ag:opNewDimPredicate :sliceSpecOnYear4;
+  ag:opNewDimPredicateInAG :sliceSpecOnYear4;
   ag:opHierarchy schema:timeHier .
   
 :drillDownToDesCountry a owl:NamedIndividual, ag:DrillDownTo;
@@ -137,55 +137,55 @@
   ag:opGranularityLevel sdmx-dimension:refPeriod .
 
 :filterSumOfNumOfAppsToMoreThan a owl:NamedIndividual, ag:AddResultPredicate;
-  ag:opNewResultPredicate :sumOfNumOfAppsGreaterThan .
+  ag:opNewResultPredicateInAG :sumOfNumOfAppsGreaterThan .
 
 #Specifications  
 :diceSpecOnContinent2 a owl:NamedIndividual, ag:DiceSpecification;
-  ag:diceLevel schema:continent;
-  ag:diceNode :varDiceNode3;
+  ag:diceLevelInAG schema:continent;
+  ag:diceNodeInAG :varDiceNode3;
   ag:dimension schema:destinationDim;
   ag:hierarchy schema:destinationGeoHier .
 
 :diceSpecOnCountry3 a owl:NamedIndividual, ag:DiceSpecification;
-  ag:diceLevel property:geo;
-  ag:diceNode :varDiceNode2;
+  ag:diceLevelInAG property:geo;
+  ag:diceNodeInAG :varDiceNode2;
   ag:dimension schema:destinationDim;
   ag:hierarchy schema:destinationGeoHier .
 
 :desContinentGran a owl:NamedIndividual, ag:Granularity;
   ag:dimension schema:destinationDim;
   ag:hierarchy schema:destinationGeoHier;
-  ag:granularityLevel schema:continent .  
+  ag:granularityLevelInAG schema:continent .  
 
 :destCountryGran a owl:NamedIndividual, ag:Granularity;
   ag:dimension schema:destinationDim;
   ag:hierarchy schema:destinationGeoHier;
-  ag:granularityLevel property:geo .
+  ag:granularityLevelInAG property:geo .
 
 :sliceOnYear a owl:NamedIndividual, ag:DimensionSelection;
   ag:dimension schema:timeDim;
   ag:hierarchy schema:timeHier;
-  ag:dimensionPredicate :sliceSpecOnYear4 .
+  ag:dimensionPredicateInAG :sliceSpecOnYear4 .
 
 :yearGranularity a owl:NamedIndividual, ag:Granularity;
   ag:dimension schema:timeDim;
   ag:hierarchy schema:timeHier;
-  ag:granularityLevel schema:year .
+  ag:granularityLevelInAG schema:year .
 
 :geoGran a owl:NamedIndividual, ag:Granularity;
   ag:dimension schema:destinationDim;
   ag:hierarchy schema:destinationGeoHier;
-  ag:granularityLevel property:geo .
+  ag:granularityLevelInAG property:geo .
 
 :monthGranularity a owl:NamedIndividual, ag:Granularity;
   ag:dimension schema:timeDim;
   ag:hierarchy schema:timeHier;
-  ag:granularityLevel sdmx-dimension:refPeriod .
+  ag:granularityLevelInAG sdmx-dimension:refPeriod .
 
 :citizenGran a owl:NamedIndividual, ag:Granularity;
   ag:dimension schema:citizenshipDim;
   ag:hierarchy schema:citizenshipGeoHier;
-  ag:granularityLevel property:citizen .
+  ag:granularityLevelInAG property:citizen .
  
 #Variables
 :sliceSpecOnYear4 a owl:NamedIndividual, ag:GroundPredicate, ag:Predicate, ag:DimensionPredicate,

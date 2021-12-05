@@ -15,29 +15,29 @@ public class Constants {
 	public final static String QB_DATASET = "http://purl.org/linked-data/cube#dataSet";
 
 	public final static String granularityE = "granularity";
-	public final static String GRANULARITY_LEVEL_E = "granularityLevel";
+	public final static String GRANULARITY_LEVEL_E = "granularityLevelInAG";
 	public final static String diceSpecificationE = "dice";
 	public final static String ON_DIMENSION_E = "dimension";
 	public final static String DIMENSION_CONF = "DimensionSummarizability";
 	public final static String ON_HIERARCHY_E = "hierarchy";
 	public final static String ON_LEVEL_E = level;
-	public final static String ON_DICE_LEVEL_E = "diceLevel";
-	public final static String ON_NODE_E = "diceNode";
+	public final static String ON_DICE_LEVEL_E = "diceLevelInAG";
+	public final static String ON_NODE_E = "diceNodeInAG";
 	public final static String HAS_SLICE_E = "dimensionSelection";
-	public final static String HAS_DIM_PREDICATE_E = "dimensionPredicate";
+	public final static String HAS_DIM_PREDICATE_E = "dimensionPredicateInAG";
 	public final static String OP_ON_DIMENSION_E = "opDimension";
 	public final static String OP_ON_HIERARCHY_E = "opHierarchy";
 	public final static String OP_TO_LEVEL_E = "opGranularityLevel";
-	public final static String MEASURE_CONDITION_E = "measureSelection";
-	public final static String RESULT_FILTER_E = "resultSelection";
-	public final static String OP_TO_DICE_NOCE_E = "opDiceNode";
-	public final static String OP_TO_DICE_LEVEL_E = "opDiceLevel";
+	public final static String MEASURE_CONDITION_E = "measureSelection";//mm
+	public final static String RESULT_FILTER_E = "resultPredicateInAG";//mmS
+	public final static String OP_TO_DICE_NOCE_E = "opDiceNodeInAG";
+	public final static String OP_TO_DICE_LEVEL_E = "opDiceLevelInAG";
 	public final static String onMeasure_E = "usesMeasure";
 	public final static String aggregationOperation_E = "usesAggregationFunction";
-	public final static String MEASURE_E = "resultMeasure";
-	public final static String OP_RESULT_FILTER_PROP_E = "opNewResultPredicate";
+	public final static String MEASURE_E = "resultMeasureInAG";
+	public final static String OP_RESULT_FILTER_PROP_E = "opNewResultPredicateInAG";
 	public final static String OP_MEASURE_SELECTION_PROP_E = "opMeasureSelection";
-	public final static String OP_SLICE_COND_PROP_E = "opNewDimPredicate";
+	public final static String OP_SLICE_COND_PROP_E = "opNewDimPredicateInAG";
 	public final static String FACT_CLASS_E = "cube";
 	public final static String DATA_SET = "dataset";
 	public final static String HAS_ANALYSIS_SITUATIO_E = "analysisSituation";
@@ -98,7 +98,7 @@ public class Constants {
 
 	// NEW MEASURES
 	public final static String DERIVED_MEASURE = "DerivedMeasure";
-	public final static String AGG_MEASURE = "AggregatedMeasure";
+	public final static String AGG_MEASURE = "ResultMeasure";
 	public final static String AGG_MEASURE_TO_DERIVED = "aggregatedMeasure";
 	public final static String DERIVED_MEASURE_EXPRESSION = "derivationExpression";
 	public final static String DERIVED_MEASURE_MEASURE = "derivedFrom";
