@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.OntResource;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.Property;
@@ -1280,5 +1281,18 @@ public class DataHandlerUtils {
       return true;
     }
     return false;
+  }
+  
+  public static boolean isPair(RDFNode node1, OWlConnection owlConnection) {
+	  node1.as(Individual.class).hasProperty(RDF.type,
+	            owlConnection.getModel().getOntClass(
+	                OWLConnectionFactory.getAGNamespace(owlConnection) + Constants.PAIR_CLASS));	  
+	  return false;
+  }
+  
+  public static String getPairParameterName(RDFNode node1, OWlConnection owlConnection) {
+	  return owlConnection.getPropertyValueEncAsString( node1.as(Individual.class),
+	            owlConnection.getModel().getProperty(
+	                OWLConnectionFactory.getAGNamespace(owlConnection) + Constants.PARAMETER_PROP));
   }
 }

@@ -110,7 +110,7 @@ public class QUERY_STRINGS {
           + " OPTIONAL { ?literalConditionType rdfs:label ?labelToTrim FILTER ( lang(?labelToTrim) = \"en\" ) BIND(str(?labelToTrim) AS ?label) } "
           + " OPTIONAL { ?literalConditionType rdfs:comment ?comment } "
           + " OPTIONAL { ?literalConditionType ag:clause ?sType } "
-          + " OPTIONAL { ?literalConditionType ag:instanceOf ?conditionType } "
+          + " OPTIONAL { ?literalConditionType ag:derivedFrom ?conditionType } "
           + "}"
           + "ORDER BY ?literalConditionType";
 
@@ -152,7 +152,7 @@ public class QUERY_STRINGS {
                     "?hierInDim ag:hierOfHierInDim ?hierLevel." +
                     "?hierInDim ag:dimOfHierInDim ?dimLevel}\r\n"
                     +      
-      "    optional {?conditoinURI pr:instanceOf ?instanceOf.}" +
+      "    optional {?conditoinURI pr:derivedFrom ?instanceOf.}" +
                     
       "    optional {?conditoinURI pr:varBinding ?varBinding." +
       "              ?varBinding pr:bindingVar ?bindingVar."  +
@@ -225,7 +225,7 @@ public class QUERY_STRINGS {
       + "select ?predicateInstance ?description ?bindingVar ?bindingVal ?varProjection ?resVar ?resVal " 
       + "where{"
       + "?predicateInstance rdf:type pr:PredicateInstance."
-      + "?predicateInstance pr:instanceOf ?xXxPredicatexXx."
+      + "?predicateInstance pr:derivedFrom ?xXxPredicatexXx."
       + "optional {?predicateInstance pr:hasDescription ?description.}" 
       + "optional {?predicateInstance pr:hasVarBinding ?varBinding."
       + "?varBinding pr:bindingOnVar ?bindingVar." 
@@ -245,7 +245,7 @@ public class QUERY_STRINGS {
       "select ?predicate ?query ?subjectVar ?bindingVar ?bindingVal ?selectionVar ?resVar ?resVal\r\n" + 
       "where{ \r\n" + 
       "    ?xXxPredicateInstancexXx rdf:type pr:PredicateInstance.\r\n" + 
-      "    ?predicateInstance pr:instanceOf ?predicate.\r\n" + 
+      "    ?predicateInstance pr:derivedFrom ?predicate.\r\n" + 
       "    optional {?predicate pr:hasQuery ?query.}optional {?predicate pr:hasTopic ?topic.}\r\n" + 
       "    optional {?predicate pr:hasSubjectVar ?subjectVar.}\r\n" + 
       "    optional {wd:Q178810 pr:hasVarBinding ?varBinding.}optional { ?varBinding pr:bindingOnVar ?bindingVar.}optional { ?varBinding pr:bindingHasValue ?bindingVal. }\r\n" + 

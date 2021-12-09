@@ -7,6 +7,11 @@ import java.util.Set;
 
 public class Constants {
 
+	
+	public static final String PAIR_CLASS = "Pair";
+	public static final String PARAMETER_CLASS = "Parameter";
+	public static final String PARAMETER_PROP = "parameter";
+	
 	public final static String level = "level";
 
 	public final static String qb_link = "https://raw.githubusercontent.com/UKGovLD/publishing-statistical-data/master/specs/src/main/vocab/cube.ttl";
@@ -28,7 +33,7 @@ public class Constants {
 	public final static String OP_ON_DIMENSION_E = "opDimension";
 	public final static String OP_ON_HIERARCHY_E = "opHierarchy";
 	public final static String OP_TO_LEVEL_E = "opGranularityLevel";
-	public final static String MEASURE_CONDITION_E = "measureSelection";//mm
+	public final static String MEASURE_CONDITION_E = "baseMeasurePredicateInAG";//mm
 	public final static String RESULT_FILTER_E = "resultPredicateInAG";//mmS
 	public final static String OP_TO_DICE_NOCE_E = "opDiceNodeInAG";
 	public final static String OP_TO_DICE_LEVEL_E = "opDiceLevelInAG";
@@ -36,7 +41,7 @@ public class Constants {
 	public final static String aggregationOperation_E = "usesAggregationFunction";
 	public final static String MEASURE_E = "resultMeasureInAG";
 	public final static String OP_RESULT_FILTER_PROP_E = "opNewResultPredicateInAG";
-	public final static String OP_MEASURE_SELECTION_PROP_E = "opMeasureSelection";
+	public final static String OP_MEASURE_SELECTION_PROP_E = "opBaseMeasurePredicateInAG";
 	public final static String OP_SLICE_COND_PROP_E = "opNewDimPredicateInAG";
 	public final static String FACT_CLASS_E = "cube";
 	public final static String DATA_SET = "dataset";
@@ -47,7 +52,7 @@ public class Constants {
 	public final static String ON_ELEMENT = "onElement";
 	public final static String PREDICATE_EXPRESSION = "expression";
 	public final static String VARIABLE_DOMAIN = "domain";
-	public final static String INSTANCE_OF = "instanceOf";
+	public final static String INSTANCE_OF = "derivedFrom";
 
 	public final static String ELEM_ON_LEVEL_E = "ofLevel";
 	public final static String ELEM_ON_ATTRIBUTE_E = "ofAttribute";
@@ -257,7 +262,7 @@ public class Constants {
 	public final static String AddDimensionSelectionOperator = "AddDimPredicate";
 	public final static String AddDimTypedConditoinOperator = "AddTypedDimensionSelectoin";
 	public final static String AddResultSelectionOperator = "AddResultPredicate";
-	public final static String AddBaseMeasureSeletionOperator = "AddBaseMeasureSelection";
+	public final static String AddBaseMeasureSeletionOperator = "AddBaseMeasurePredicate";
 	public final static String MoveDownToDiceNodeOpClass = "MoveDownToNode";
 	public final static String MoveUpToDiceNodeOpClass = "MoveUpToNode";
 	public final static String MoveToNextDiceNodeOpClass = "MoveToNextNode";

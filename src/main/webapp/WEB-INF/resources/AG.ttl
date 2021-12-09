@@ -14,10 +14,11 @@
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
-@base <http://www.amcis2021.com/swag/ag> .
+@base <http://www.dke.jku.ac.at/swag/ag> .
 
-<http://www.amcis2021.com/swag/ag> rdf:type owl:Ontology ;
-                                    owl:imports qb: ;
+<http://www.dke.jku.ac.at/swag/ag> rdf:type owl:Ontology ;
+                                    owl:imports <http://purl.org/linked-data/cube> ,
+                                                <http://purl.org/qb4olap/cubes> ;
                                     dcterms:title "The Semantic Web Analysis Graphs Vocabulary." ;
                                     vann:preferredNamespacePrefix "ag" ;
                                     vann:preferredNamespaceUri "http://www.amcis2021.com/swag/ag#" ;
@@ -61,6 +62,14 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 :analysisSituationProperty rdf:type owl:ObjectProperty .
 
 
+###  http://www.amcis2021.com/swag/ag#baseMeasurePredicateInAG
+:baseMeasurePredicateInAG rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf :analysisSituationProperty ;
+                          rdfs:domain :AnalysisSituation ;
+                          rdfs:range :GroundBaseMeasurePredicate ;
+                          rdfs:comment "Specifies a conditoin over a measure." .
+
+
 ###  http://www.amcis2021.com/swag/ag#clause
 :clause rdf:type owl:ObjectProperty ;
         rdfs:subPropertyOf :predicateProperty ;
@@ -86,9 +95,12 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 
 ###  http://www.amcis2021.com/swag/ag#derivedFrom
 :derivedFrom rdf:type owl:ObjectProperty ;
-             rdfs:domain :DerivedMeasure ;
-             rdfs:range qb:MeasureProperty ;
-             rdfs:comment "Specifies a value in a navigation operation to be the dice value in the navigate target analysis situation."@en .
+             rdfs:subPropertyOf :predicateProperty ;
+             rdf:type owl:TransitiveProperty ;
+             rdfs:domain :GroundPredicate ;
+             rdfs:range :FreePredicate ;
+             rdfs:comment "Specifies a value in a navigation operation to be the dice value in the navigate target analysis situation."@en ,
+                          "Specifies the type of the predicate."@en .
 
 
 ###  http://www.amcis2021.com/swag/ag#dice
@@ -126,8 +138,8 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 ###  http://www.amcis2021.com/swag/ag#dimensionPredicateInAG
 :dimensionPredicateInAG rdf:type owl:ObjectProperty ;
                         rdfs:subPropertyOf :analysisSituationProperty ;
-                        rdfs:domain :DimensionSelection ,
-                                    :GroundDimensionPredicateInAG ;
+                        rdfs:domain :DimensionSelection ;
+                        rdfs:range :GroundDimensionPredicateInAG ;
                         rdfs:comment "Specifies a dimension predicate."@en .
 
 
@@ -169,6 +181,7 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 ###  http://www.amcis2021.com/swag/ag#hierarchy
 :hierarchy rdf:type owl:ObjectProperty ;
            rdfs:subPropertyOf :analysisSituationProperty ;
+           rdfs:domain :DimensionSpecification ;
            rdfs:range qb4o:Hierarchy ;
            rdfs:comment "Specifies a hierarchy." .
 
@@ -198,15 +211,6 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
                        :NonStrictMeasureMode .
 
 
-###  http://www.amcis2021.com/swag/ag#instanceOf
-:instanceOf rdf:type owl:ObjectProperty ;
-            rdfs:subPropertyOf :predicateProperty ;
-            rdf:type owl:TransitiveProperty ;
-            rdfs:domain :Predicate ;
-            rdfs:range :Predicate ;
-            rdfs:comment "Specifies the type of the predicate."@en .
-
-
 ###  http://www.amcis2021.com/swag/ag#mdSelection
 :mdSelection rdf:type owl:ObjectProperty ;
              rdfs:subPropertyOf :analysisSituationProperty ;
@@ -217,14 +221,6 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 ###  http://www.amcis2021.com/swag/ag#measureProperty
 :measureProperty rdf:type owl:ObjectProperty ;
                  rdfs:comment "Abstract propertz of measure properties."@en .
-
-
-###  http://www.amcis2021.com/swag/ag#measureSelection
-:measureSelection rdf:type owl:ObjectProperty ;
-                  rdfs:subPropertyOf :analysisSituationProperty ;
-                  rdfs:domain :AnalysisSituation ;
-                  rdfs:range :MeasureSelection ;
-                  rdfs:comment "Specifies a conditoin over a measure." .
 
 
 ###  http://www.amcis2021.com/swag/ag#measureSummarizability
@@ -285,7 +281,7 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 ###  http://www.amcis2021.com/swag/ag#opDiceLevelInAG
 :opDiceLevelInAG rdf:type owl:ObjectProperty ;
                  rdfs:subPropertyOf :navigationOperationProperty ;
-                 rdfs:domain :MoveUpToNode ;
+                 rdfs:domain :MoveToLevelAndNode ;
                  rdfs:range :LevelInAG ;
                  rdfs:comment "Specifies a value in a navigation operation to be a dice value in the navigation target analysis situation."@en .
 
@@ -323,7 +319,15 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 :opHierarchy rdf:type owl:ObjectProperty ;
              rdfs:subPropertyOf :navigationOperationProperty ;
              rdfs:domain :DimensionOperation ;
+             rdfs:range qb4o:Hierarchy ;
              rdfs:comment "Specifies the dimension on which a navigation is to be performed."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opNewDimPredicate
+:opNewDimPredicate rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :opNewDimPredicateInAG ;
+                   rdfs:domain :RebindDimPredicate ;
+                   rdfs:range :GroundDimensionPredicate .
 
 
 ###  http://www.amcis2021.com/swag/ag#opNewDimPredicateInAG
@@ -333,12 +337,26 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
                        rdfs:range :GroundDimensionPredicateInAG .
 
 
+###  http://www.amcis2021.com/swag/ag#opNewResultMeasure
+:opNewResultMeasure rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :opNewResultMeasureInAG ;
+                    rdfs:domain :RebindResultMeasure ;
+                    rdfs:range :ResultMeasure .
+
+
 ###  http://www.amcis2021.com/swag/ag#opNewResultMeasureInAG
 :opNewResultMeasureInAG rdf:type owl:ObjectProperty ;
                         rdfs:subPropertyOf :navigationOperationProperty ;
                         rdfs:domain :AddResultMeasure ;
                         rdfs:range :ResultMeasureInAG ;
                         rdfs:comment "Specifies a measure speicification for the operation."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#opNewResultPredicate
+:opNewResultPredicate rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf :opNewResultPredicateInAG ;
+                      rdfs:domain :RebindResultPredicate ;
+                      rdfs:range :GroundResultPredicate .
 
 
 ###  http://www.amcis2021.com/swag/ag#opNewResultPredicateInAG
@@ -356,6 +374,13 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
                        rdfs:range :GroundDimensionPredicateInAG .
 
 
+###  http://www.amcis2021.com/swag/ag#opOldDimPredicatePair
+:opOldDimPredicatePair rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf :opOldDimPredicateInAG ;
+                       rdfs:domain :RebindDimPredicate ;
+                       rdfs:range :GroundDimensionPredicatePair .
+
+
 ###  http://www.amcis2021.com/swag/ag#opOldResultMeasureInAG
 :opOldResultMeasureInAG rdf:type owl:ObjectProperty ;
                         rdfs:subPropertyOf :navigationOperationProperty ;
@@ -363,11 +388,25 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
                         rdfs:range :ResultMeasureInAG .
 
 
+###  http://www.amcis2021.com/swag/ag#opOldResultMeasurePair
+:opOldResultMeasurePair rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf :opOldResultMeasureInAG ;
+                        rdfs:domain :RebindResultMeasure ;
+                        rdfs:range :ResultMeasurePair .
+
+
 ###  http://www.amcis2021.com/swag/ag#opOldResultPredicateInAG
 :opOldResultPredicateInAG rdf:type owl:ObjectProperty ;
                           rdfs:subPropertyOf :navigationOperationProperty ;
                           rdfs:domain :RemoveResultPredicate ;
                           rdfs:range :GroundResultPredicateInAG .
+
+
+###  http://www.amcis2021.com/swag/ag#opOldResultPredicatePair
+:opOldResultPredicatePair rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf :opOldResultPredicateInAG ;
+                          rdfs:domain :RebindResultPredicate ;
+                          rdfs:range :GroundResultPredicatePair .
 
 
 ###  http://www.amcis2021.com/swag/ag#operation
@@ -381,6 +420,7 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 ###  http://www.amcis2021.com/swag/ag#predicateMDElement
 :predicateMDElement rdf:type owl:ObjectProperty ;
                     rdfs:subPropertyOf :predicateProperty ;
+                    rdfs:domain :Predicate ;
                     rdfs:range :PredicateMDElement .
 
 
@@ -465,7 +505,8 @@ vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
 
 
 ###  http://www.amcis2021.com/swag/ag#expression
-:expression rdf:type owl:DatatypeProperty .
+:expression rdf:type owl:DatatypeProperty ;
+            rdfs:range xsd:string .
 
 
 ###  http://www.amcis2021.com/swag/ag#hasValue
@@ -492,16 +533,23 @@ qb:DataStructureDefinition rdf:type owl:Class .
 
 
 ###  http://purl.org/linked-data/cube#DimensionProperty
-qb:DimensionProperty rdf:type owl:Class .
+qb:DimensionProperty rdf:type owl:Class ;
+                     rdfs:subClassOf :MDElement .
 
 
 ###  http://purl.org/linked-data/cube#MeasureProperty
 qb:MeasureProperty rdf:type owl:Class ;
-                   rdfs:subClassOf :NonAggregatedMeasure .
+                   rdfs:subClassOf :MDElement ,
+                                   :NonAggregatedMeasure .
 
 
 ###  http://purl.org/qb4olap/cubes#Hierarchy
-qb4o:Hierarchy rdf:type owl:Class .
+qb4o:Hierarchy rdf:type owl:Class ;
+               rdfs:subClassOf :MDElement .
+
+
+###  http://purl.org/qb4olap/cubes#LevelMember
+qb4o:LevelMember rdfs:subClassOf :Attribute .
 
 
 ###  http://purl.org/qb4olap/cubes#LevelProperty
@@ -562,12 +610,17 @@ voaf:Vocabulary rdf:type owl:Class .
 
 ###  http://www.amcis2021.com/swag/ag#Attribute
 :Attribute rdf:type owl:Class ;
-           rdfs:subClassOf :DimensionElement .
+           rdfs:subClassOf :MDElement .
 
 
 ###  http://www.amcis2021.com/swag/ag#BaseMeasureOperation
 :BaseMeasureOperation rdf:type owl:Class ;
                       rdfs:subClassOf :MeasureOperatoin .
+
+
+###  http://www.amcis2021.com/swag/ag#BaseMeasureSpecification
+:BaseMeasureSpecification rdf:type owl:Class ;
+                          rdfs:subClassOf :MeasureSpecification .
 
 
 ###  http://www.amcis2021.com/swag/ag#BroadenBaseMeasureSelection
@@ -613,12 +666,6 @@ voaf:Vocabulary rdf:type owl:Class .
 :DiceOperation rdf:type owl:Class ;
                rdfs:subClassOf :DimensionOperation ;
                rdfs:comment "Abstract class for dice operations."@en .
-
-
-###  http://www.amcis2021.com/swag/ag#DimensionElement
-:DimensionElement rdf:type owl:Class ;
-                  rdfs:subClassOf :MDElement ;
-                  rdfs:comment "Abstract class for all dimensional elements."@en .
 
 
 ###  http://www.amcis2021.com/swag/ag#DimensionOperation
@@ -704,6 +751,11 @@ voaf:Vocabulary rdf:type owl:Class .
                       rdfs:comment "Umbrella Navigation Operation for the operations that change a granularity level of an analysis situation." .
 
 
+###  http://www.amcis2021.com/swag/ag#GroundBaseMeasurePredicate
+:GroundBaseMeasurePredicate rdf:type owl:Class ;
+                            rdfs:subClassOf :GroundBaseMeasurePredicateInAG .
+
+
 ###  http://www.amcis2021.com/swag/ag#GroundDimensionPredicate
 :GroundDimensionPredicate rdf:type owl:Class ;
                           rdfs:subClassOf :GroundDimensionPredicateInAG ,
@@ -743,7 +795,8 @@ voaf:Vocabulary rdf:type owl:Class .
 
 ###  http://www.amcis2021.com/swag/ag#GroundResultPredicateInAG
 :GroundResultPredicateInAG rdf:type owl:Class ;
-                           rdfs:subClassOf :Value .
+                           rdfs:subClassOf :ResultMeasureSpecification ,
+                                           :Value .
 
 
 ###  http://www.amcis2021.com/swag/ag#GroundResultPredicatePair
@@ -774,7 +827,7 @@ voaf:Vocabulary rdf:type owl:Class .
 
 ###  http://www.amcis2021.com/swag/ag#Level
 :Level rdf:type owl:Class ;
-       rdfs:subClassOf :DimensionElement ;
+       rdfs:subClassOf :MDElement ;
        rdfs:comment "Abstract class for levels and level variables."@en .
 
 
@@ -821,23 +874,10 @@ voaf:Vocabulary rdf:type owl:Class .
              rdfs:comment "Abstract class for selection conditoins over multiple dimensions."@en .
 
 
-###  http://www.amcis2021.com/swag/ag#Measure
-:Measure rdf:type owl:Class ;
-         rdfs:subClassOf :MDElement ,
-                         :MeasureSpecification ;
-         rdfs:comment "Measure."@en .
-
-
 ###  http://www.amcis2021.com/swag/ag#MeasureOperatoin
 :MeasureOperatoin rdf:type owl:Class ;
                   rdfs:subClassOf :NavigationOperation ;
                   rdfs:comment "Abstract class for measure operations."@en .
-
-
-###  http://www.amcis2021.com/swag/ag#MeasureSelection
-:MeasureSelection rdf:type owl:Class ;
-                  rdfs:subClassOf :MeasureSpecification ,
-                                  :NonAggregatedMeasure .
 
 
 ###  http://www.amcis2021.com/swag/ag#MeasureSpecification
@@ -931,7 +971,7 @@ voaf:Vocabulary rdf:type owl:Class .
 
 ###  http://www.amcis2021.com/swag/ag#NonAggregatedMeasure
 :NonAggregatedMeasure rdf:type owl:Class ;
-                      rdfs:subClassOf :Measure .
+                      rdfs:subClassOf :BaseMeasureSpecification .
 
 
 ###  http://www.amcis2021.com/swag/ag#NonStrictDimSummarizabilityConfig
@@ -972,12 +1012,6 @@ voaf:Vocabulary rdf:type owl:Class .
 :PredicateMDElement rdf:type owl:Class ;
                     rdfs:subClassOf :PredicateElement ;
                     rdfs:comment "Abstract class for MD elements of a predicate."@en .
-
-
-###  http://www.amcis2021.com/swag/ag#PredicateParameter
-:PredicateParameter rdf:type owl:Class ;
-                    rdfs:subClassOf :PredicateElement ;
-                    rdfs:comment "Parameter of a predicate (e.g, a variable or an MD element)."@en .
 
 
 ###  http://www.amcis2021.com/swag/ag#PredicateVariable
@@ -1060,8 +1094,8 @@ voaf:Vocabulary rdf:type owl:Class .
 
 ###  http://www.amcis2021.com/swag/ag#ResultMeasure
 :ResultMeasure rdf:type owl:Class ;
-               rdfs:subClassOf :Measure ,
-                               :ResultMeasureInAG ;
+               rdfs:subClassOf :ResultMeasureInAG ,
+                               :ResultMeasureSpecification ;
                rdfs:comment "Aggregation expression over a measure."@en .
 
 
@@ -1081,15 +1115,14 @@ voaf:Vocabulary rdf:type owl:Class .
                                    :ResultMeasureInAG .
 
 
+###  http://www.amcis2021.com/swag/ag#ResultMeasureSpecification
+:ResultMeasureSpecification rdf:type owl:Class ;
+                            rdfs:subClassOf :MeasureSpecification .
+
+
 ###  http://www.amcis2021.com/swag/ag#ResultOperation
 :ResultOperation rdf:type owl:Class ;
                  rdfs:subClassOf :MeasureOperatoin .
-
-
-###  http://www.amcis2021.com/swag/ag#ResultPredicate
-:ResultPredicate rdf:type owl:Class ;
-                 rdfs:subClassOf :Specification ;
-                 rdfs:comment "Filter conditoin"@en .
 
 
 ###  http://www.amcis2021.com/swag/ag#ResultPredicateOperation
@@ -1107,6 +1140,11 @@ voaf:Vocabulary rdf:type owl:Class .
 :RollUpTo rdf:type owl:Class ;
           rdfs:subClassOf :ChangeGranularityTo ;
           rdfs:comment "A roll up to a specific level navigation operator that changes the granularity level on a dimenions/hierarchy  to a specific level that is higher it in the hierarchy."@en .
+
+
+###  http://www.amcis2021.com/swag/ag#SetGranularity
+:SetGranularity rdf:type owl:Class ;
+                rdfs:subClassOf :GranularityOperatoin .
 
 
 ###  http://www.amcis2021.com/swag/ag#Specification
@@ -1149,6 +1187,16 @@ pr:Variable rdf:type owl:Class .
 
 ###  http://www.amcis2021.com/swag/smd#MDSchema
 smd:MDSchema rdf:type owl:Class .
+
+
+###  http://www.dke.jku.ac.at/swag/ag#GroundBaseMeasurePredicateInAG
+:GroundBaseMeasurePredicateInAG rdf:type owl:Class ;
+                                rdfs:subClassOf :BaseMeasureSpecification .
+
+
+###  http://www.dke.jku.ac.at/swag/ag#GroundBaseMeasurePredicatePair
+:GroundBaseMeasurePredicatePair rdf:type owl:Class ;
+                                rdfs:subClassOf :GroundBaseMeasurePredicateInAG .
 
 
 ###  http://www.w3.org/2001/XMLSchema#String
