@@ -103,6 +103,17 @@ public class MDSchemaGraphSMD implements MDSchema {
     }
     return null;
   }
+  
+  public Set<Level> getLevelByNonUNiqueUri(String uri) {
+	  Set<Level> levels = new HashSet<>();
+	  
+	    for (MDElement node : mdGraphMap.keySet()) {
+	      if (node.getURI().equals(uri) && node instanceof Level) {
+	    	  levels.add((Level) node);
+	      }
+	    }
+	    return levels;
+  }
 
   @Override
   public MDRelation getEdge(String name) {

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import swag.helpers.AutoCompleteData;
 import swag.sparql_builder.Configuration;
@@ -24,6 +25,94 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
       String preferredLabelProperty, MDSchemaType type) {
     super(name, uri, nameSpace, endpoint, preferredLabelProperty, type);
   }
+  
+  public MDRelation getRollUpProperty(String l1, String d1, String l2, String d2) {
+	  	 
+	  for (MDElement elem1 : getAllElemsWithUri(l1)){
+		  if(elem1 instanceof Level) {			  
+			  if(deosOutEdgesTargetsContainElem(getOutEdgesOfNode(elem1), d1)) {				  				 
+				  for (MDElement elem2 : getAllElemsWithUri(l2)){					  
+					  if(elem1 instanceof Level) {						  
+						  if(deosOutEdgesTargetsContainElem(getOutEdgesOfNode(elem2), d2)) {							  
+							  for (MDRelation rel : 
+								  getMdGraphMap().values().stream().flatMap(val -> val.stream())
+								  .collect(Collectors.toSet())) {
+								if (rel instanceof QB4OHierarchyStep &&
+										rel.getSource().getURI().equals(l1) &&
+										rel.getTarget().getURI().equals(l2)) {
+									return rel;
+								}
+							  }
+						  }
+					  }
+				  }					  
+			  }
+		  }
+	  }	  	  
+	  return null;
+  }
+  
+  public boolean deosOutEdgesTargetsContainElem(Set<MDRelation> rels, String elm) {
+	  
+	  for(MDRelation rel:rels) {
+		  if(rel.getTarget().getURI().equals(elm)) {
+			  return true;
+		  }
+	  }
+	  return false;
+  }
+  
+  public Set<MDRelation> getOutEdgesOfNode(MDElement e){
+	  Set<MDRelation> rels = new HashSet<>();
+	  
+	  for (MDRelation rel : this.getAllEdges()) {
+		  if(rel.getSource().getURI().equals(e.getURI())) {
+			  rels.add(rel);
+		  }
+	  }	  
+	  return rels;
+  }
+  
+  public Set<MDElement> getAllElemsWithUri(String uri){
+	  Set<MDElement> elems = new HashSet<>();
+	  
+	  for (MDElement elem : getMdGraphMap().keySet()) {
+		  if (elem.getURI().equals(uri)) {
+			  elems.add(elem);
+		  }
+	  }
+	  return elems;
+  }
+  
+  
+  
+  
+  public Set<Dimension> getDimensionsOfLevel(Level l) {
+	  
+	  Set<Dimension> dimensions = new HashSet<>();
+	  
+	  Set <Level> levels = getLevelByNonUNiqueUri(l.getURI());
+  
+	  for (Level level : levels) {
+		  if (level != null && level instanceof Level) {
+		      Set<MDRelation> rels = getOutEdgesOfNode(level);
+		      
+		     
+		        for (MDRelation rel : rels) {
+		        	
+		          if (rel instanceof InDimension) {
+		        	  
+		            if (rel.getTo() != null && rel.getTo() instanceof Dimension) {
+		            	dimensions.add((Dimension) rel.getTo());
+		            }
+		          }
+		        }		      
+		  }
+	  }
+	
+	  return dimensions;
+  }
+
 
   @Override
   public Set<MDElement> getAllElementsOnDimension(String dimensionURI) {
