@@ -36,6 +36,7 @@ public class BasicAnalysisSituationSPARQLQueryGeneratorQB4O extends BasicAnalysi
 
 	private static final Logger logger = Logger.getLogger(BasicAnalysisSituationSPARQLQueryGeneratorQB4O.class);
 	private TripleCollectorBGP bgp = new TripleCollectorBGP();
+	private QueryUtils utils;
 	
 	/**
 	 * Generates a query from a dimensionToAS This function is unaware of the
@@ -62,7 +63,7 @@ public class BasicAnalysisSituationSPARQLQueryGeneratorQB4O extends BasicAnalysi
 					&& !dimToAS.getGranularities().get(0).getPosition().getIdentifyingName().equals("")
 					&& !dimToAS.getGranularities().get(0).getPosition().getSignature().isVariable()) {
 				
-				bgp;
+				
 				
 				granularityLevelQuery = new CustomSPARQLQuery(
 						dimToAS.getGranularities().get(0).getPosition().getMapping().getQuery().getSparqlQuery());
