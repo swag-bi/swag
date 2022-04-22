@@ -92,8 +92,7 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 	 * 
 	 * Creates an instance of {@code MDSchemaBuilder}.
 	 * 
-	 * @param conn
-	 *            data connection with model containing the MD schema.
+	 * @param conn data connection with model containing the MD schema.
 	 * 
 	 */
 	public MDSchemaBuilderQB4O(OWlConnection conn) {
@@ -107,15 +106,12 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 
 	/**
 	 * 
-	 * Recursively traverses the data MD schema instance starting from the fact,
-	 * and builds the corresponding {@code MDSchema} instance.
+	 * Recursively traverses the data MD schema instance starting from the fact, and
+	 * builds the corresponding {@code MDSchema} instance.
 	 * 
-	 * @param owlConnection
-	 *            data connection with model containing the MD schema
-	 * @param graph
-	 *            the MDSchema being built
-	 * @param outEdges
-	 *            the edges outgoing from the current node
+	 * @param owlConnection data connection with model containing the MD schema
+	 * @param graph         the MDSchema being built
+	 * @param outEdges      the edges outgoing from the current node
 	 */
 	private static void propagate(OWlConnection owlConnection, Graph<MDElement, MDRelation> graph,
 			Set<MDRelation> outEdges) {
@@ -143,8 +139,7 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 	 * Builds the MD schema from the provided OWL conneciton which should have a
 	 * model containing and MD schema (instance of MDSchema).
 	 * 
-	 * @param conn
-	 *            OWL connection with model containing the MD schema
+	 * @param conn OWL connection with model containing the MD schema
 	 * 
 	 * @return the built multidimensional schema, null in case of an exception
 	 * 
@@ -224,10 +219,8 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 	 * Gets a set of outgoing edges from a specific nodes. This means the MD
 	 * relationships of the current MD element being visited.
 	 * 
-	 * @param owlConnection
-	 *            OWL connection with model containing the MD schema
-	 * @param elem
-	 *            current MD element being visited
+	 * @param owlConnection OWL connection with model containing the MD schema
+	 * @param elem          current MD element being visited
 	 * 
 	 * @return the outgoing relationships from {@param elem}
 	 */
@@ -522,20 +515,16 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 	 * 
 	 * @param owlConnection
 	 * @param set
-	 * @param sourceInd
-	 *            the individual for we which we are getting related individuals
-	 * @param elem
-	 *            the MD element that was built on the source individual
-	 *            {@code sourceInd}
+	 * @param sourceInd     the individual for we which we are getting related
+	 *                      individuals
+	 * @param elem          the MD element that was built on the source individual
+	 *                      {@code sourceInd}
 	 * @param constantStr
-	 * @param clazzStr
-	 *            the class we are generating instances for
-	 * @param fromStr
-	 *            the string used for the name of the property that connects the
-	 *            edge individual with its from
-	 * @param toStr
-	 *            the string used for the name of the property that connects the
-	 *            edge individual with its to
+	 * @param clazzStr      the class we are generating instances for
+	 * @param fromStr       the string used for the name of the property that
+	 *                      connects the edge individual with its from
+	 * @param toStr         the string used for the name of the property that
+	 *                      connects the edge individual with its to
 	 */
 	private static void addEdgesToSet(OWlConnection owlConnection, Set<MDRelation> set, Individual sourceInd,
 			MDElement elem, String constantStr, String clazzStr, String fromStr, String toStr) {
@@ -602,12 +591,9 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 	/**
 	 * Read derived measures defined for the schema
 	 * 
-	 * @param owlConnection
-	 *            the OWL connection
-	 * @param set
-	 *            the set of MD relations being built
-	 * @param sourceInd
-	 *            the fact individual
+	 * @param owlConnection the OWL connection
+	 * @param set           the set of MD relations being built
+	 * @param sourceInd     the fact individual
 	 * @param elem
 	 */
 	public static final void handleDerivedMeasures(Individual sourceInd, OWlConnection owlConnection,
@@ -634,12 +620,9 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 	/**
 	 * Read derived measures defined for the schema
 	 * 
-	 * @param owlConnection
-	 *            the OWL connection
-	 * @param set
-	 *            the set of MD relations being built
-	 * @param sourceInd
-	 *            the fact individual
+	 * @param owlConnection the OWL connection
+	 * @param set           the set of MD relations being built
+	 * @param sourceInd     the fact individual
 	 * @param elem
 	 */
 	public static final void handleAggregatedMeasures(Individual sourceInd, OWlConnection owlConnection,

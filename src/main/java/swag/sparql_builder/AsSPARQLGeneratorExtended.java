@@ -61,6 +61,7 @@ import swag.sparql_builder.reporting.IMeasureReoprter;
  */
 public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 
+	QueryUtils utils;
 	MDSchema mdSchema;
 	IDimensionQueryGroupVarBodyBuilder dimGrpVarBuilder;
 	AnalysisGraph ag;
@@ -73,17 +74,17 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 		this.mdSchema = mdSchema;
 		this.ag = ag;
 		visitor = new ASElementSPARQLGenerator(ag, mdElemToVarMap);
+		utils = new QueryUtils(mdSchema);
 	}
 
 	private static final Logger logger = Logger.getLogger(AsSPARQLGeneratorExtended.class);
 
 	/**
-	 * Given an analysis situation, this function generates a corresponding
-	 * SPARQL query The whole query body is treated as one single pattern, i.e.,
-	 * any duplicated triple pattern anywhere in the whole query is removed
+	 * Given an analysis situation, this function generates a corresponding SPARQL
+	 * query The whole query body is treated as one single pattern, i.e., any
+	 * duplicated triple pattern anywhere in the whole query is removed
 	 * 
-	 * @param as
-	 *            the bound analysis situation to generate its SPARQL
+	 * @param as the bound analysis situation to generate its SPARQL
 	 * @return a rooted SPARQL query
 	 * @throws SPARQLQueryGenerationException
 	 */
@@ -149,9 +150,9 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 			}
 
 			/*
-			 * adding measure queries first to have a header (project) for the
-			 * query, otherwise if there are no granularities and exception
-			 * might occur. adding measures queries
+			 * adding measure queries first to have a header (project) for the query,
+			 * otherwise if there are no granularities and exception might occur. adding
+			 * measures queries
 			 */
 			List<Var> renamedGranVarsUsedForCount = new ArrayList<>();
 			// Names of variables used in count for the split query
@@ -185,8 +186,8 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 			addResultFilters(rq, mdSchema, as);
 
 			/*
-			 * Adding aggregations and BIND statements related to
-			 * summarizability to the query
+			 * Adding aggregations and BIND statements related to summarizability to the
+			 * query
 			 */
 			if (Configuration.getInstance().isReportingActive()) {
 				for (IDimensionReoprter reporter : allDimsReporters) {
@@ -214,8 +215,7 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 	}
 
 	/**
-	 * Collects the base (derived) measures included in the base measure
-	 * conditions.
+	 * Collects the base (derived) measures included in the base measure conditions.
 	 * 
 	 * @param as
 	 * @return
@@ -276,17 +276,13 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 
 	/**
 	 * 
-	 * Appends the result measures queries to the main query. This is the
-	 * default implementation. As the process of this function flows, there
-	 * function that can be overridden in sub classes to chieve a different
-	 * functionality.
+	 * Appends the result measures queries to the main query. This is the default
+	 * implementation. As the process of this function flows, there function that
+	 * can be overridden in sub classes to chieve a different functionality.
 	 * 
-	 * @param rq
-	 *            the main query to append subqueries to
-	 * @param mdSchema
-	 *            the MD schema
-	 * @param as
-	 *            the current analysis situation
+	 * @param rq                          the main query to append subqueries to
+	 * @param mdSchema                    the MD schema
+	 * @param as                          the current analysis situation
 	 * @param renamedGranVarsUsedForCount
 	 * @throws Exception
 	 */
@@ -338,22 +334,19 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 	}
 
 	/**
-	 * Generates the most outer aggregation variables of the main analytical
-	 * query. Can Be overridden. Implicitly assumes that all required measures
-	 * for the filter are result measures and hence appear in the header of the
-	 * most outer main query.
+	 * Generates the most outer aggregation variables of the main analytical query.
+	 * Can Be overridden. Implicitly assumes that all required measures for the
+	 * filter are result measures and hence appear in the header of the most outer
+	 * main query.
 	 * 
-	 * @param the
-	 *            measure query generator
-	 * @param rq
-	 *            the main analytical query
-	 * @param subQuery
-	 *            the subquery of the measure of analysis situation at hand
-	 * @param measToAS
-	 *            the measure of analysis situation at hand
+	 * @param the                         measure query generator
+	 * @param rq                          the main analytical query
+	 * @param subQuery                    the subquery of the measure of analysis
+	 *                                    situation at hand
+	 * @param measToAS                    the measure of analysis situation at hand
 	 * @param renamedGranVarsUsedForCount
-	 * @param dims
-	 *            the dimensions qualification of the analysis situation
+	 * @param dims                        the dimensions qualification of the
+	 *                                    analysis situation
 	 */
 	protected void appendOuterAggregation(IMeasureToSPARQLQueryGenerator generator, CustomSPARQLQuery rq,
 			CustomSPARQLQuery subQuery, MeasureAggregatedInAS measToAS, List<Var> renamedGranVarsUsedForCount,
@@ -366,13 +359,11 @@ public class AsSPARQLGeneratorExtended implements IAnalysisSituationToSPARQL {
 	}
 
 	/**
-	 * Appending the generated measure subquery to the main containing query.
-	 * This implementation can be overridden.
+	 * Appending the generated measure subquery to the main containing query. This
+	 * implementation can be overridden.
 	 * 
-	 * @param rq
-	 *            the main analytical query
-	 * @param subQuery
-	 *            the subquery of the measure of analysis situation at hand
+	 * @param rq       the main analytical query
+	 * @param subQuery the subquery of the measure of analysis situation at hand
 	 */
 	protected void appendSubQueryToMainQuery(CustomSPARQLQuery rq, CustomSPARQLQuery subQuery) {
 		rq.insertSubQuery(subQuery);

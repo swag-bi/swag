@@ -13,17 +13,22 @@ public class MDSchemaGraphUriBasedOps extends MDSchemaGraphQB4OLAP {
 		super(name, uri, nameSpace, endpoint, preferredLabelProperty, type);
 	}
 
-	public List<MDRelation> getPath(String startLevel, String endLevel, String dimension) {
+	public List<Level> getPath(String startLevel, String endLevel, String dimension) {
 
-		List<MDRelation> path = new LinkedList<>();
+		List<Level> path = new LinkedList<>();
 
 		for (MDElement elem : this.getMdGraphMap().keySet()) {
-			if (elem.getURI().equals(startLevel) && elem instanceof Level && getDimensionsOfLevel(startLevel).stream()
+			if (elem.getURI().equals(endLevel) && elem instanceof Level && getDimensionsOfLevel(endLevel).stream()
 					.map(d -> d.getURI()).collect(Collectors.toSet()).contains(dimension)) {
-
+				path.add((Level) elem);
+				for (MDRelation rel : getInEdgesOfNode(elem)) {
+					if (rel instanceof QB4OHierarchyStep) {
+						path.add((Level) rel.getSource());
+						path.addAll(getPath(rel.getSource().getURI(), endLevel, dimension));
+					}
+				}
 			}
 		}
-
 		return path;
 	}
 
@@ -66,6 +71,17 @@ public class MDSchemaGraphUriBasedOps extends MDSchemaGraphQB4OLAP {
 
 		for (MDRelation rel : this.getAllEdges()) {
 			if (rel.getSource().getURI().equals(e.getURI())) {
+				rels.add(rel);
+			}
+		}
+		return rels;
+	}
+
+	public Set<MDRelation> getInEdgesOfNode(MDElement e) {
+		Set<MDRelation> rels = new HashSet<>();
+
+		for (MDRelation rel : this.getAllEdges()) {
+			if (rel.getTarget().getURI().equals(e.getURI())) {
 				rels.add(rel);
 			}
 		}
