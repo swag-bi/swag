@@ -72,6 +72,11 @@ public class MDSchemaGraphSMD implements MDSchema {
 		return path;
 	}
 
+	@Override
+	public List<Level> getPath(List<Level> path, String startLevel, String endLevel, String dimension) {
+		return null;
+	}
+
 	public MDRelation getRollUpProperty(String l1, String d1, String l2, String d2) {
 
 		for (MDElement elem1 : getAllElemsWithUri(l1)) {

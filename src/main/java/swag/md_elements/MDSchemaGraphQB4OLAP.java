@@ -21,17 +21,18 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 
 		if (!startLevel.equals(endLevel)) {
 			for (MDElement elem : this.getMdGraphMap().keySet()) {
-				if (elem.getURI().equals(endLevel) && elem instanceof Level && getDimensionsOfLevel1(endLevel).stream()
-						.map(d -> d.getURI()).collect(Collectors.toSet()).contains(dimension)) {
+				if (elem.getURI().equals(endLevel) && elem instanceof Level && isLevelInDimension(dimension, elem.getURI())) {
 					if (!path.contains(elem)) {
 						path.add((Level) elem);
 					}
 					for (MDRelation rel : getInEdgesOfNode(elem)) {
 						if (rel instanceof QB4OHierarchyStep) {
-							if (!path.contains((Level) rel.getSource())) {
-								path.add((Level) rel.getSource());
+							if(isLevelInDimension(dimension, rel.getSource().getURI())){
+								if (!path.contains((Level) rel.getSource())) {
+									path.add((Level) rel.getSource());
+								}
+								getPath(path, startLevel, rel.getSource().getURI(), dimension);
 							}
-							path.addAll(getPath(startLevel, rel.getSource().getURI(), dimension));
 						}
 					}
 				}
@@ -40,14 +41,18 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 		return path;
 	}
 
+	public boolean isLevelInDimension(String dimension, String level){
+		return getDimensionsOfLevel1(level).stream()
+				.map(d -> d.getURI()).collect(Collectors.toSet()).contains(dimension);
+	}
+
 	public MDRelation getRollUpProperty(String l1, String d1, String l2, String d2) {
 
 		for (MDElement elem1 : getAllElemsWithUri(l1)) {
 			if (elem1 instanceof Level) {
-				if (deosOutEdgesTargetsContainElem(getOutEdgesOfNode(elem1), d1)) {
 					for (MDElement elem2 : getAllElemsWithUri(l2)) {
 						if (elem1 instanceof Level) {
-							if (deosOutEdgesTargetsContainElem(getOutEdgesOfNode(elem2), d2)) {
+
 								for (MDRelation rel : getMdGraphMap().values().stream().flatMap(val -> val.stream())
 										.collect(Collectors.toSet())) {
 									if (rel instanceof QB4OHierarchyStep && rel.getSource().getURI().equals(l1)
@@ -55,10 +60,8 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 										return rel;
 									}
 								}
-							}
 						}
 					}
-				}
 			}
 		}
 		return null;

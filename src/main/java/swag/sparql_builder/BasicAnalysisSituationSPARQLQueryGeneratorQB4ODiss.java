@@ -71,7 +71,7 @@ public class BasicAnalysisSituationSPARQLQueryGeneratorQB4ODiss extends BasicAna
 
 				bgp = utils.getTriplesOfPath(dimToAS.getD().getURI(),
 						dimToAS.getGranularities().get(0).getPosition().getURI(),
-						schema.getFinestLevelOnDimension(dimToAS.getD().getURI()));
+						schema.getFinestLevelOnDimension(dimToAS.getD().getURI()).getURI());
 
 				granularityLevelQuery = new CustomSPARQLQuery(
 						dimToAS.getGranularities().get(0).getPosition().getMapping().getQuery().getSparqlQuery());

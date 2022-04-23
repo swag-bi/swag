@@ -62,9 +62,9 @@ public class BasicAnalysisSituationSPARQLQueryGeneratorQB4O extends BasicAnalysi
 			if (dimToAS.getGranularities().get(0).getPosition() != null
 					&& !dimToAS.getGranularities().get(0).getPosition().getIdentifyingName().equals("")
 					&& !dimToAS.getGranularities().get(0).getPosition().getSignature().isVariable()) {
-				
-				
-				
+
+
+
 				granularityLevelQuery = new CustomSPARQLQuery(
 						dimToAS.getGranularities().get(0).getPosition().getMapping().getQuery().getSparqlQuery());
 				rq = rq.joinWith(granularityLevelQuery);

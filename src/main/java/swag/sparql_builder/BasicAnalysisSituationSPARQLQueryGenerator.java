@@ -33,6 +33,7 @@ import swag.sparql_builder.ASElements.IAnalysisSituationToSPARQL;
 
 public class BasicAnalysisSituationSPARQLQueryGenerator implements IAnalysisSituationToSPARQL {
 
+
 	private static final Logger logger = Logger.getLogger(BasicAnalysisSituationSPARQLQueryGenerator.class);
 
 	/**
@@ -54,6 +55,9 @@ public class BasicAnalysisSituationSPARQLQueryGenerator implements IAnalysisSitu
 		CustomSPARQLQuery diceLevelQuery = new CustomSPARQLQuery();
 
 		if (dimToAS.getGranularities().size() != 0) {
+
+
+
 			// the granularity query is added as-is in case it is neither null
 			// nor a variable
 			if (dimToAS.getGranularities().get(0).getPosition() != null

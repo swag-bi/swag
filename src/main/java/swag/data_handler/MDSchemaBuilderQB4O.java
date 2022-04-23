@@ -197,7 +197,7 @@ public class MDSchemaBuilderQB4O extends MDSchemaBuilderAbstract {
 						logger.error("Exception building MD schema.", ex);
 					}
 
-					graph.injectInitiate();
+					//graph.injectInitiate();
 					// graph.injectIdentifyingNames();
 					// System.out.println(graph.stringifyGraph());
 
