@@ -104,7 +104,10 @@ public interface ISliceSinglePosition<T extends ISignatureType> extends IASItem<
 
     public MDElement getPositionOfCondition();
 
+
     public void setPositionOfCondition(MDElement e);
+
+
 
     public String getURI();
 

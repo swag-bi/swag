@@ -184,10 +184,12 @@ public class PredicateInASSimple extends PredicateInAS<IDimensionQualification>
 	return positionofPredicate;
     }
 
+
     @Override
     public void setPositionOfCondition(MDElement e) {
 	this.positionofPredicate = e;
     }
+
 
     @Override
     public String getConditoin() {

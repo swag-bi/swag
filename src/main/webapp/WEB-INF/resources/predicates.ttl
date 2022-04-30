@@ -345,7 +345,7 @@ SERVICE <https://query.wikidata.org/sparql> {
 
 schema:year a owl:NamedIndividual .
 
-myMDSchema:SumOfNumOfApplicatoins a ag:AggregatedMeasure;
+myMDSchema:SumOfNumOfApplicatoins a ag:ResultMeasure;
   rdfs:comment "The sum of the number of asylum applications"@en;
   rdfs:label "Sum of number of asylum applications"@en;
   qb4o:aggregateFunction qb4o:sum;

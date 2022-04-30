@@ -9,4 +9,13 @@ public class SetBasedBGP {
             bgp.addTriple(triple);
         }
     }
+
+    static void addBgpToBgp(TripleCollectorBGP bgp1, TripleCollectorBGP bgp2){
+
+        for (Triple triple : bgp2.getBGP().getList()){
+            if(!bgp1.getBGP().getList().contains(triple)){
+                bgp1.addTriple(triple);
+            }
+        }
+    }
 }

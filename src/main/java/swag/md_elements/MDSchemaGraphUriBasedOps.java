@@ -32,7 +32,7 @@ public class MDSchemaGraphUriBasedOps extends MDSchemaGraphQB4OLAP {
 		return path;
 	}
 
-	public MDRelation getRollUpProperty(String l1, String d1, String l2, String d2) {
+	public MDRelation getRollUpOrHasAttributeProperty(String l1, String d1, String l2, String d2) {
 
 		for (MDElement elem1 : getAllElemsWithUri(l1)) {
 			if (elem1 instanceof Level) {

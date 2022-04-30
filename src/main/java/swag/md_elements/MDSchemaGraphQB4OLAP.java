@@ -17,7 +17,34 @@ import swag.sparql_builder.SPARQLUtilities;
 
 public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 
-	public List<Level> getPath(List<Level> path, String startLevel, String endLevel, String dimension) {
+	public List<MDElement> getPath(List<MDElement> path, String startLevel, String endLevel, String dimension) {
+
+		if (path.size() == 0){
+			if (this.getNodeByUri(endLevel) instanceof Descriptor){
+				for (MDElement elem : this.getMdGraphMap().keySet()) {
+					if (elem.getURI().equals(endLevel) && elem instanceof Descriptor && isAttributeInDimension(dimension, elem.getURI())) {
+						if (!path.contains(elem)) {
+							path.add((Descriptor) elem);
+						}
+						for (MDRelation rel : getInEdgesOfNode(elem)) {
+							if (rel instanceof HasDescriptor) {
+								if(isLevelInDimension(dimension, rel.getSource().getURI())){
+									if (!path.contains((Level) rel.getSource())) {
+										path.add((Level) rel.getSource());
+									}
+									getPath(path, startLevel, rel.getSource().getURI(), dimension);
+								}
+							}
+						}
+					}
+				}
+			}
+			if(startLevel.equals(endLevel)) {
+				if (this.getNodeByUri(startLevel) instanceof Level) {
+					path.add((Level) this.getNodeByUri(startLevel));
+				}
+			}
+		}
 
 		if (!startLevel.equals(endLevel)) {
 			for (MDElement elem : this.getMdGraphMap().keySet()) {
@@ -46,12 +73,17 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 				.map(d -> d.getURI()).collect(Collectors.toSet()).contains(dimension);
 	}
 
-	public MDRelation getRollUpProperty(String l1, String d1, String l2, String d2) {
+	public boolean isAttributeInDimension(String dimension, String attribute){
+		return getDimensionsOfAttribute(attribute).stream()
+				.map(d -> d.getURI()).collect(Collectors.toSet()).contains(dimension);
+	}
+
+	public MDRelation getRollUpOrHasAttributeProperty(String l1, String d1, String l2, String d2) {
 
 		for (MDElement elem1 : getAllElemsWithUri(l1)) {
 			if (elem1 instanceof Level) {
 					for (MDElement elem2 : getAllElemsWithUri(l2)) {
-						if (elem1 instanceof Level) {
+						if (elem2 instanceof Level) {
 
 								for (MDRelation rel : getMdGraphMap().values().stream().flatMap(val -> val.stream())
 										.collect(Collectors.toSet())) {
@@ -60,6 +92,17 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 										return rel;
 									}
 								}
+						}else{
+							if (elem2 instanceof Descriptor) {
+
+								for (MDRelation rel : getMdGraphMap().values().stream().flatMap(val -> val.stream())
+										.collect(Collectors.toSet())) {
+									if (rel instanceof HasDescriptor && rel.getSource().getURI().equals(l1)
+											&& rel.getTarget().getURI().equals(l2)) {
+										return rel;
+									}
+								}
+							}
 						}
 					}
 			}
@@ -628,6 +671,33 @@ public class MDSchemaGraphQB4OLAP extends MDSchemaGraphSMD {
 		}
 		return null;
 	}
+
+	public Set<Dimension> getDimensionsOfAttribute(String attr) {
+
+		return getDimensionsOfLevel1(getLevelOfDescriptor1(attr).getURI());
+	}
+
+	public Level getLevelOfDescriptor1(String descriptorURI) {
+
+		Level level = null;
+
+		if (getNodeByUri(descriptorURI) instanceof Descriptor) {
+
+			for (MDElement elem : getAllNodes()) {
+				if (elem instanceof Level) {
+					for (MDRelation rel :getOutEdgesOfNode(getNodeByUri(elem.getURI()))) {
+						if (rel instanceof HasDescriptor && rel.getTo() != null
+								&& rel.getTo().getURI().equals(descriptorURI)) {
+							return (Level) rel.getFrom();
+						}
+					}
+				}
+			}
+		}
+		return level;
+
+	}
+
 
 	public Set<Dimension> getDimensionsOfLevel1(String leveName) {
 

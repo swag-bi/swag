@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jena.graph.Triple;
+import org.apache.jena.query.Query;
 import org.apache.jena.sparql.core.Var;
 import org.apache.jena.sparql.syntax.TripleCollectorBGP;
 import org.apache.log4j.Logger;
 
 import swag.analysis_graphs.execution_engine.AnalysisGraph;
-import swag.analysis_graphs.execution_engine.analysis_situations.AnalysisSituation;
-import swag.analysis_graphs.execution_engine.analysis_situations.IDimensionQualification;
-import swag.analysis_graphs.execution_engine.analysis_situations.IMeasureInAS;
-import swag.analysis_graphs.execution_engine.analysis_situations.LevelInAnalysisSituation;
+import swag.analysis_graphs.execution_engine.analysis_situations.*;
 import swag.md_elements.MDSchema;
 import swag.sparql_builder.ASElements.DimensionParserCreator;
 import swag.sparql_builder.ASElements.DimensionToSPARQLQueryGenerator;
@@ -35,10 +34,103 @@ public class AsSPARQLGeneratorSimple extends AsSPARQLGeneratorExtended {
 		super(mdSchema, ag);
 	}
 
+	public void collect(AnalysisSituation as) throws Exception {
+
+		TripleCollectorBGP bgp = new TripleCollectorBGP();
+		List<String> conds = new ArrayList<>();
+		List<String> filters = new ArrayList<>();
+		List<String> aggs = new ArrayList<>();
+		List<Var> grans = new ArrayList<Var>();
+
+		for (IDimensionQualification dimToAS : as.getDimensionsToAnalysisSituation()) {
+
+			if (dimToAS.getGranularities().size() > 0) {
+				 SetBasedBGP.addBgpToBgp(bgp, utils.getTriplesOfPath(dimToAS.getD().getURI(),
+						dimToAS.getGranularities().get(0).getPosition().getURI(),
+						mdSchema.getFinestLevelOnDimension1(dimToAS.getD().getURI()).getURI()));
+				 grans.add(utils.getVarOfLevel(dimToAS.getD().getURI(),dimToAS.getGranularities().get(0).getPosition().getURI()));
+			}
+
+			if (dimToAS.getDices().size() > 0) {
+				SetBasedBGP.addBgpToBgp(bgp, utils.getTriplesOfPath(dimToAS.getD().getURI(),
+						dimToAS.getDices().get(0).getPosition().getURI(),
+						mdSchema.getFinestLevelOnDimension1(dimToAS.getD().getURI()).getURI()));
+				String str = " FILTER(?" + utils.getVarOfLevel(dimToAS.getD().getURI(), dimToAS.getDices().get(0).getPosition().getURI()).getVarName()
+						+ " = <" +  dimToAS.getDices().get(0).getDiceNodeInAnalysisSituation().getNodeValue() + ">)";
+				conds.add(str);
+			}
+
+			for (ISliceSinglePosition<IDimensionQualification> cond : dimToAS.getSliceConditions()) {
+				SetBasedBGP.addBgpToBgp(bgp, utils.getTriplesOfPath(dimToAS.getD().getURI(),
+						cond.getPositionOfCondition().getURI(),
+						mdSchema.getFinestLevelOnDimension1(dimToAS.getD().getURI()).getURI()));
+				conds.add(utils.generateConditionnASQuery(cond, dimToAS.getD().getURI(), ag));
+			}
+		}
+
+		for (MeasureAggregatedInAS msr: as.getResultMeasures()){
+			SetBasedBGP.addBgpToBgp(bgp, utils.getTriplesOfPathMeasuure (msr.getMeasure().getMeasure().getURI()));
+			String str = "" + msr.getAgg() + "(" + utils.getVarOfMeasure(msr.getMeasure().getMeasure().getURI()) + ") as ?agg" + msr.getName();
+			aggs.add(str);
+		}
+
+		for(ISliceSinglePosition<AnalysisSituationToResultFilters> filter: as.getResultFilters()){
+			MeasureAggregated mAgg = (MeasureAggregated) filter.getPositionOfCondition();
+			SetBasedBGP.addBgpToBgp(bgp, utils.getTriplesOfPathMeasuure (mAgg.getMeasure().getURI()));
+			filters.add(utils.generateConditionnASQueryMsr(filter, ag));
+		}
+
+
+		String query = "";
+		query += "SELECT ";
+
+		for (String agg: aggs){
+			query+= "(" + agg + ")";
+		}
+
+		for (Var gran : grans){
+			query += " ?" + gran.getName() + " ";
+		}
+
+		query += " WHERE {";
+		for (Triple t : bgp.getBGP().getList()){
+			query += "?" + ((Var) t.getSubject()).getName() +
+					" <" + t.getPredicate().getURI() + "> " +
+					((t.getObject() instanceof  Var)?
+							"?" + ((Var) t.getObject()).getName() :
+							" <" + t.getObject().getURI() + "> ") +
+					". ";
+		}
+		query += " \n ";
+		for (String cond : conds){
+			query += cond + " \n ";
+		}
+		query += " } GROUP BY ";
+
+		for (Var gran : grans){
+			query += " ?" + gran.getName() + " ";
+		}
+
+		query += " HAVING (";
+
+		for (String filter : filters){
+			query+= filter + " && ";
+		}
+
+		query += ")";
+
+
+	}
+
 	@Override
 	public CustomSPARQLQuery doQueryGenerationMainProcessing(AnalysisSituation as)
 			throws SPARQLQueryGenerationException {
 
+		try {
+			collect(as);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		logger.info("generating SPARQL query for Analysis Situation " + as.getName());
 		try {
 

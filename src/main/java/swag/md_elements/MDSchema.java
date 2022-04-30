@@ -25,10 +25,11 @@ import swag.sparql_builder.Configuration;
  */
 public interface MDSchema extends Graph<MDElement, MDRelation> {
 
-	public List<Level> getPath(List<Level> path, String startLevel, String endLevel, String dimension);
+	public List<MDElement> getPath(List<MDElement> path, String startLevel, String endLevel, String dimension);
 
-	public MDRelation getRollUpProperty(String l1, String d1, String l2, String d2);
+	public MDRelation getRollUpOrHasAttributeProperty(String l1, String d1, String l2, String d2);
 
+	public Level getLevelOfDescriptor1(String descriptorURI);
 	/**
 	 * 
 	 * Gets all MD elements leading to the element specified by the passed
